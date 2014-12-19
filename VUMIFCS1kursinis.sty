@@ -20,37 +20,49 @@
 \setstretch{1.4}
 \sloppy  % Tolygiai paskirsto tekstą nuo kairės iki dešinės paraštės'
 
-% Titulinio puslapio variantas
+% Titulinio puslapio pagrindinių eleemntų išdėstymas
 \DeclareOption{sedepttitle}{%
   \def\@outputtitle{%
   \begin{center}
   \null\vfil
-  \vskip 2.9cm
-  {\@vumifpaper \par}%
-  {\singlespacing \Large \textbf{\@title} \par}
-  % {\singlespacing \Large \textbf{\titleineng} \par}%
+  \@ifundefined{@titleineng}{
+      \vskip 2.9cm
+      {\@vumifpaper \par}%
+      {\singlespacing \Large \textbf{\@title} \par}
+  }{
+      \vskip 2.4cm
+      {\@vumifpaper \par}%
+      {\singlespacing \Large \textbf{\@title} \par}
+    {\singlespacing \large \textbf{\@titleineng} \par}%
+  }
   \end{center}
-    \vskip 4.9cm
-  \begin{flushright}
-    \singlespacing
-    {\begin{tabular}[t]{l l}%
-        % Jei 1 autorius:
-        \medskip &\hskip 1cm Atliko: \@status \\
-        \medskip\bigskip &\hskip 1cm \@author \hfill \@signatureplace \\
-        %% Jei 2 autoriai:  dar neįgyvendinta
-        % \medskip &\hskip 1cm Atliko: \@status \\
-        % \medskip\bigskip &\hskip 1cm \@author \hfill \@signatureplace \\
-        % \medskip\bigskip &\hskip 1cm \@author \hfill \@signatureplace \\
-        & \medskip Darbo vadovas: \\
-        & \hskip 1cm \@supervisor \hfill  \@signatureplace
-        % \@ifundefined{@reviewer}{}{%
-          % \\ \\
-          % Recenzentas: \\
-          % \@reviewer \hfill \@signatureplace
-        %  }%
-      \end{tabular} \par}%
-  \end{flushright}}
-}
+  \@ifundefined{@secondauthor}{
+     \vskip 4.9cm
+     \begin{flushright}
+        \singlespacing
+        {\begin{tabular}[t]{l l}%
+          & \medskip \hskip 1cm Atliko: \@status \\
+          & \medskip\bigskip \hskip 1cm \@author \hfill \@signatureplace \\
+          & \medskip Darbo vadovas: \\
+          & \hskip 1cm \@supervisor \hfill  \@signatureplace
+        \end{tabular} \par}%
+     \end{flushright}
+     \@ifundefined{@titleineng}{\vskip 5cm}{\vskip 4cm}
+   }{
+     \vskip 4.4cm
+     \begin{flushright}
+        \singlespacing
+        {\begin{tabular}[t]{l l}%
+          \medskip &\hskip 1cm Atliko: \@status \\
+          \medskip\bigskip &\hskip 1cm \@author \hfill \@signatureplace \\
+          \medskip\bigskip &\hskip 1cm \@secondauthor \hfill \@signatureplace \\
+          & \medskip Darbo vadovas: \\
+          & \hskip 1cm \@supervisor \hfill  \@signatureplace
+        \end{tabular} \par}%
+     \end{flushright}
+     \@ifundefined{@titleineng}{\vskip 4cm}{\vskip 3cm}
+   }
+}}
 
 \ExecuteOptions{sedepttitle}
 
@@ -63,6 +75,7 @@
 \newcommand{\reviewer}[1]{\def\@reviewer{#1}}
 \newcommand{\status}[1]{\def\@status{#1}}
 \newcommand{\titleineng}[1]{\def\@titleineng{#1}}
+\newcommand{\secondauthor}[1]{\def\@secondauthor{#1}}
 
 % Skyriaus pavadinimas, turinyje neturintis numerio
 \newcommand{\sectionnonum}[1]{%
@@ -80,7 +93,7 @@
 
 % Lapo formato nurodymas, vėliau nurodysime ir paraštes
 \RequirePackage{vmargin}
-\setmarginsrb{3cm}{2cm}{1.5cm}{1.5cm}{0pt}{0pt}{0pt}{5mm}
+\setmarginsrb{3cm}{2.5cm}{1.5cm}{1.5cm}{0pt}{14pt}{0pt}{5mm}
 \setpapersize[portrait]{A4}
 
 % Mums reikės 1,5 intervalo tarp eilučių
@@ -124,7 +137,6 @@
   \end{center}
   \@outputtitle
   \begin{center}
-      \vskip 5cm 
     {\singlespacing \@date \par}%   
   \end{center}\par
   \@thanks
@@ -204,10 +216,10 @@
 
 % Puslapiai numeruojami apačioje
 \def\ps@plain{%
-    \renewcommand{\@oddhead}{}%
-    \renewcommand{\@evenhead}{}%
-    \renewcommand{\@evenfoot}{\hfill\textrm{\thepage}}%
-    \renewcommand{\@oddfoot}{\@evenfoot}%
+    \renewcommand{\@oddhead}{\hfill\textrm{\thepage}}%
+    \renewcommand{\@evenhead}{\@oddhead}%
+    \renewcommand{\@evenfoot}{}%
+    \renewcommand{\@oddfoot}{}%
 }
 
 
@@ -216,38 +228,30 @@
     \renewcommand{\section}{%
         \cleardoublepage%
          \secdef\@Appendix\@sAppendix%
-    }%
-
+     }%
     \makeatletter
     \addtocontents{toc}{\def\string\@dotsep{1000}}
-    \addtocontents{toc}{\protect\thispagestyle{empty}}
+    % \addtocontents{toc}{\protect\thispagestyle{empty}}   % Removes page number from ToC
     \makeatother
-
     \setcounter{section}{0}%
     \renewcommand{\thesection}{Nr. \arabic{section}}%
-    % \section*{Appendix \thesection:\hspace*{1.5ex} #1}
-    % Insert record to TOC 
-    % \addcontentsline{toc}{section}{Priedai}%}
 }
 
 \def\@Appendix[#1]#2{%
     \refstepcounter{section}%
-    %\renewcommand{\cftdot}{}
     \cftaddtitleline{toc}{section}{Priedas Nr.\arabic{section}}{}
     {\large\bfseries\appendixname\ \thesection\par
-     #2\par}% \nohyphens\centering#2\par}%
+     #2\par}%
     \sectionmark{#1}\vspace{\baselineskip}%
-    \footnotesize%
+    \footnotesize
 }
 
 \def\@sAppendix#1{%
     {\flushright\large\bfseries\appendixname\par
      \centering#1\par}% \nohyphens\centering#1\par}%
     \vspace{\baselineskip}%
-    \footnotesize%
+    \footnotesize
 }
-
-
 
 % Literatūros sąrašą reikia pervadinti
 \addto\captionslithuanian{%
