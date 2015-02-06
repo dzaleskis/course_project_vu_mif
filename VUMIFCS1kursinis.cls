@@ -27,10 +27,14 @@
     BoldItalicFont=*-bolditalic
 ]{texgyretermes}  % Teksto  šrifatas bus Nimbus Roman No9 L, kuris yra
                   % atviras Times New Roman šrifto atitikmuo
-\RequirePackage{setspace} % Intervalas tarp eilučių
-\RequirePackage{vmargin}  % Lapo paraštės
-\setmarginsrb{3cm}{2.5cm}{1.5cm}{1.5cm}{0pt}{14pt}{0pt}{5mm}
-\setpapersize[portrait]{A4}
+\RequirePackage{setspace}  % Intervalas tarp eilučių
+\RequirePackage[
+    left=3cm,
+    top=3cm,
+    right=1.5cm,
+    bottom=2cm,
+    headsep=14pt
+]{geometry}  % Lapo paraštės
 \sloppy  % Tolygiai paskirsto tekstą nuo kairės iki dešinės paraštės
 \RequirePackage[titles]{tocloft} % Turinio eilučių išlygiavimo nustatymui
 \RequirePackage{fancyhdr} % Puslapio numerio vietos nustatymui
