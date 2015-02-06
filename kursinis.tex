@@ -1,88 +1,84 @@
-\documentclass[12pt, a4paper, lithuanian]{article}
-\usepackage[utf8x]{inputenc}
-\def\LTfontencoding{L7x}
-\PrerenderUnicode{ąčęėįšųūž}
-\usepackage[\LTfontencoding]{fontenc}
-\usepackage[lithuanian]{babel}
-\usepackage{VUMIFCS1kursinis}
-\usepackage{cite}
+\documentclass{VUMIFCS1kursinis}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{bm}
-\usepackage{amsfonts}
+\usepackage{caption}
+\usepackage{color}
 \usepackage{float}
 \usepackage{graphicx}
-\usepackage{color}
+% \usepackage{hyperref}  % Nuorodų aktyvavimas
 \usepackage{listings}
-\usepackage{wrapfig}
-\usepackage{algpseudocode}
-\usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage{caption}
 \usepackage{subfig}
+\usepackage{url}
+\usepackage{wrapfig}
 
 
 % Titulinio aprašas
-\vumifdept{Informatikos katedra}
-\vumifpaper{Kursinis projektas}
-\title{Nutolusio programinės įrangos instaliavimo ir administravimo sistemos}
-% \titleineng{Remote software instalation and administration systems}
-\status{2 kurso 1 grupės studentas}
+\university{Vilniaus universitetas}
+\faculty{Matematikos ir informatikos fakultetas}
+\department{Informatikos katedra}
+\papertype{Kursinis darbas}
+\title{Rizikų valdymo proceso modeliavimas}
+\titleineng{Modeling of Risk Management Process}
+\status{X kurso Y grupės studentas}
 \author{Vardenis Pavardenis}
-% \secondauthor{Vardonis Pavardonis}
-\supervisor{dr. Vardaitis Pavardaitis}
-\date{Vilnius\\ \the\year}
+% \secondauthor{Vardonis Pavardonis}   % Pridėti antrą autorių
+\supervisor{prof. habil. dr. Vardaitis Pavardaitis}
+\date{Vilnius \\ \the\year}
+
+% Nustatymai
+% \setmainfont{Palemonas}   % Pakeisti teksto šriftą į Palemonas (turi būti įdiegtas sistemoje)
+\bibliography{bibliografija} 
 
 \begin{document}
 \maketitle
 
 \tableofcontents
 
+\sectionnonum{Sąvokų apibrėžimai}
+Sutartinių ženklų, simbolių, vienetų ir terminų sutrumpinimų sąrašas (jeigu
+ženklų, simbolių, vienetų ir terminų bendras skaičius didesnis nei 10 ir
+kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).
+
 \sectionnonum{Įvadas}
-...
+Įvade apibūdinamas darbo tikslas, temos aktualumas ir siekiami rezultatai.
 
-\section{RPC mechanizmas}
-... citavimo pavyzdys \cite{Banerjee1997} ...
+\section{Pagrindinė tiriamoji dalis}
+Pagrindinėje tiriamojoje dalyje aptariama ir pagrindžiama tyrimo metodika;
+pagal atitinkamas darbo dalis, nuosekliai, panaudojant lyginamosios analizės,
+klasifikacijos, sisteminimo metodus bei apibendrinimus, dėstoma sukaupta ir
+išanalizuota medžiaga. 
 
-\subsection{Kliento-serverio modelis}
-\subsection{Serverio-skaičiuotojo modelis}
-\subsection{Kaip dirba RPC}
+\subsection{Poskyris}
+Citavimo pavyzdžiai: cituojamas vienas šaltinis \cite{PvzStraipsnLt}; cituojami
+keli šaltiniai \cite{PvzStraipsnEn, PvzKonfLt, PvzKonfEn, PvzKnygLt, PvzKnygEn,
+PvzElPubLt, PvzElPubEn, PvzMagistrLt, PvzPhdEn}.
 
-\section{Programų, naudojančių RPC, kūrimas}
-\subsection{Kūrimo etapai}
-\subsubsection{RPC SDK instaliavimas}
-\subsubsection{Detalaus programų sistemų projektavimas}
-\subsubsection{Objektinių modulių ryšių redagavimas}
-\subsection{IDL failas}
-\subsubsection{IDL failo antraštė}
-\subsubsubsection{Atributas "`uuid"'}
-\subsubsubsection{Atributas "`version"'}
-\subsubsubsection{Atributas "`local"'}
-\subsubsection{IDL failo kūnas}
-\subsubsubsection{Baziniai tipai}
-\subsubsubsection{Direktyva "`import"'}
-\subsubsubsection{Funkcijų deklaracijos}
-\subsection{ACL failas}
-\subsubsection{ACF failo antraštė}
-\subsection{MIDL kompiliatoriaus generuojami failai}
-\section{RPC panaudojimo pavyzdys}
-\subsection{Problemos formulavimas}
-\subsection{Užduotis}
-\subsubsection{Pradiniai reikalavimai}
-\subsection{Analizė}
-\subsubsection{RS-232}
-\subsubsection{Vardiniai kanalai}
-\subsubsection{Oracle}
-\subsubsection{RPC}
-\subsection{Realizacija}
-\subsubsection{Registracija}
-\subsubsection{Diskusija}
+\subsubsection{Skirsnis}
+\subsubsubsection{Straipsnis}
+\subsubsection{Skirsnis}
+\section{Skyrius}
+\subsection{Poskyris}
+\subsection{Poskyris}
 
 \sectionnonum{Išvados}
-...
+Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
+suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 
-\bibliography{bibliografija}
+\printbibliography  % Literatūros šaltiniai aprašomi bibliografija.bib faile
+% Šaltinių sąraše nurodoma panaudota literatūra, kitokie šaltiniai. Abėcėlės
+% tvarka išdėstoma tik darbe panaudotų (cituotų, perfrazuotų ar bent paminėtų)
+% mokslo leidinių, kitokių publikacijų bibliografiniai aprašai (šiuo punktu
+% pasirūpina LaTeX). Aprašai pateikiami netransliteruoti.
 
-\appendix
+\appendix  % Priedai
+% Prieduose gali būti pateikiama pagalbinė, ypač darbo autoriaus savarankiškai
+% parengta, medžiaga. Savarankiški priedai gali būti pateikiami kompiuterio
+% diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
+% Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
 
 \section{Niauroninio tinklo struktūra}
 \begin{figure}[H]
@@ -94,7 +90,7 @@
 
 
 \section{Eksperimentinio palyginimo rezultatai}
-% tablesgenerator.com - converts calculators, e.g. excel, tables to LaTeX
+% tablesgenerator.com - converts calculators (e.g. excel) tables to LaTeX
 \begin{table}[H]\footnotesize
   \centering
   \caption{Lentelės pavyzdys.}

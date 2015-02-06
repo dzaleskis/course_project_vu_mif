@@ -1,5 +1,5 @@
-%% VUMIFCS1kursinis.sty
-%% Created by  Laurynas Biveinis, Albertas Gimbutas  2014
+%% VUMIFCS1kursinis.cls – „Tik svajotojai-romantikai gali pagerinti nepakeičiamą pasaulį“
+%% Created by   „Atviras Kodas Lietuvai“  2015
 %
 %% Latest version available here: https://github.com/LIKS/course_work_template_mifcs1
 %% Any suggestions or contributions are welcome!  Also see: http://latex.liks.lt!
@@ -13,27 +13,103 @@
 
 % Kursinio darbo apiforminimas pagal Vilniaus universiteto
 % Matematikos ir informatikos fakulteto Informatikos katedros reikalavimus
-\ProvidesPackage{VUMIFCS1kursinis}[2015/01/01 1.0 VU MIF CS1 course Style]
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{VUMIFCS1kursinis}[2015/02/03 1.0 VU MIF CS1 course work class]
+\LoadClass[12pt, a4paper]{article}
+\RequirePackage{LTPlius}  % Nustatymų sulietuvinimas
+\RequirePackage{fontspec} % Šrifto pasirinkimui
+\setmainfont[
+    Ligatures=TeX,
+    Extension=.otf,
+    UprightFont= *-regular,
+    BoldFont=*-bold,
+    ItalicFont=*-italic,
+    BoldItalicFont=*-bolditalic
+]{texgyretermes}  % Teksto  šrifatas bus Nimbus Roman No9 L, kuris yra
+                  % atviras Times New Roman šrifto atitikmuo
+\RequirePackage{setspace} % Intervalas tarp eilučių
+\RequirePackage{vmargin}  % Lapo paraštės
+\setmarginsrb{3cm}{2.5cm}{1.5cm}{1.5cm}{0pt}{14pt}{0pt}{5mm}
+\setpapersize[portrait]{A4}
+\sloppy  % Tolygiai paskirsto tekstą nuo kairės iki dešinės paraštės
+\RequirePackage[titles]{tocloft} % Turinio eilučių išlygiavimo nustatymui
+\RequirePackage{fancyhdr} % Puslapio numerio vietos nustatymui
+\pagestyle{fancy}
 
-\RequirePackage[T1]{fontenc}
-\RequirePackage{setspace}
-\setstretch{1.4}
-\sloppy  % Tolygiai paskirsto tekstą nuo kairės iki dešinės paraštės'
+% Nustatoma puslapio numerio vieta puslapyje
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\lhead{}
+\chead{}
+\rhead{\thepage}  % Numeris bus puslapio viršuje dešinėje
+\lfoot{}
+\cfoot{}
+\rfoot{}
 
-% Titulinio puslapio pagrindinių eleemntų išdėstymas
-\DeclareOption{sedepttitle}{%
-  \def\@outputtitle{%
+% Informacijos tituliniame puslapyje kintamieji
+\newcommand{\university}[1]{\def\@university{#1}}
+\newcommand{\faculty}[1]{\def\@faculty{#1}}
+\newcommand{\papertype}[1]{\def\@papertype{#1}}
+\newcommand{\department}[1]{\def\@department{#1}}
+\newcommand{\supervisor}[1]{\def\@supervisor{#1}}
+\newcommand{\reviewer}[1]{\def\@reviewer{#1}}
+\newcommand{\status}[1]{\def\@status{#1}}
+\newcommand{\titleineng}[1]{\def\@titleineng{#1}}
+\newcommand{\secondauthor}[1]{\def\@secondauthor{#1}}
+
+% Pirmos eilutės paragrafe atitraukimas 0,7 cm
+\setlength{\parindent}{0.7cm}
+
+% Bibliografijos stilius
+\RequirePackage[
+    alldates=iso8601,
+    autolang=other,
+    backend=biber,
+    sortcites=true,
+    style=alphabetic,
+    minalphanames=3,
+    maxnames=9,
+    minnames=4,
+]{biblatex}
+\RequirePackage{csquotes}
+\renewcommand*{\labelalphaothers}{\textsuperscript{+}}
+
+% -------------------------------
+% Titulinio puslapio formatavimas
+% -------------------------------
+\newcommand{\@signatureplace}{%
+    \parbox[t]{2.5cm}{%
+        \makebox[2.5cm]{\raisebox{-0.5ex}{\scriptsize
+        (para\v{s}as) }}}
+}
+
+\newcommand{\checkifdefined}[2]{%
+    % Patikriname, ar visa reikalinga informacija tituliniam puslapiui
+    % buvo nurodyta. #1 yra tikrinama reikšmė (be \ priekyje),
+    % #2 - klaidos pranešimas.
+    \@ifundefined{#1}{\PackageError{VUMIF}{#2}{Add the missing command}}%
+}
+
+\renewcommand\maketitle{\begin{titlepage}%
+  \checkifdefined{@department}%
+    {Tituliniame puslapyje nenurodyta katedra (komanda \protect\department)}
+  \checkifdefined{@supervisor}%
+    {Tituliniame puslapyje nenurodytas darbo vadovas (komanda \protect\supervisor)}
+
   \begin{center}
-  \null\vfil
-  \@ifundefined{@titleineng}{
-      \vskip 2.9cm
-      {\@vumifpaper \par}%
-      {\singlespacing \Large \textbf{\@title} \par}
-  }{
-      \vskip 2.4cm
-      {\@vumifpaper \par}%
-      {\singlespacing \Large \textbf{\@title}\\ {\large(\@titleineng)}\par}
-  }
+      {\singlespacing \MakeUppercase{\@university} \\
+                      \MakeUppercase{\@faculty} \\
+                      \MakeUppercase{\@department}\par }
+      \null\vfil
+      \@ifundefined{@titleineng}{
+          \vskip 2.9cm
+          {\@papertype \par}%
+          {\singlespacing \Large \textbf{\@title} \par}
+      }{
+          \vskip 2.4cm
+          {\@papertype \par}%
+          {\singlespacing \Large \textbf{\@title}\\ {\large(\@titleineng)}\par}
+      }
   \end{center}
   \@ifundefined{@secondauthor}{
      \vskip 5.7cm
@@ -61,87 +137,13 @@
      \end{flushright}
      \@ifundefined{@titleineng}{\vskip 3cm}{\vskip 2cm}
    }
-}}
-
-\ExecuteOptions{sedepttitle}
-
-\ProcessOptions
-
-% Papildoma informacija tituliniame puslapyje
-\newcommand{\vumifpaper}[1]{\def\@vumifpaper{#1}}
-\newcommand{\vumifdept}[1]{\def\@vumifdept{#1}}
-\newcommand{\supervisor}[1]{\def\@supervisor{#1}}
-\newcommand{\reviewer}[1]{\def\@reviewer{#1}}
-\newcommand{\status}[1]{\def\@status{#1}}
-\newcommand{\titleineng}[1]{\def\@titleineng{#1}}
-\newcommand{\secondauthor}[1]{\def\@secondauthor{#1}}
-
-% Skyriaus pavadinimas, turinyje neturintis numerio
-\newcommand{\sectionnonum}[1]{%
-    \section*{#1}%
-    \addcontentsline{toc}{section}{#1}% 
-}
-
-% Skyriaus pavadinimas, neturintis numerio bei neįeinantis į turinį
-% \newcommand{\sectionnonumnocontent}[1]{%
-%     \section*{#1}%
-% }
-
-% Reikia lietuvybės patobulinimų
-\RequirePackage{LTPlius}
-
-% Lapo formato nurodymas, vėliau nurodysime ir paraštes
-\RequirePackage{vmargin}
-\setmarginsrb{3cm}{2.5cm}{1.5cm}{1.5cm}{0pt}{14pt}{0pt}{5mm}
-\setpapersize[portrait]{A4}
-
-% Mums reikės 1,5 intervalo tarp eilučių
-\RequirePackage{setspace}
-
-% Keisime standartinius priklausomus nuo kalbos tekstus
-\RequirePackage[lithuanian]{babel}
-\RequirePackage[titles]{tocloft}
-\RequirePackage{etoolbox}
-
-% Pirmos eilutės paragrafe atitraukimas 0,7 cm
-\setlength{\parindent}{0.7cm}
-
-% ---------------------------------------------------
-% Titulinis puslapis suformatuotas pagal VU MIF formą
-% ---------------------------------------------------
-
-\newcommand{\@signatureplace}{%
-    \parbox[t]{2.5cm}{%
-        \makebox[2.5cm]{\raisebox{-0.5ex}{\scriptsize
-        (para\v{s}as) }}}
-}
-
-\newcommand{\vumifchecktitle}[2]{%
-    % Patikriname, ar visa reikalinga informacija tituliniam puslapiui
-    % buvo nurodyta. #1 yra tikrinama reikšmė (be \ priekyje),
-    % #2 - klaidos pranešimas.
-    \@ifundefined{#1}{\PackageError{VUMIF}{#2}{Add the missing command}}%
-}
-
-\renewcommand\maketitle{\begin{titlepage}%
-  \vumifchecktitle{@vumifdept}%
-    {Tituliniame puslapyje nenurodyta katedra (komanda \protect\vumifdept)}
-  \vumifchecktitle{@supervisor}%
-    {Tituliniame puslapyje nenurodytas darbo vadovas (komanda \protect\supervisor)}
-
-  \begin{center}
-          {\singlespacing VILNIAUS UNIVERSITETAS \\
-        MATEMATIKOS IR INFORMATIKOS FAKULTETAS \\
-            \MakeUppercase{\@vumifdept}\par }
-  \end{center}
-  \@outputtitle
   \begin{center}
     {\singlespacing \@date \par}%   
   \end{center}\par
   \@thanks
   \vfil\null
   \end{titlepage}%
-  \setcounter{footnote}{0}%
+  % Atlaisviname panaudotus kintamuosius
   \global\let\@outputtitle\relax
   \global\let\thanks\relax
   \global\let\maketitle\relax
@@ -150,25 +152,37 @@
   \global\let\@author\@empty
   \global\let\@date\@empty
   \global\let\@title\@empty
-  \global\let\@vumifdept\@empty
-  \global\let\@vumifpaper\@empty
+  \global\let\@university\@empty
+  \global\let\@faculty\@empty
+  \global\let\@department\@empty
+  \global\let\@papertype\@empty
   \global\let\@supervisor\@empty
   \global\let\@reviewer\@empty
   \global\let\title\relax
   \global\let\author\relax
   \global\let\date\relax
   \global\let\and\relax
-  \global\let\vumifdept\relax
+  \global\let\department\relax
   \global\let\supervisor\relax
   \global\let\@signatureplace\relax
-  \global\let\vumifchecktitle\relax
+  \global\let\checkifdefined\relax
+  \setcounter{footnote}{0}%
   % Nustatome dokumentui 1,5 eilutės intervalą
   \onehalfspacing
 }
 
+% Skyriaus pavadinimas, turinyje neturintis numerio
+\newcommand{\sectionnonum}[1]{%
+    \section*{#1}%
+    \addcontentsline{toc}{section}{#1}% 
+}
+
+% Skyriaus pavadinimas, neturintis numerio bei neįeinantis į turinį
+\newcommand{\sectionnonumnocontent}[1]{%
+    \section*{#1}%   Sugadina pirmojo šio tipo skyriaus numeravimą puslapiais
+}
 
 \renewcommand\tableofcontents{%
-    \pagestyle{plain}%
     % Turinys su viengubu intervalu tarp eilučių
     \begin{singlespacing}%
         \section*{\rm\normalsize\centering\contentsname
@@ -209,18 +223,9 @@
     \cleardoublepage%
     \@startsection {section}{1}{\z@}%
         {-3.5ex \@plus -1ex \@minus -.2ex}%
-        {0.1ex \@plus.2ex}%
+        {2.3ex \@plus.2ex}%
         {\normalfont\Large\bfseries}%
 }
-
-% Puslapiai numeruojami apačioje
-\def\ps@plain{%
-    \renewcommand{\@oddhead}{\hfill\textrm{\thepage}}%
-    \renewcommand{\@evenhead}{\@oddhead}%
-    \renewcommand{\@evenfoot}{}%
-    \renewcommand{\@oddfoot}{}%
-}
-
 
 % Priedo sekcijų formatavimas turiniui
 \renewcommand{\appendix}{%
@@ -257,15 +262,6 @@
     \renewcommand{\refname}{Literat\={u}ros s\k{a}ra\v{s}as}%
 }
 
-% Literatūros sąrašą įtraukiame į turinį, nustatome jo stilių
-\let\oldbibliography\bibliography
-\renewcommand{\bibliography}[1]{%
-    \cleardoublepage%
-    \addcontentsline{toc}{section}{\refname}%}
-    \bibliographystyle{alpha}%
-    \oldbibliography{#1}%
-}
-
 % Apibrėžiame ketvirto lygio skyrius
 \newcommand{\subsubsubsection}{\subsubparagraph}
 
@@ -286,3 +282,17 @@
   \renewcommand*\l@subsubsection{\@dottedtocline{3}{0.8cm}{1.22cm}}
   \renewcommand*\l@paragraph{\@dottedtocline{4}{1.5cm}{1.52cm}}
 \makeatother
+
+% Raktinių žodžių komandos
+\newcommand\keywords[1]{%
+    \par \bigskip \par
+    % \hangindent=\parindent   % Lygiavimas nuo antros eilutės
+    \noindent \textbf{Keywords:}\; \textbf{#1}
+}
+\newcommand\raktiniaizodziai[1]{%
+    \par \bigskip \par
+    % \hangindent=\parindent   % Lygiavimas nuo antros eilutės
+    \noindent \textbf{Raktiniai žodžiai:}\; \textbf{#1}
+}
+
+
