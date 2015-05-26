@@ -15,7 +15,7 @@
 % Matematikos ir informatikos fakulteto Informatikos katedros reikalavimus
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{VUMIFInfKursinis}[2015/02/03 1.0 VU MIF CS1 course work class]
-\LoadClass[12pt, a4paper]{article}
+\LoadClass[a4paper]{article}
 \RequirePackage{LTPlius}  % Nustatymų sulietuvinimas
 \RequirePackage{fontspec} % Šrifto pasirinkimui
 \setmainfont[
@@ -50,6 +50,18 @@
 \cfoot{}
 \rfoot{}
 
+
+
+% Nerodyti įspėjimo dėl pakeistos article klasės antraščių stiliaus
+\RequirePackage{silence}
+\WarningFilter{caption}{Unsupported document class}
+
+% Po lentelės antraštės prefiksu bus dedamas taškas
+\RequirePackage{caption}
+\captionsetup*[table]{labelsep=period}
+\captionsetup*[figure]{labelsep=period, name=pav}
+
+
 % Informacijos tituliniame puslapyje kintamieji
 \newcommand{\university}[1]{\def\@university{#1}}
 \newcommand{\faculty}[1]{\def\@faculty{#1}}
@@ -77,7 +89,7 @@
     maxnames=9,
     minnames=4,
 ]{biblatex}
-\RequirePackage{csquotes}
+\RequirePackage[style=lithuanian]{csquotes}
 % Pliuso ženklas, kuris rodomas esant >3 autoriams, sumažinamas ir pakeliamas
 \renewcommand*{\labelalphaothers}{\textsuperscript{+}}
 
