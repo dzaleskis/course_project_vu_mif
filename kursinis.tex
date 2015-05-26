@@ -5,15 +5,9 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{bm}
-\usepackage{caption}
 \usepackage{color}
-\usepackage{float}
-\usepackage{graphicx}
 % \usepackage{hyperref}  % Nuorodų aktyvavimas
-\usepackage{listings}
-\usepackage{subfig}
 \usepackage{url}
-\usepackage{wrapfig}
 
 
 % Titulinio aprašas
@@ -50,7 +44,7 @@ kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).
 Pagrindinėje tiriamojoje dalyje aptariama ir pagrindžiama tyrimo metodika;
 pagal atitinkamas darbo dalis, nuosekliai, panaudojant lyginamosios analizės,
 klasifikacijos, sisteminimo metodus bei apibendrinimus, dėstoma sukaupta ir
-išanalizuota medžiaga. 
+išanalizuota medžiaga.
 
 \subsection{Poskyris}
 Citavimo pavyzdžiai: cituojamas vienas šaltinis \cite{PvzStraipsnLt}; cituojami
@@ -85,7 +79,7 @@ suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{img/MLP}
-    \caption{Paveikslėlio pavyzdys}
+    \caption{Paveikslėlio pavyzdys}   % Antraštė įterpiama po paveikslėlio
     \label{img:mlp}
 \end{figure}
 
@@ -94,7 +88,7 @@ suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 % tablesgenerator.com - converts calculators (e.g. excel) tables to LaTeX
 \begin{table}[H]\footnotesize
   \centering
-  \caption{Lentelės pavyzdys.}
+  \caption{Lentelės pavyzdys}    % Antraštė įterpiama prieš lentelę
   {\begin{tabular}{|l|c|c|} \hline
     Algoritmas & $\bar{x}$ & $\sigma^{2}$ \\
     \hline
