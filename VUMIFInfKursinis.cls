@@ -15,7 +15,7 @@
 % Matematikos ir informatikos fakulteto Informatikos katedros reikalavimus
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{VUMIFInfKursinis}[2015/02/03 1.0 VU MIF CS1 course work class]
-\LoadClass[a4paper]{article}
+\LoadClass[12pt, a4paper]{article}
 \RequirePackage{LTPlius}  % Nustatymų sulietuvinimas
 \RequirePackage{fontspec} % Šrifto pasirinkimui
 \setmainfont[
@@ -38,6 +38,7 @@
 \sloppy  % Tolygiai paskirsto tekstą nuo kairės iki dešinės paraštės
 \RequirePackage[titles]{tocloft} % Turinio eilučių išlygiavimo nustatymui
 \RequirePackage{fancyhdr} % Puslapio numerio vietos nustatymui
+\setlength{\headheight}{14.5pt} 
 \pagestyle{fancy}
 
 % Nustatoma puslapio numerio vieta puslapyje
@@ -50,8 +51,6 @@
 \cfoot{}
 \rfoot{}
 
-
-
 % Nerodyti įspėjimo dėl pakeistos article klasės antraščių stiliaus
 \RequirePackage{silence}
 \WarningFilter{caption}{Unsupported document class}
@@ -60,7 +59,6 @@
 \RequirePackage{caption}
 \captionsetup*[table]{labelsep=period}
 \captionsetup*[figure]{labelsep=period, name=pav}
-
 
 % Informacijos tituliniame puslapyje kintamieji
 \newcommand{\university}[1]{\def\@university{#1}}
