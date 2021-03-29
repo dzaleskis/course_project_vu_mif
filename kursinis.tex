@@ -25,7 +25,6 @@
 \date{Vilnius \\ \the\year}
 
 % Nustatymai
-% \setmainfont{Palemonas}   % Pakeisti teksto šriftą į Palemonas (turi būti įdiegtas sistemoje)
 \bibliography{bibliografija} 
 
 \begin{document}
@@ -33,13 +32,56 @@
 
 \tableofcontents
 
-\sectionnonum{Sąvokų apibrėžimai}
-Sutartinių ženklų, simbolių, vienetų ir terminų sutrumpinimų sąrašas (jeigu
-ženklų, simbolių, vienetų ir terminų bendras skaičius didesnis nei 10 ir
-kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).
+%\sectionnonum{Sąvokų apibrėžimai}
+%Sutartinių ženklų, simbolių, vienetų ir terminų sutrumpinimų sąrašas (jeigu
+%ženklų, simbolių, vienetų ir terminų bendras skaičius didesnis nei 10 ir
+%kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).
 
 \sectionnonum{Įvadas}
-Įvade apibūdinamas darbo tikslas, temos aktualumas ir siekiami rezultatai.
+% Įvade apibūdinamas darbo tikslas, temos aktualumas ir siekiami rezultatai.
+
+Darbo tikslas:
+\textbf{pritaikyti genetinius algoritmus Šelo algoritmo tarpų sekoms generuoti}.
+
+\bigskip
+
+Darbo uždaviniai:
+
+\begin{itemize}
+  \item Nustatyti kriterijus tarpų sekų efektyvumui įvertinti.
+  \item Paruošti aplinką eksperimentų vykdymui.
+  \item Naudojant genetinius algoritmus sugeneruoti pasirinktas tarpų sekas.
+  \item Atliekant eksperimentus įvertinti sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumą.
+\end{itemize}
+
+Duomenų rikiavimas yra vienas pamatinių informatikos uždavinių.
+Matematiškai jis formuluojamas taip:
+duotai baigtinei palyginamų elementų sekai $S = (s_1, s_2, ..., s_n)$ surasti tokį
+kėlinį, kad pradinės sekos elementai būtų išdėstyti didėjančia (mažėjančia) tvarka \cite{Radavičius_Baranauskas_2013}.
+Rikiavimo uždavinys yra aktualus nuo pat kompiuterių atsiradimo ir buvo laikomas vienu 
+pagrindinių uždavinių, kuriuos turėtų gebėti spręsti kompiuteris \cite{10.1145/356580.356581}.
+Rikiavimo uždavinio sprendimas dažnai padeda pagrindą efektyviam kito uždavinio sprendimui,
+pavyzdžiui, atliekant paiešką sąraše, galima naudoti dvejetainės paieškos algoritmą tik tuo atveju,
+kai sąrašas jau yra išrikiuotas.
+Kadangi rikiavimo uždavinys yra fundamentalus, jam spręsti egzistuoja labai įvairių algoritmų.
+
+Rikiavimo algoritmų yra įvairių rūšių:
+paremti palyginimu (rikiuojama remiantis elementų palyginimu, o ne bendromis žiniomis apie duomenis), stabilūs (lygių elementų tvarka nekeičiama),
+rikiuojantys vietoje (naudoja tik $O(1)$ papildomos atminties), etc \cite{Radavičius_Baranauskas_2013}.
+Asimptotinis rikiavimo algoritmų sudėtingumas laiko atžvilgiu taip pat skiriasi:
+bogo rikiavimo (angl. bogosort) \cite{10.1007/978-3-540-72914-3_17} blogiausiu atveju atliekamas palyginimų skaičius yra neribotas,
+rikiavimas įterpimu (angl. insertion sort) blogiausiu atveju atlieka $O(n^2)$ palyginimų \cite{bender2006insertion},
+o asimptotiškai optimalus krūvos rikiavimas (angl. heapsort) \cite{10.1145/512274.512284} atlieka $O(n\,log\,n)$ palyginimų \cite{SCHAFFER199376}.
+Nepaisant rikiavimo algoritmų įvairovės, nėra algoritmo, kuris būtų geriausias visais atvejais,
+kadangi praktinis efektyvumas priklauso nuo daugelio veiksnių.
+
+Šelo rikiavimo algoritmas (angl. shellsort) \cite{10.1145/368370.368387} yra paremtas palyginimu, rikiuojantis vietoje ir nestabilus.
+Šelo algoritmą galima laikyti rikiavimo įterpimu modifikacija,
+kuri lygina ne gretimus, o toliau vienas nuo kito esančius elementus, taip paspartindama jų perkėlimą į galutinę poziciją.
+Pagrindinė algoritmo idėja - išskaidyti rikiuojamą seką S į posekius $S_1, S_2, ..., S_n$,
+kur kiekvienas posekis $S_i = (s_i, s_{i+h}, s_{i+2h}, ...)$ yra sekos S elementai, kurių pozicija skiriasi $h$.
+Seka yra $h$-išrikiuota, jei išrikiuoti visi posekiai $S_i$ su tarpu $h$.
+
 
 \section{Pagrindinė tiriamoji dalis}
 Pagrindinėje tiriamojoje dalyje aptariama ir pagrindžiama tyrimo metodika;
@@ -48,9 +90,7 @@ klasifikacijos, sisteminimo metodus bei apibendrinimus, dėstoma sukaupta ir
 išanalizuota medžiaga.
 
 \subsection{Poskyris}
-Citavimo pavyzdžiai: cituojamas vienas šaltinis \cite{PvzStraipsnLt}; cituojami
-keli šaltiniai \cite{PvzStraipsnEn, PvzKonfLt, PvzKonfEn, PvzKnygLt, PvzKnygEn,
-PvzElPubLt, PvzElPubEn, PvzMagistrLt, PvzPhdEn}.
+Citavimo pavyzdžiai nebereikalingi.
 
 \subsubsection{Skirsnis}
 \subsubsubsection{Straipsnis}
@@ -76,28 +116,12 @@ suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 % diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
 % Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
 
-\section{Niauroninio tinklo struktūra}
+\section{Priedas 1}
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{img/MLP}
     \caption{Paveikslėlio pavyzdys}   % Antraštė įterpiama po paveikslėlio
     \label{img:mlp}
 \end{figure}
-
-
-\section{Eksperimentinio palyginimo rezultatai}
-% tablesgenerator.com - converts calculators (e.g. excel) tables to LaTeX
-\begin{table}[H]\footnotesize
-  \centering
-  \caption{Lentelės pavyzdys}    % Antraštė įterpiama prieš lentelę
-  {\begin{tabular}{|l|c|c|} \hline
-    Algoritmas & $\bar{x}$ & $\sigma^{2}$ \\
-    \hline
-    Algoritmas A  & 1.6335    & 0.5584       \\
-    Algoritmas B  & 1.7395    & 0.5647       \\
-    \hline
-  \end{tabular}}
-  \label{tab:table example}
-\end{table}
 
 \end{document}
