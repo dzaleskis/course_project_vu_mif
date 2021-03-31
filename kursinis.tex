@@ -54,33 +54,56 @@ Darbo uždaviniai:
   \item Atliekant eksperimentus įvertinti sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumą.
 \end{itemize}
 
+% Kas yra algoritmas?
+
 Duomenų rikiavimas yra vienas pamatinių informatikos uždavinių.
 Matematiškai jis formuluojamas taip:
-duotai baigtinei palyginamų elementų sekai $S = (s_1, s_2, ..., s_n)$ surasti tokį
+duotai baigtinei palyginamų elementų sekai $S = (s_1, s_2, ..., s_n)$ pateikti tokį
 kėlinį, kad pradinės sekos elementai būtų išdėstyti didėjančia (mažėjančia) tvarka \cite{Radavičius_Baranauskas_2013}.
 Rikiavimo uždavinys yra aktualus nuo pat kompiuterių atsiradimo ir buvo laikomas vienu 
 pagrindinių uždavinių, kuriuos turėtų gebėti spręsti kompiuteris \cite{10.1145/356580.356581}.
 Rikiavimo uždavinio sprendimas dažnai padeda pagrindą efektyviam kito uždavinio sprendimui,
-pavyzdžiui, atliekant paiešką sąraše, galima naudoti dvejetainės paieškos algoritmą tik tuo atveju,
-kai sąrašas jau yra išrikiuotas.
-Kadangi rikiavimo uždavinys yra fundamentalus, jam spręsti egzistuoja labai įvairių algoritmų.
+pavyzdžiui, atliekant paiešką sąraše, galima taikyti dvejetainės paieškos algoritmą tik tada,
+kai sąrašas yra išrikiuotas.
+Kadangi rikiavimo uždavinys yra fundamentalus, jam spręsti egzistuoja labai skirtingų algoritmų.
 
-Rikiavimo algoritmų yra įvairių rūšių:
-paremti palyginimu (rikiuojama remiantis elementų palyginimu, o ne bendromis žiniomis apie duomenis), stabilūs (lygių elementų tvarka nekeičiama),
-rikiuojantys vietoje (naudoja tik $O(1)$ papildomos atminties), etc \cite{Radavičius_Baranauskas_2013}.
+Rikiavimo algoritmų yra įvairių:
+paremtų palyginimu (elementų tvarką nustato naudojant palyginimo operatorius),
+stabilių (nekeičia lygių elementų tvarkos),
+rikiuojančių vietoje (nenaudoja pagalbinių duomenų struktūrų), etc.
 Asimptotinis rikiavimo algoritmų sudėtingumas laiko atžvilgiu taip pat skiriasi:
 bogo rikiavimo (angl. bogosort) \cite{10.1007/978-3-540-72914-3_17} blogiausiu atveju atliekamas palyginimų skaičius yra neribotas,
 rikiavimas įterpimu (angl. insertion sort) blogiausiu atveju atlieka $O(n^2)$ palyginimų \cite{bender2006insertion},
-o asimptotiškai optimalus krūvos rikiavimas (angl. heapsort) \cite{10.1145/512274.512284} atlieka $O(n\,log\,n)$ palyginimų \cite{SCHAFFER199376}.
+o asimptotiškai optimalūs palyginimu paremti algoritmai, pavyzdžiui, krūvos rikiavimas (angl. heapsort) \cite{10.1145/512274.512284}
+blogiausiu atveju atlieka $O(n\,log\,n)$ palyginimų \cite{SCHAFFER199376}.
 Nepaisant rikiavimo algoritmų įvairovės, nėra algoritmo, kuris būtų geriausias visais atvejais,
-kadangi praktinis efektyvumas priklauso nuo daugelio veiksnių.
+nes praktinis efektyvumas priklauso nuo daugelio veiksnių.
 
 Šelo rikiavimo algoritmas (angl. shellsort) \cite{10.1145/368370.368387} yra paremtas palyginimu, rikiuojantis vietoje ir nestabilus.
 Šelo algoritmą galima laikyti rikiavimo įterpimu modifikacija,
 kuri lygina ne gretimus, o toliau vienas nuo kito esančius elementus, taip paspartindama jų perkėlimą į galutinę poziciją.
 Pagrindinė algoritmo idėja - išskaidyti rikiuojamą seką S į posekius $S_1, S_2, ..., S_n$,
 kur kiekvienas posekis $S_i = (s_i, s_{i+h}, s_{i+2h}, ...)$ yra sekos S elementai, kurių pozicija skiriasi $h$.
-Seka yra $h$-išrikiuota, jei išrikiuoti visi posekiai $S_i$ su tarpu $h$.
+Išrikiavus visus sekos $S$ posekius $S_i$ su tarpu $h$, seka tampa $h$-išrikiuota.
+Remiantis tuo, jog sekai S esant $h$-išrikiuota ir ją $k$-išrikiavus, ji lieka $h$-išrikiuota \cite{GALE1972103},
+galima kiekvieną algoritmo iteraciją mažinti tarpą, taip vis didinant sekos $S$ išrikiuotumą. % reiketu pasitikslinti del termino
+Pritaikant šias idėjas ir rikiavimui naudojant mažėjančią tarpų seką su paskutiniu nariu $1$,
+kuris garantuoja rikiavimą įterpimu paskutinėje iteracijoje,
+galima užtikrinti, jog algoritmo darbo pabaigoje seka S bus pilnai išrikiuota.
+
+Šelo rikiavimo algoritmo efektyvumas tiesiogiai priklauso nuo pasirinktos tarpų sekos.
+M.A. Weiss atlikto tyrimo \cite{weiss1991short} rezultatai rodo, jog su R. Sedgewick pasiūlyta seka
+algoritmas veikia beveik dvigubai greičiau nei Šelo pradinis variantas, kai $n = 1000000$.
+Yra įrodyta, kad šio algoritmo blogiausiu atveju atliekamų palyginimų skaičiaus apatinė riba yra
+$\Omega(\frac{n\,log^2\,n}{log\,log\,n^2})$ \cite{267769}, taigi jis nėra asimptotiškai optimalus.
+Tiesa, kol kas nėra rasta seka, su kuria algoritmas pasiektų šią apatinę ribą.
+Kiek žinoma autoriui, asimptotiškai geriausia tarpų seka yra rasta V.R. Pratt, kuri yra formos
+$2^p3^p$ ir turi $\Theta(n\,log^2\,n)$ asimptotinį sudėtingumą \cite{pratt1972shellsort},
+tačiau praktikoje ji veikia lėčiau už Ciura \cite{ciura2001best} ar Tokuda \cite{10.5555/645569.659879} pasiūlytas sekas.
+Daugelio praktikoje naudojamų sekų asimptotinis sudėtingumas laiko atžvilgiu lieka atvira problema,
+nes jos yra rastos eksperimentiškai ir neturi matematinio pagrindo.
+
+% Genetiniai algoritmai yra optimizavimo metodas...
 
 
 \section{Pagrindinė tiriamoji dalis}
