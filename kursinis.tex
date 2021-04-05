@@ -80,15 +80,18 @@ Rikiavimo algoritmų yra įvairių:
 paremtų palyginimu (elementų tvarką nustato naudojant palyginimo operatorius),
 stabilių (nekeičia lygių elementų tvarkos),
 rikiuojančių vietoje (nenaudoja pagalbinių duomenų struktūrų), etc.
-Asimptotinis rikiavimo algoritmų sudėtingumas laiko atžvilgiu taip pat skiriasi:
-bogo rikiavimo (angl. bogosort) \cite{10.1007/978-3-540-72914-3_17} blogiausiu atveju atliekamas palyginimų skaičius yra neribotas,
+Asimptotiškai optimalūs palyginimu paremti algoritmai blogiausiu atveju turi $O(n\,log\,n)$ sudėtingumą laiko atžvilgiu,
+o ne palyginimu paremti algoritmai gali veikti dar greičiau, tačiau nėra tokie universalūs, kadangi rikiuojama remiantis duomenų specifika.
+Tiesa, rikiuojant remtis vien algoritmo asimptotika nepakanka:
 rikiavimas įterpimu (angl. insertion sort) blogiausiu atveju atlieka $O(n^2)$ palyginimų \cite{bender2006insertion},
-o asimptotiškai optimalūs palyginimu paremti algoritmai, pavyzdžiui, krūvos rikiavimas (angl. heapsort) \cite{10.1145/512274.512284}
-blogiausiu atveju atlieka $O(n\,log\,n)$ palyginimų \cite{SCHAFFER199376}.
-Nepaisant rikiavimo algoritmų įvairovės, nėra algoritmo, kuris būtų geriausias visais atvejais,
-nes praktinis efektyvumas priklauso nuo daugelio veiksnių.
+tačiau mažesnius elementų kiekius rikiuoja daug greičiau, nei asimptotiškai optimalūs algoritmai,
+pavyzdžiui, krūvos rikiavimas (angl. heapsort) \cite{10.1145/512274.512284}.
+Todėl pastaruoju metu plačiai naudojami hibridiniai rikiavimo algoritmai, kurie sujungia keletą rikiavimo
+algoritmų į vieną ir panaudoja jų geriausias savybes.
+Taigi, nėra rikiavimo algoritmo, kuris būtų geriausias visais atvejais
+ir praktikoje naudojami įvairūs algoritmai, priklausomai nuo aplinkybių.
 
-Šelo rikiavimo algoritmas (angl. shellsort) \cite{10.1145/368370.368387} yra paremtas palyginimu, rikiuojantis vietoje ir nestabilus.
+Šelo rikiavimo algoritmas (angl. shellsort, toliau - Šelo algoritmas) \cite{10.1145/368370.368387} yra paremtas palyginimu, rikiuojantis vietoje ir nestabilus.
 Šelo algoritmą galima laikyti rikiavimo įterpimu modifikacija,
 kuri lygina ne gretimus, o toliau vienas nuo kito esančius elementus, taip paspartindama jų perkėlimą į galutinę poziciją.
 Pagrindinė algoritmo idėja - išskaidyti rikiuojamą seką S į posekius $S_1, S_2, ..., S_n$,
@@ -99,14 +102,14 @@ galima kiekvieną algoritmo iteraciją mažinti tarpą, taip vis didinant sekos 
 Pritaikant šias idėjas ir rikiavimui naudojant mažėjančią tarpų seką su paskutiniu nariu $1$,
 kuris garantuoja rikiavimą įterpimu paskutinėje iteracijoje,
 galima užtikrinti, jog algoritmo darbo pabaigoje seka S bus pilnai išrikiuota.
-Įvertinant aukščiau aprašytas mintis, nesunku pastebėti tarpų sekų įtaką Šelo rikiavimo algoritmo veikimui.
+Įvertinant aukščiau aptartas idėjas, nesunku pastebėti tarpų sekų įtaką Šelo algoritmo veikimui.
 
-Šelo rikiavimo algoritmo efektyvumas tiesiogiai priklauso nuo pasirinktos tarpų sekos.
+Šelo algoritmo efektyvumas tiesiogiai priklauso nuo pasirinktos tarpų sekos.
 Weiss atlikto tyrimo \cite{weiss1991short} rezultatai rodo, jog su Sedgewick pasiūlyta seka
-algoritmas veikia beveik dvigubai greičiau nei Šelo pradinis variantas, kai $n = 1000000$.
-Yra įrodyta, kad šio algoritmo blogiausiu atveju atliekamų palyginimų skaičiaus apatinė riba yra
+šis algoritmas veikia beveik dvigubai greičiau nei Šelo pradinis variantas, kai $n = 1000000$.
+Yra įrodyta, kad Šelo algoritmo blogiausiu atveju atliekamų palyginimų skaičiaus apatinė riba yra
 $\Omega(\frac{n\,log^2\,n}{log\,log\,n^2})$ \cite{267769}, taigi jis nėra asimptotiškai optimalus.
-Tiesa, kol kas nėra rasta seka, su kuria algoritmas pasiektų šią apatinę ribą.
+Tiesa, kol kas nėra rasta seka, su kuria Šelo algoritmas pasiektų šią apatinę ribą.
 Kiek žinoma autoriui, asimptotiškai geriausia tarpų seka yra rasta Pratt, kuri yra formos
 $2^p3^p$ ir turi $\Theta(n\,log^2\,n)$ asimptotinį sudėtingumą \cite{pratt1972shellsort},
 tačiau praktikoje ji veikia lėčiau už Ciura \cite{ciura2001best} ar Tokuda \cite{10.5555/645569.659879} pasiūlytas sekas.
@@ -114,13 +117,32 @@ Daugelio praktikoje naudojamų sekų asimptotinis sudėtingumas laiko atžvilgiu
 nes jos yra rastos eksperimentiškai, tad sunku rasti matematinį modelį tinkamą jų analizei.
 Vienas iš metodų, kuriuos galima taikyti efektyvių tarpų sekų radimui, yra genetinis algoritmas.
 
-Genetinis algoritmas yra metaeuristika (metodas rasti euristikas), paremta biologijos žiniomis apie natūralios atrankos procesą.
-% Genetiniai algoritmai taikomi sprendžiant paieškos ir optimizavimo uždavinius ir naudoja biologijos įkvėptus
-% paveldėjimo, mutacijos, atrankos bei rekombinacijos operatorius.
-% Metodo pradininkas J.H. Holland savo knygoje \cite{holland1992adaptation} apibrėžė  
+Genetinis algoritmas (GA) yra metodas rasti euristikas, paremtas biologijos žiniomis apie natūralios atrankos procesą.
+Kartu su genetiniu programavimu, evoliuciniais algoritmais ir kitais metodais, % citations needed
+genetiniai algoritmai sudaro evoliucinių skaičiavimų šeimą.
+Visi šios šeimos atstovai yra paremti pradinės populiacijos generavimu ir iteraciniu populiacijos atnaujinimu naudojant biologijos įkvėptas strategijas.
+J.H. Holland, GA pradininkas, savo knygoje \cite{holland1992adaptation}
+apibrėžė genetinio algoritmo sąvoką ir su ja glaudžiai susijusias
+chromosomų (potencialių uždavinio sprendinių, išreikštų genų rinkiniu), bei
+rekombinacijos (tėvinių chromosomų genų perdavimo palikuonims),
+atrankos (tinkamiausių chromosomų atrinkimo) ir mutacijos (savaiminio chromosomos genų kitimo) operatorių koncepcijas.
+Genetinių algoritmų veikimo strategija pagrįsta pradinės chromosomų populiacijos evoliucija, kiekvienos naujos chromosomų kartos
+gavimui naudojant rekombinacijos, atrankos ir mutacijos operatorius.
+Toliau bus aptariamos genetinių algoritmų taikymo galimybės.
 
+Genetiniai algoritmai taikomi sprendžiant įvairius paieškos ir optimizavimo uždavinius, kuomet nesunku nustatyti, ar sprendinys tinkamas,
+tačiau tinkamo sprendinio radimas reikalauja daug resursų ar net pilno perrinkimo.
+Tokiu atveju apytikslio sprendinio radimas (euristika) gali būti daug patrauklesnis sprendimo būdas,
+kadangi tikslaus sprendinio radimas dažnai yra NP-sunkus uždavinys.
+Todėl GA yra pritaikomi sudarant grafikus ir tvarkaraščius,
+sprendžiant globalaus optimizavimo uždavinius
+ir net projektuojant NASA mikrosatelitų antenas \cite{hornby2006automated}.
+Nesunku pastebėti, jog efektyvių Šelo algoritmo tarpų sekų radimas yra sunkus uždavinys atliekamų skaičiavimų prasme,
+tikėtinai reikalaujantis pilno potencialių sprendinių perrinkimo,
+tad šio uždavinio sprendimui taikyti GA yra tikslinga.
+Kiek žinoma autoriui, yra buvę du bandymai taikyti genetinius algoritmus efektyvių Šelo algoritmo tarpų sekų radimui
+ir abu pateikė daug žadančius rezultatus \cite{simpson1999faster} \cite{roos2002genetic}.
 
- % Genetiniu algoritmu taikymas tarpu seku radimui
 
 \section{Pagrindinė tiriamoji dalis}
 Pagrindinėje tiriamojoje dalyje aptariama ir pagrindžiama tyrimo metodika;
@@ -142,12 +164,7 @@ Citavimo pavyzdžiai nebereikalingi.
 Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
 suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 
-\printbibliography[heading=bibintoc] % Literatūros šaltiniai aprašomi
-% bibliografija.bib faile. Šaltinių sąraše nurodoma panaudota literatūra,
-% kitokie šaltiniai. Abėcėlės tvarka išdėstoma tik darbe panaudotų (cituotų,
-% perfrazuotų ar bent paminėtų) mokslo leidinių, kitokių publikacijų
-% bibliografiniai aprašai (šiuo punktu pasirūpina LaTeX). Aprašai pateikiami
-% netransliteruoti.
+\printbibliography[heading=bibintoc] % Literatūros šaltiniai
 
 \appendix  % Priedai
 % Prieduose gali būti pateikiama pagalbinė, ypač darbo autoriaus savarankiškai
@@ -155,7 +172,7 @@ suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 % diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
 % Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
 
-\section{Priedas 1}
+\section{Paveikslėlis}
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{img/MLP}
