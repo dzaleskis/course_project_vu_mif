@@ -40,20 +40,6 @@
 \sectionnonum{Įvadas}
 % Įvade apibūdinamas darbo tikslas, temos aktualumas ir siekiami rezultatai.
 
-Darbo tikslas:
-pritaikyti genetinius algoritmus Šelo algoritmo tarpų sekoms generuoti.
-
-\bigskip
-
-Darbo uždaviniai:
-
-\begin{itemize}
-  \item Nustatyti kriterijus tarpų sekų efektyvumui įvertinti.
-  \item Paruošti aplinką eksperimentų vykdymui.
-  \item Naudojant genetinius algoritmus sugeneruoti pasirinktas tarpų sekas.
-  \item Atliekant eksperimentus įvertinti sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumą.
-\end{itemize}
-
 Viena pagrindinių informatikos sąvokų yra algoritmas.
 Formaliai algoritmą galima apibūdinti kaip
 baigtinę seką instrukcijų, nurodančių kaip rasti nagrinėjamo uždavinio sprendinį.
@@ -79,42 +65,41 @@ Kadangi rikiavimo uždavinys yra fundamentalus, jam spręsti egzistuoja labai sk
 Rikiavimo algoritmų yra įvairių:
 paremtų palyginimu (elementų tvarką nustato naudojant palyginimo operatorius),
 stabilių (nekeičia lygių elementų tvarkos),
-rikiuojančių vietoje (nenaudoja pagalbinių duomenų struktūrų), etc.
-Asimptotiškai optimalūs palyginimu paremti algoritmai blogiausiu atveju turi $O(n\,log\,n)$ sudėtingumą laiko atžvilgiu,
+nenaudojančių papildomos atminties (atminties sudėtingumas yra $O(1)$), etc.
+Asimptotiškai optimalūs palyginimu paremti algoritmai blogiausiu atveju turi $O(n\,log\,n)$ laiko sudėtingumą,
 o ne palyginimu paremti algoritmai gali veikti dar greičiau, tačiau nėra tokie universalūs, kadangi rikiuojama remiantis duomenų specifika.
 Tiesa, rikiuojant remtis vien algoritmo asimptotika nepakanka:
-rikiavimas įterpimu (angl. insertion sort) blogiausiu atveju atlieka $O(n^2)$ palyginimų \cite{bender2006insertion},
+rikiavimas įterpimu (angl. insertion sort) blogiausiu atveju turi $O(n^2)$ laiko sudėtingumą \cite{bender2006insertion},
 tačiau mažesnius elementų kiekius rikiuoja daug greičiau, nei asimptotiškai optimalūs algoritmai,
-pavyzdžiui, krūvos rikiavimas (angl. heapsort) \cite{10.1145/512274.512284}.
+pavyzdžiui, rikiavimas krūva (angl. heapsort) \cite{10.1145/512274.512284}.
 Todėl pastaruoju metu plačiai naudojami hibridiniai rikiavimo algoritmai, kurie sujungia keletą rikiavimo
 algoritmų į vieną ir panaudoja jų geriausias savybes.
-Taigi, nėra rikiavimo algoritmo, kuris būtų geriausias visais atvejais
-ir praktikoje naudojami įvairūs algoritmai, priklausomai nuo aplinkybių.
+Nepaisant įvairovės ir naujų algoritmų gausos, klasikiniai rikiavimo algoritmai išlieka aktualūs. % ir yra nuolat tobulinami
 
-Šelo rikiavimo algoritmas (angl. shellsort, toliau - Šelo algoritmas) \cite{10.1145/368370.368387} yra paremtas palyginimu, rikiuojantis vietoje ir nestabilus.
+Šelo rikiavimo algoritmas (angl. Shellsort, toliau - Šelo algoritmas) \cite{10.1145/368370.368387} yra paremtas palyginimu, nenaudojantis papildomos atminties ir nestabilus.
 Šelo algoritmą galima laikyti rikiavimo įterpimu modifikacija,
 kuri lygina ne gretimus, o toliau vienas nuo kito esančius elementus, taip paspartindama jų perkėlimą į galutinę poziciją.
 Pagrindinė algoritmo idėja - išskaidyti rikiuojamą seką S į posekius $S_1, S_2, ..., S_n$,
 kur kiekvienas posekis $S_i = (s_i, s_{i+h}, s_{i+2h}, ...)$ yra sekos S elementai, kurių pozicija skiriasi $h$.
 Išrikiavus visus sekos $S$ posekius $S_i$ su tarpu $h$, seka tampa $h$-išrikiuota.
 Remiantis tuo, jog sekai S esant $h$-išrikiuota ir ją $k$-išrikiavus, ji lieka $h$-išrikiuota \cite{GALE1972103},
-galima kiekvieną algoritmo iteraciją mažinti tarpą, taip vis didinant sekos $S$ išrikiuotumą. % reiketu pasitikslinti del termino
+galima kiekvieną algoritmo iteraciją mažinti tarpą, taip vis didinant sekos $S$ išrikiuotumą. % rikiuotuma??
 Pritaikant šias idėjas ir rikiavimui naudojant mažėjančią tarpų seką su paskutiniu nariu $1$,
 kuris garantuoja rikiavimą įterpimu paskutinėje iteracijoje,
 galima užtikrinti, jog algoritmo darbo pabaigoje seka S bus pilnai išrikiuota.
-Įvertinant aukščiau aptartas idėjas, nesunku pastebėti tarpų sekų įtaką Šelo algoritmo veikimui.
+Įvertinant Šelo algoritmo idėjas, nesunku pastebėti tarpų sekų įtaką jo veikimui.
 
 Šelo algoritmo efektyvumas tiesiogiai priklauso nuo pasirinktos tarpų sekos.
 Weiss atlikto tyrimo \cite{weiss1991short} rezultatai rodo, jog su Sedgewick pasiūlyta seka
 šis algoritmas veikia beveik dvigubai greičiau nei Šelo pradinis variantas, kai $n = 1000000$.
-Yra įrodyta, kad Šelo algoritmo blogiausiu atveju atliekamų palyginimų skaičiaus apatinė riba yra
+Yra įrodyta, kad Šelo algoritmo laiko sudėtingumo blogiausiu atveju apatinė riba yra
 $\Omega(\frac{n\,log^2\,n}{log\,log\,n^2})$ \cite{267769}, taigi jis nėra asimptotiškai optimalus.
 Tiesa, kol kas nėra rasta seka, su kuria Šelo algoritmas pasiektų šią apatinę ribą.
 Kiek žinoma autoriui, asimptotiškai geriausia tarpų seka yra rasta Pratt, kuri yra formos
-$2^p3^p$ ir turi $\Theta(n\,log^2\,n)$ asimptotinį sudėtingumą \cite{pratt1972shellsort},
+$2^p3^p$ ir turi $\Theta(n\,log^2\,n)$ laiko sudėtingumą \cite{pratt1972shellsort},
 tačiau praktikoje ji veikia lėčiau už Ciura \cite{ciura2001best} ar Tokuda \cite{10.5555/645569.659879} pasiūlytas sekas.
-Daugelio praktikoje naudojamų sekų asimptotinis sudėtingumas laiko atžvilgiu lieka atvira problema,
-nes jos yra rastos eksperimentiškai, tad sunku rasti matematinį modelį tinkamą jų analizei.
+Daugelio praktikoje efektyvių sekų asimptotinis sudėtingumas laiko atžvilgiu lieka atvira problema,
+nes jos yra rastos eksperimentiškai.
 Vienas iš metodų, kuriuos galima taikyti efektyvių tarpų sekų radimui, yra genetinis algoritmas.
 
 Genetinis algoritmas (GA) yra metodas rasti euristikas, paremtas biologijos žiniomis apie natūralios atrankos procesą.
@@ -139,30 +124,55 @@ sprendžiant globalaus optimizavimo uždavinius
 ir net projektuojant NASA mikrosatelitų antenas \cite{hornby2006automated}.
 Nesunku pastebėti, jog efektyvių Šelo algoritmo tarpų sekų radimas yra sunkus uždavinys atliekamų skaičiavimų prasme,
 tikėtinai reikalaujantis pilno potencialių sprendinių perrinkimo,
-tad šio uždavinio sprendimui taikyti GA yra tikslinga.
-Kiek žinoma autoriui, yra buvę du bandymai taikyti genetinius algoritmus efektyvių Šelo algoritmo tarpų sekų radimui
-ir abu pateikė daug žadančius rezultatus \cite{simpson1999faster} \cite{roos2002genetic}.
+tad šio uždavinio sprendimui taikyti GA yra prasminga.
+Kiek žinoma autoriui, kol kas yra buvę du bandymai taikyti genetinius algoritmus efektyvių Šelo algoritmo tarpų sekų radimui \cite{simpson1999faster} \cite{roos2002genetic}.
+Abiejuose darbuose teigiama, jog genetiniais algoritmais gautos tarpų sekos veikia greičiau už Sedgewick seką, kuri literatūroje laikoma viena efektyviausių.
 
+\bigskip
 
-\section{Pagrindinė tiriamoji dalis}
-Pagrindinėje tiriamojoje dalyje aptariama ir pagrindžiama tyrimo metodika;
-pagal atitinkamas darbo dalis, nuosekliai, panaudojant lyginamosios analizės,
-klasifikacijos, sisteminimo metodus bei apibendrinimus, dėstoma sukaupta ir
-išanalizuota medžiaga.
+Darbo \textbf{tikslas}:
+pritaikyti genetinius algoritmus Šelo algoritmo tarpų sekoms generuoti.
 
-\subsection{Poskyris}
-Citavimo pavyzdžiai nebereikalingi.
+Darbo uždaviniai:
+\begin{itemize}
+  \item Nustatyti kriterijus tarpų sekų efektyvumui įvertinti.
+  \item Paruošti aplinką eksperimentų vykdymui.
+  \item Naudojant genetinius algoritmus sugeneruoti pasirinktas tarpų sekas.
+  \item Atliekant eksperimentus įvertinti sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumą.
+\end{itemize}
 
-\subsubsection{Skirsnis}
-\subsubsubsection{Straipsnis}
-\subsubsection{Skirsnis}
-\section{Skyrius}
-\subsection{Poskyris}
-\subsection{Poskyris}
+Šis darbas sudarytas iš 4 skyrių.
+Pirmame skyriuje bus nustatomi kriterijai tarpų sekų efektyvumui įvertinti.
+Antrame skyriuje bus paruošiama eksperimentų vykdymo aplinka.
+Trečiame skyriuje bus generuojamos tarpų sekos, naudojant genetinius algoritmus.
+Ketvirtame skyriuje atliekant eksperimentus bus įvertinamas sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumas.
+
+\section{Kriterijų nustatymas}
+placeholder....
+
+\section{Aplinkos paruošimas}
+placeholder....
+
+\section{Sekų generavimas}
+placeholder....
+
+\section{Sekų efektyvumo įvertinimas}
+placeholder....
+
+% \subsection{Poskyris}
+% Citavimo pavyzdžiai nebereikalingi.
+
+% \subsubsection{Skirsnis}
+% \subsubsubsection{Straipsnis}
+% \subsubsection{Skirsnis}
+% \section{Skyrius}
+% \subsection{Poskyris}
+% \subsection{Poskyris}
 
 \sectionnonum{Išvados}
-Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
-suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
+Gavome tą ir aną, rekomenduojame šitai.
+% Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
+% suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 
 \printbibliography[heading=bibintoc] % Literatūros šaltiniai
 
