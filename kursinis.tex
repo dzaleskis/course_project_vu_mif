@@ -10,6 +10,8 @@
 % \usepackage{hyperref}  % Nuorodų aktyvavimas
 \usepackage{url}
 
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
 
 % Titulinio aprašas
 \university{Vilniaus universitetas}
@@ -21,7 +23,7 @@
 \titleineng{Improving sorting with genetic algorithms}
 \status{3 kurso 2 grupės studentas}
 \author{Deividas Zaleskis}
-\supervisor{lekt. Irmantas Radavičius}
+\supervisor{Irmantas Radavičius}
 \date{Vilnius \\ \the\year}
 
 % Nustatymai
@@ -32,13 +34,7 @@
 
 \tableofcontents
 
-%\sectionnonum{Sąvokų apibrėžimai}
-%Sutartinių ženklų, simbolių, vienetų ir terminų sutrumpinimų sąrašas (jeigu
-%ženklų, simbolių, vienetų ir terminų bendras skaičius didesnis nei 10 ir
-%kiekvienas iš jų tekste kartojasi daugiau nei 3 kartus).
-
 \sectionnonum{Įvadas}
-% Įvade apibūdinamas darbo tikslas, temos aktualumas ir siekiami rezultatai.
 
 Viena pagrindinių informatikos sąvokų yra algoritmas.
 Formaliai algoritmą galima apibūdinti kaip
@@ -128,7 +124,7 @@ tad šio uždavinio sprendimui taikyti GA yra prasminga.
 Kiek žinoma autoriui, kol kas yra buvę du bandymai taikyti genetinius algoritmus efektyvių Šelo algoritmo tarpų sekų radimui \cite{simpson1999faster} \cite{roos2002genetic}.
 Abiejuose darbuose teigiama, jog genetiniais algoritmais gautos tarpų sekos veikia greičiau už Sedgewick seką, kuri literatūroje laikoma viena efektyviausių.
 
-\bigskip
+\pagebreak
 
 Darbo \textbf{tikslas}:
 pritaikyti genetinius algoritmus Šelo algoritmo tarpų sekoms generuoti.
@@ -137,24 +133,108 @@ Darbo uždaviniai:
 \begin{itemize}
   \item Nustatyti kriterijus tarpų sekų efektyvumui įvertinti.
   \item Paruošti aplinką eksperimentų vykdymui.
-  \item Naudojant genetinius algoritmus sugeneruoti pasirinktas tarpų sekas.
+  \item Naudojant genetinius algoritmus sugeneruoti tarpų sekas.
   \item Atliekant eksperimentus įvertinti sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumą.
 \end{itemize}
 
 Šis darbas sudarytas iš 4 skyrių.
-Pirmame skyriuje bus nustatomi kriterijai tarpų sekų efektyvumui įvertinti.
-Antrame skyriuje bus paruošiama eksperimentų vykdymo aplinka.
-Trečiame skyriuje bus generuojamos tarpų sekos, naudojant genetinius algoritmus.
-Ketvirtame skyriuje atliekant eksperimentus bus įvertinamas sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumas.
+Pirmame skyriuje nustatomi kriterijai tarpų sekų efektyvumui įvertinti.
+Antrame skyriuje paruošiama eksperimentų vykdymo aplinka.
+Trečiame skyriuje generuojamos tarpų sekos, naudojant genetinius algoritmus.
+Ketvirtame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumas.
 
-\section{Kriterijų nustatymas}
-placeholder....
+\section{Tarpų sekų efektyvumo kriterijų nustatymas}
 
-\section{Aplinkos paruošimas}
-placeholder....
+Šelo algoritmo tarpų sekų efektyvumo įvertinimas nėra trivialus.
+Rikiavimo algoritmai dažniausiai yra vertinami pagal atliekamų priskyrimų skaičių.
+Skaičiuojant algoritmo atliekamus priskyrimus, gana paprasta jais išreikšti inversijų skaičių. % o kodel inversijos svarbu?
+Daugelyje algoritmų priskyrimų skaičius uždaviniui augant greitai artėja prie palyginimų skaičiaus,
+tad tokiu metodu gautas įvertis būna pakankamai tikslus.
+Šelo algoritmo atveju, vien priskyrimų skaičius nėra pakankamai tikslus kriterijus tarpų sekų efektyvumui įvertinti,
+kadangi remiantis tik juo, gautas įvertis neatspindi praktinio efektyvumo.
+Kaip parodo \cite{ciura2001best}, šiame algoritme dominuojanti operacija yra palyginimas.
+Tad galima daryti išvadą, jog atliekamų palyginimų skaičius yra tinkamesnis kriterijus efektyvumui įvertinti.
+
+Matuojant rikiavimo algoritmo efektyvumą tik naudojant sveikaskaitinius pradinius duomenis, gauti rezultatai gali būti netikslūs,
+kadangi šių operacijų sparta priklauso nuo rikiuojamų duomenų tipo.
+Rikiuojant simbolių eilutes, priskyrimas atliekamas naudojant rodykles, kas yra $O(1)$ operacija,
+tačiau palyginimas yra $O(n)$ blogiausiu atveju.
+Ir atvirkščiai, rikiuojant įrašus kurie saugomi steke, priskyrimas reikalauja perkopijuoti visą įrašą,
+o palyginimas gali būti atliekamas naudojant tam tikrą raktą.
+Todėl apsiriboti vien palyginimų ar priskyrimų skaičiumi nepakanka, kadangi tiksliausia praktinio algoritmo
+veikimo laiko aproksimacija (tai, kam ir skaičiuojamos operacijos), bus gauta tik įvertinant abu šiuos rodiklius.
+
+Algoritmo veikimo laikas, nors ir priklausomas nuo platformos, kurioje vykdomas tyrimas, detalių,
+taip pat gali duoti tinkamų įžvalgų įvertinant praktinį efektyvumą.
+Kadangi algoritmo atliekamos operacijos skaičiuojamos tam, jog gauti praktinio
+veikimo laiko aproksimaciją, tai realus veikimo laikas
+yra konkretus įvertis, leidžiantis praktiškai įvertinti duotos sekos efektyvumą.
+Taigi, įvertinant tarpų sekų efektyvumą bus remiamasi visomis atliekamomis operacijomis bei realiais veikimo laikais.
+
+\section{Eksperimentų vykdymo aplinkos paruošimas}
+
+\subsection{Techninės detalės}
+Tyrimui buvo naudotas kompiuteris su 2.70 GHz Intel(R) Core(TM) i7-10850H procesoriumi,
+32 GB operatyviosios atminties ir Windows 10 operacine sistema.
+Tyrimas buvo įgyvendintas C++ kalba su GNU g++ 8.1.0 kompiliatoriumi.
+Genetinio algoritmo implementacijai buvo pasirinkta OpenGA biblioteka \cite{mohammadi2017openga}
+dėl suteikiamos laisvės pasirinkti, kaip įgyvendinti genetinius operatorius bei modernių kalbos konstruktų ir lygiagretaus vykdymo palaikymo.
+
+\subsection{Šelo rikiavimo algoritmo variantai}
+
+Kaip ir daugelis algoritmų, Šelo rikiavimo algoritmas turi keletą variantų.
+Kaip pabrėžia \cite{Radavičius_Baranauskas_2013}, vadovėlinė šio algoritmo implementacija nėra
+naši, kadangi atlieka nereikalingus priskyrimus,
+todėl buvo pasirinkta atlikti matavimus naudojant ir vadovėlinę, ir patobulintą šio algoritmo versiją.
+Abiejų algoritmų pseudokodas pateikiamas žemiau.
+
+\begin{algorithm}
+  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{css} % TO may need fixing
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ in $H$}
+    \For {$i\gets gap+1$ to $N$} % TO may need fixing
+      \State $j\gets i$
+      \State $temp\gets S[i]$
+      \While {$j > gap$ and $S[j - gap] > S[j]$}
+        \State $S[j]\gets S[j - gap]$
+        \State $j\gets j-gap$
+      \EndWhile
+      \State $S[j]\gets temp$
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Patobulintas Šelo rikiavimo algoritmas}\label{iss}
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ in $H$}
+    \For {$i\gets gap+1$ to $N$}
+      \If {$S[i-gap] > S[i]$}
+        \State $j\gets i$
+        \State $temp\gets S[i]$
+        \Repeat
+          \State $S[j]\gets S[j - gap]$
+          \State $j\gets j-gap$
+        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}
+        \State $S[j]\gets temp$
+      \EndIf
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+\subsection{Matavimų atlikimas}
+Siekant išmatuoti abiejų algoritmų atliekamų operacijų skaičių, buvo parengtos modifikuotos jų
+versijos, kurios kaip rezultatą grąžina atliktus palyginimus bei priskyrimus.
+Tiesa, matuoti algoritmų veikimo laiką naudojant šias versijas nėra tinkama,
+kadangi jos atlieka papildomus žingsnius ir gali iškreipti gautus rezultatus.
+Atsižvelgiant į tai, veikimo laiko matavimui naudotos nemodifikuotos abiejų algoritmų implementacijos. 
 
 \section{Sekų generavimas}
-placeholder....
+Pirmiausia sugeneravom 10 sekų su atsitiktiniais pradiniais duomenimis, atrinkdami geriausias.
+Tada iteratyviai tobulinome jas, kas kart paduodami visas prieš tai geriausias gautas sekas kaip pradinius parametrus, kol buvo gauta dar 10 sekų.
+
 
 \section{Sekų efektyvumo įvertinimas}
 placeholder....
