@@ -189,13 +189,13 @@ todėl buvo pasirinkta atlikti matavimus naudojant ir vadovėlinę, ir patobulin
 Abiejų algoritmų pseudokodas pateikiamas žemiau.
 
 \begin{algorithm}
-  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{css} % TO may need fixing
+  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{css}
   \begin{algorithmic}[1]
-  \ForEach {$gap$ in $H$}
-    \For {$i\gets gap+1$ to $N$} % TO may need fixing
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
       \State $j\gets i$
       \State $temp\gets S[i]$
-      \While {$j > gap$ and $S[j - gap] > S[j]$}
+      \While {$j > gap$ \textbf{and} $S[j - gap] > S[j]$}
         \State $S[j]\gets S[j - gap]$
         \State $j\gets j-gap$
       \EndWhile
@@ -208,8 +208,8 @@ Abiejų algoritmų pseudokodas pateikiamas žemiau.
 \begin{algorithm}
   \caption{Patobulintas Šelo rikiavimo algoritmas}\label{iss}
   \begin{algorithmic}[1]
-  \ForEach {$gap$ in $H$}
-    \For {$i\gets gap+1$ to $N$}
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
       \If {$S[i-gap] > S[i]$}
         \State $j\gets i$
         \State $temp\gets S[i]$
@@ -224,16 +224,95 @@ Abiejų algoritmų pseudokodas pateikiamas žemiau.
   \end{algorithmic}
 \end{algorithm}
 
-\subsection{Matavimų atlikimas}
+\subsection{Pasiruošimas matavimų atlikimui}
 Siekant išmatuoti abiejų algoritmų atliekamų operacijų skaičių, buvo parengtos modifikuotos jų
 versijos, kurios kaip rezultatą grąžina atliktus palyginimus bei priskyrimus.
 Tiesa, matuoti algoritmų veikimo laiką naudojant šias versijas nėra tinkama,
 kadangi jos atlieka papildomus žingsnius ir gali iškreipti gautus rezultatus.
 Atsižvelgiant į tai, veikimo laiko matavimui naudotos nemodifikuotos abiejų algoritmų implementacijos. 
 
+\begin{algorithm}
+  \caption{Vadovėlinis operacijas skaičiuojantis Šelo rikiavimo algoritmas}\label{css_reported}
+  \begin{algorithmic}[1]
+  \State $cmp\gets 0$
+  \State $asn\gets 0$
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \State $cmp\gets cmp+1$
+      \State $j\gets i$
+      \State $temp\gets S[i]$
+      \State $asn\gets asn+2$
+      \While {$j > gap$  \textbf{and} $S[j - gap] > S[j]$}
+        \State $S[j]\gets S[j - gap]$
+        \State $j\gets j-gap$
+        \State $asn\gets asn+2$
+        \State $cmp\gets cmp+2$
+      \EndWhile
+      \If {$j < gap$}
+        \State $cmp\gets cmp+1$
+      \Else
+        \State $cmp\gets cmp+2$
+      \EndIf
+      \State $S[j]\gets temp$
+      \State $asn\gets asn+1$
+    \EndFor
+  \EndFor
+  \State \textbf{return} $(asn, cmp)$
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Patobulintas operacijas skaičiuojantis Šelo rikiavimo algoritmas}\label{iss_reported}
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \If {$S[i-gap] > S[i]$}
+        \State $j\gets i$
+        \State $temp\gets S[i]$
+        \Repeat
+          \State $S[j]\gets S[j - gap]$
+          \State $j\gets j-gap$
+        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}
+        \State $S[j]\gets temp$
+      \EndIf
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
 \section{Sekų generavimas}
-Pirmiausia sugeneravom 10 sekų su atsitiktiniais pradiniais duomenimis, atrinkdami geriausias.
-Tada iteratyviai tobulinome jas, kas kart paduodami visas prieš tai geriausias gautas sekas kaip pradinius parametrus, kol buvo gauta dar 10 sekų.
+
+\subsection{Genetinis algoritmas}
+
+\subsection{Galinių sekų generavimas}
+Pirmame sekų generavimo etape buvo generuojamos tarpų sekos, kurios efektyvios kai $N=1000$.
+Remiantis \cite{simpson1999faster}, tokios sekos chromosoma buvo modeliuojama kaip
+septynių sveikų skaičių masyvas.
+Toliau šios sekos vadinamos galinėmis sekomis.
+Galinių sekų generavimui buvo paruoštas vienkriterinis genetinis algoritmas.
+Chromosomos buvo vertinamos jas naudojant 20-ties atsitiktinai
+sugeneruotų sveikų skaičių masyvų rikiavimui vadovėline Šelo rikiavimo algoritmo versija ir skaičiuojant atliktas palyginimo operacijas.
+Chromosomos tinkamumo funkcija buvo apibrėžta kaip atliktų palyginimų skaičiaus aritmetinis vidurkis.
+Rekombinacijos operatorius buvo įgyvendintas tolygia strategija, kur abiejų tėvų genai turi vienodą tikimybę
+būti perduoti vaikinei chromosomai.
+Mutacijos operatorius buvo įgyvendintas su $\frac{1}{2}$ tikimybe keičiant kiekvieną chromosomos geną,
+pridedant prie jo atsitiktinį skaičių iš intervalo $[-100, 100]$ su apribojimu, jog pakeistas genas turi priklausyti intervalui $[1, 1000]$.
+
+Pirmiausia algoritmas buvo vykdomas su atsitiktinai sugeneruota 10000 individų populiacija, kiekvieną iteraciją pritaikant mutacijos ir rekombinacijos operatorius
+atitinkamai $\frac{8}{10}$ ir $\frac{1}{10}$ populiacijos.
+Tokiu būdu buvo sugeneruota ir atrinkta 10 sekų.
+Po to algoritmas buvo vykdomas su atsitiktinai sugeneruota 15000 individų populiacija, dalį jos inicializuojant geriausiomis prieš tai gautomis sekomis
+ir kiekvieną iteraciją pritaikant mutacijos ir rekombinacijos operatorius
+atitinkamai $\frac{9}{10}$ ir $\frac{1}{100}$ populiacijos.
+Tokiu būdu buvo sugeneruota ir atrinkta dar 10 sekų.
+Galiausiai iš visų sugeneruotų sekų buvo atrinkta tinkamiausia.
+Tai buvo atlikta sugeneruotas sekas naudojant 100000 atsitiktinai sugeneruotų masyvų rikiavimui
+vadovėline Šelo rikiavimo algoritmo versija ir matuojant atliktų palyginimo operacijų aritmetinį vidurkį.
+Atliekant matavimus taip pat buvo įtraukta Simpson ir Yachavaram pasiūlyta \cite{simpson1999faster} seka 1, 4, 13, 36, 83, 219, 893.
+Tai buvo atlikta todėl, kad autorių teigimu tai sparčiausiai veikianti jų rasta galinė seka ir ji suteikė puikų kontekstą įvertinti
+darbo metu sugeneruotų galinių sekų tinkamumą.
+Geriausiai pasirodė seka 1, 5, 13, 40, 137, 669, 974.
+
 
 
 \section{Sekų efektyvumo įvertinimas}
