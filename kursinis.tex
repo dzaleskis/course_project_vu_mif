@@ -7,10 +7,10 @@
 \usepackage{bm}
 \usepackage{color}
 \usepackage{graphicx}
-% \usepackage{hyperref}  % Nuorodų aktyvavimas
+\usepackage{hyperref}  % Nuorodų aktyvavimas
 \usepackage{url}
 
-\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algnewcommand\algorithmicforeach{\textbf{foreach}}
 \algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
 
 % Titulinio aprašas
@@ -70,7 +70,7 @@ tačiau mažesnius elementų kiekius rikiuoja daug greičiau, nei asimptotiškai
 pavyzdžiui, rikiavimas krūva (angl. heapsort) \cite{10.1145/512274.512284}.
 Todėl pastaruoju metu plačiai naudojami hibridiniai rikiavimo algoritmai, kurie sujungia keletą rikiavimo
 algoritmų į vieną ir panaudoja jų geriausias savybes.
-Nepaisant įvairovės ir naujų algoritmų gausos, klasikiniai rikiavimo algoritmai išlieka aktualūs. % ir yra nuolat tobulinami
+Nepaisant įvairovės ir naujų algoritmų gausos, klasikiniai rikiavimo algoritmai išlieka aktualūs.
 
 Šelo rikiavimo algoritmas (angl. Shellsort, toliau - Šelo algoritmas) \cite{10.1145/368370.368387} yra paremtas palyginimu, nenaudojantis papildomos atminties ir nestabilus.
 Šelo algoritmą galima laikyti rikiavimo įterpimu modifikacija,
@@ -79,7 +79,7 @@ Pagrindinė algoritmo idėja - išskaidyti rikiuojamą seką S į posekius $S_1,
 kur kiekvienas posekis $S_i = (s_i, s_{i+h}, s_{i+2h}, ...)$ yra sekos S elementai, kurių pozicija skiriasi $h$.
 Išrikiavus visus sekos $S$ posekius $S_i$ su tarpu $h$, seka tampa $h$-išrikiuota.
 Remiantis tuo, jog sekai S esant $h$-išrikiuota ir ją $k$-išrikiavus, ji lieka $h$-išrikiuota \cite{GALE1972103},
-galima kiekvieną algoritmo iteraciją mažinti tarpą, taip vis didinant sekos $S$ išrikiuotumą. % rikiuotuma??
+galima kiekvieną algoritmo iteraciją mažinti tarpą, taip vis didinant sekos $S$ išrikiuotumą.
 Pritaikant šias idėjas ir rikiavimui naudojant mažėjančią tarpų seką su paskutiniu nariu $1$,
 kuris garantuoja rikiavimą įterpimu paskutinėje iteracijoje,
 galima užtikrinti, jog algoritmo darbo pabaigoje seka S bus pilnai išrikiuota.
@@ -121,7 +121,7 @@ ir net projektuojant NASA mikrosatelitų antenas \cite{hornby2006automated}.
 Nesunku pastebėti, jog efektyvių Šelo algoritmo tarpų sekų radimas yra sunkus uždavinys atliekamų skaičiavimų prasme,
 tikėtinai reikalaujantis pilno potencialių sprendinių perrinkimo,
 tad šio uždavinio sprendimui taikyti GA yra prasminga.
-Kiek žinoma autoriui, kol kas yra buvę du bandymai taikyti genetinius algoritmus efektyvių Šelo algoritmo tarpų sekų radimui \cite{simpson1999faster} \cite{roos2002genetic}.
+Kiek žinoma autoriui, kol kas yra buvę du bandymai taikyti genetinius algoritmus efektyvių Šelo algoritmo tarpų sekų radimui \cite{simpson1999faster, roos2002genetic}.
 Abiejuose darbuose teigiama, jog genetiniais algoritmais gautos tarpų sekos veikia greičiau už Sedgewick seką, kuri literatūroje laikoma viena efektyviausių.
 
 \pagebreak
@@ -131,17 +131,176 @@ pritaikyti genetinius algoritmus Šelo algoritmo tarpų sekoms generuoti.
 
 Darbo uždaviniai:
 \begin{itemize}
+  \item Atlikti Šelo rikiavimo algoritmo literatūros analizę.
   \item Nustatyti kriterijus tarpų sekų efektyvumui įvertinti.
   \item Paruošti aplinką eksperimentų vykdymui.
   \item Naudojant genetinius algoritmus sugeneruoti tarpų sekas.
   \item Atliekant eksperimentus įvertinti sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumą.
 \end{itemize}
 
-Šis darbas sudarytas iš 4 skyrių.
-Pirmame skyriuje nustatomi kriterijai tarpų sekų efektyvumui įvertinti.
-Antrame skyriuje paruošiama eksperimentų vykdymo aplinka.
-Trečiame skyriuje generuojamos tarpų sekos, naudojant genetinius algoritmus.
-Ketvirtame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumas.
+Šis darbas sudarytas iš 6 skyrių.
+Pirmame skyriuje atliekama Šelo rikiavimo algoritmo literatūros analizė.
+Antrame skyriuje apžvelgiama genetinio algoritmo sąvoka.
+Trečiame skyriuje nustatomi kriterijai tarpų sekų efektyvumui įvertinti.
+Ketvirtame skyriuje paruošiama eksperimentų vykdymo aplinka.
+Penktame skyriuje generuojamos tarpų sekos, naudojant genetinius algoritmus.
+Šeštame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumas.
+
+\section{Šelo rikiavimo algoritmas}
+
+\subsection{Šelo rikiavimo algoritmo efektyvumas}
+
+\subsubsection{Šelo rikiavimo algoritmo asimptotinė analizė}
+
+\subsubsection{Šelo rikiavimo algoritmo efektyvumas priklausomai nuo duomenų dydžio}
+
+Renkantis kokį algoritmą naudoti, labai svarbu įvertinti tikėtiną duomenų dydį.
+Šelo rikiavimo algoritmas yra efektyviausias, kai duomenų dydis yra ganėtinai mažas \cite{ciura2001best}.
+Kaip teigiama \cite{simpson1999faster}, šis algoritmas veikia geriausiai, kai $N < 150$.
+Tokiu atveju, jis lenkia net ir vienu greičiausių laikomą greitojo rikiavimo algoritmą.
+Todėl Šelo rikiavimo algoritmas dažnai naudojamas hibridiniuose rikiavimo algoritmuose, kai pasiekus tam tikrą rekursijos lygį
+rikiuojamų duomenų dalis tampa pakankamai maža ir tolimesnė rekursija asimptotiškai optimaliu algoritmu nebeturi prasmės,
+kadangi jos tęsimas reikalautų per daug mašinos resursų.
+Tokių šio algoritmo naudojimo pavyzdžių galima rasti Go programavimo kalbos standartinėje bibliotekoje \cite{golangsort} bei
+bzip2 failų glaudinimo programoje \cite{bzip2sort}.
+Tiesa, net ir rikiuojant didesnius duomenų dydžius, Šelo algoritmas nėra labai lėtas \cite{ciura2001best}.
+Todėl jis yra vertingas įrankis programuojant įterptinėms sistemoms, kadangi dėl ribotų atminties išteklių
+asimptotiškai optimalūs algoritmai, kurie dažniausia yra rekursyvūs ir naudoja daugiau atminties, tokioms sistemoms netinka.
+Taigi, nors Šelo rikiavimo algoritmas nėra vienas greičiausių kai uždavinys didelis,
+yra scenarijų, kuriais šį algoritmą rinktis tikrai verta.
+
+\subsubsection{Šelo rikiavimo algoritmo efektyvumas priklausomai nuo duomenų specifikos}
+
+Viena palankiausių Šelo algoritmo savybių yra jo adaptyvumas.
+Adaptyvumas rikiavimo algoritmų kontekste reiškia, jog algoritmas atlieka mažiau operacijų, jei duomenys dalinai išrikiuoti.
+Moksliniuose tyrimuose ši savybė retai turi įtakos, kadangi dažniausia siekiama ištirti algoritmo veikimą, kai duomenys
+nėra tvarkingai išdėstyti ir tipiškai renkamasi atsitiktinai generuoti pradinius duomenis šiam tikslui pasiekti.
+Savaime aišku, jog praktikoje retai pavyks sutikti visiškai atsitiktinai išsidėsčiusius duomenis, neturinčius nei vieno išrikiuoto posekio didesnio už 1.
+Kaip pavyzdį galima pateikti vieną populiariausių šiuo metu naudojamų algoritmų, Timsort \cite{auger2018worst}. 
+Esminė šio algoritmo idėja yra ta, jog realiame pasaulyje sutinkami duomenys labai dažnai turi išrikiuotų posekių,
+o juos aptikus rikiavimą galima atlikti greičiau, kadangi šių posekių rikiuoti nebereikia.
+Deja, literatūroje sudėtinga rasti Šelo algoritmo adaptyvumo tyrimų, tad sunku tiksliai įvertinti, kokią didelę įtaką duomenų tvarka daro šio algoritmo efektyvumui.
+Tačiau remiantis faktu, jog viena pagrindinių Šelo algoritmo idėjų yra aprikiuoti duomenis ir tik tada taikyti rikiavimą įterpimu,
+kuris veikia labai greitai, kai duomenys išrikiuoti (šiuo atveju sudėtingumas laiko atžvilgiu yra $O(n)$), galima daryti prielaidą,
+jog su dalinai išrikiuotais pradiniais duomenimis šis algoritmas veikia ženkliai greičiau.
+
+\subsection{Šelo rikiavimo algoritmo versijos}
+
+\subsubsection{Vadovėlinis Šelo rikiavimo algoritmas}
+
+Kaip ir daugelis algoritmų, Šelo rikiavimo algoritmas turi keletą galimų implementacijų.
+Žinomiausia iš jų, be abejo, yra vadovėlinė šio algoritmo versija,
+daugeliui pasaulio informatikos studentų žinoma iš duomenų struktūrų ir algoritmų kurso.
+Jos pseudokodas pateikiamas žemiau.
+
+\begin{algorithm}[H]
+  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{alg:tss}
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \State $j\gets i$\label{alg:tss:assign1}
+      \State $temp\gets S[i]$\label{alg:tss:assign2}
+      \While {$j > gap$ \textbf{and} $S[j - gap] > S[j]$}\label{alg:tss:while}
+        \State $S[j]\gets S[j - gap]$
+        \State $j\gets j-gap$
+      \EndWhile
+      \State $S[j]\gets temp$
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Patobulintas Šelo rikiavimo algoritmas}
+
+Verta pastebėti, jog vadovėlinė Šelo algoritmo implementacija nėra naši \cite{Radavičius_Baranauskas_2013}.
+Pradedant vidinį vadovėlinio Šelo algoritmo ciklą 5 eilutėje yra tikrinama, ar $S[j]$ jau yra tinkamoje pozicijoje.
+Tai švaisto resursus, kadangi prieš tai 3 ir 4 eilutėse yra atliekami du priskyrimai,
+kurie atliekami veltui, jei $S[j]$ jau yra tinkamoje pozicijoje (o taip nutinka dažnai).
+Siekiant tai ištaisyti, \cite{Radavičius_Baranauskas_2013} pateikė patobulintą Šelo algoritmo versiją, kuri prieš vykdydama
+bet kokias kitas instrukcijas patikrina, ar elementas $S[j]$ jau yra tinkamoje pozicijoje.
+Patobulinto Šelo algoritmo pseudokodas pateikiamas žemiau.
+
+\begin{algorithm}[H]
+  \caption{Patobulintas Šelo rikiavimo algoritmas}\label{alg:iss}
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \If {$S[i-gap] > S[i]$}
+        \State $j\gets i$
+        \State $temp\gets S[i]$
+        \Repeat
+          \State $S[j]\gets S[j - gap]$
+          \State $j\gets j-gap$
+        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}
+        \State $S[j]\gets temp$
+      \EndIf
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+\section{Genetinis algoritmas}
+
+Prieš pradedant generuoti sekas, reikalinga plačiau apžvelgti genetinio algoritmo sąvoką.
+Paprasčiausias genetinis algoritmas susideda iš chromosomų populiacijos bei atrankos, mutacijos ir rekombinacijos operatorių.
+Projektuojant genetinį algoritmą tam tikro uždavinio sprendimui, svarbu tinkamai pasirinkti,
+kaip kompiuteriu modeliuoti galimus sprendinius (chromosomas).
+Chromosomos kompiuterio atmintyje standartiškai išreiškiamos bitų eilutėmis,
+kadangi tai palengvina tiek mutaciją (pakanka apversti kurio nors atsitiktinio bito reikšmę),
+tiek rekombinaciją (pakanka perkopijuoti pasirinktus tėvinių chromosomų bitus į vaikinę chromosomą).
+Tiesa, tai nėra vienintelis įmanomas būdas, ir kai kurių uždavinių sprendiniai modeliuojami pvz. grafu ar simbolių eilute.
+Chromosomų rinkinys, literatūroje dažnai vadinamas populiacija, atspindi uždavinio sprendinių aibę, kuri kinta kiekvieną algoritmo iteraciją.
+Sprendinio kokybę įvardijame kaip jo tinkamumą, kuris apibrėžiamas tinkamumo funkcijos reikšme, pateikus sprendinį kaip parametrą.
+Nesunku pastebėti, jog tinkamumo funkcija tėra tikslo funkcijos specializacija, kuri naudojama chromosomų vertinimui.
+Tinkamumo funkcija yra viena svarbiausių genetinio algoritmo dalių,
+kadangi kai ji netinkamai parinkta, algoritmas nekonverguos į tinkamą sprendinį arba užtruks labai ilgai.  
+Genetinis algoritmas vykdymo metu iteratyviai atnaujina esamą populiaciją, kurdamas naujas kartas taikant atrankos, rekombinacijos ir mutacijos operatorius.
+Atrankos operatorius grąžina tinkamiausius populiacijos individus, kuriems yra leidžiama susilaukti palikuonių taikant rekombinacijos operatorių.
+Rekombinacijos operatorius veikia iš dviejų tėvinių chromosomų sukurdamas naują vaikinę chromosomą, kas dažniausiai pasiekiama
+tam tikru būdu perkopijuojant tėvų genų atkarpas į vaikinę chromosomą.
+Rekombinacijos strategijų yra įvairių, tačiau ne kiekvienam uždaviniui visos jos tinka, kadangi
+kai kuriais atvejais netinkamai parinkta rekombinacijos strategija pagamina neatitinkančią uždavinio apribojimų vaikinę chromosomą.
+Pavyzdžiui, jei modeliuojama chromosoma yra sąrašas, turintis susidėti iš tam tikrų elementų, neįmanoma garantuoti, jog atsitiktinai
+perkopijavus tėvinių chromosomų genus į vaikinę chromosomą šis apribojimas bus išlaikytas.
+Galiausiai tam tikrai populiacijos daliai yra pritaikomas mutacijos operatorius.
+Jo veikimo principas yra gana paprastas: pasirinktos chromosomos vienas ar keli genai yra modifikuojami,
+nežymiai pakeičiant jų reikšmes ar sukeičiant kelių genų reikšmes vietomis.
+Mutacijos operatorius praplečia vykdomos paieškos erdvę, o tai labai svarbu, kadangi kitaip algoritmas gali konverguoti
+į lokaliojo minimumo taškus, taip ir nepasiekdamas globaliojo minimumo.
+Atsižvelgiant į tai, yra laikoma, jog mutacijos operatorius yra kertinė genetinio algoritmo dalis,
+kuri palaiko genetinę individų įvairovę ir padeda rasti tinkamiausius sprendinius.
+Jei algoritmas suprojektuotas tinkamai, dažnu atveju vidutinis populiacijos tinkamumas gerės kiekvieną iteraciją.
+Kad algoritmas neveiktų amžinai, yra pasirenkama tam tikra sustojimo sąlyga, pvz. pasiektas maksimalus
+kartų skaičius, vidutinio tinkamumo pokytis tarp paskutinių dviejų populiacijos kartų pakankamai mažas.
+
+
+\subsection{Galima paprasto genetinio algoritmo implementacija}
+
+Apjungiant visas aukščiau aptartas genetinio algoritmo dalis, galima suformuluoti paprasto genetinio algoritmo pseudokodą.
+
+\begin{algorithm}[H]
+  \caption{Paprastas GA}\label{simple_GA}
+  \begin{algorithmic}
+    \State Let $current\_population$ be a random population of chromosomes.
+    \State Let $mutation\_rate$ be a real value between 0 and 1.
+    \State Let $recombination\_fraction$ be a real value between 0 and 1.
+    \Repeat
+      \State Apply the fitness function to each chromosome in $current\_population$.
+      \State Sort the chromosomes in $current\_population$ based on their fitness.
+      \State Let $new\_population$ be an empty set.
+      \Repeat
+        \State Let $(parent1, parent2)$ be a pair of parent chromosomes selected randomly from the first $[N * recombination\_fraction]$ elements of $current\_population$.
+        \State Let $child\_chromosome$ be the result of applying the recombination operator to $parent1$ and $parent2$.
+        \State Let $rand$ be a random real value between 0 and 1.
+        \If {$rand < mutation\_rate$}
+          \State Apply the mutation operator to $child\_chromosome$
+        \EndIf
+        \State Add $child\_chromosome$ to $new\_population$
+      \Until N offspring have been created.
+      \State Assign $new\_population$ to $current\_population$.
+    \Until termination criteria are satisfied.
+  \end{algorithmic}
+\end{algorithm}
 
 \section{Tarpų sekų efektyvumo kriterijų nustatymas}
 
@@ -180,115 +339,31 @@ Tyrimas buvo įgyvendintas C++ kalba su GNU g++ 8.1.0 kompiliatoriumi.
 Genetinio algoritmo implementacijai buvo pasirinkta OpenGA biblioteka \cite{mohammadi2017openga}
 dėl suteikiamos laisvės pasirinkti, kaip įgyvendinti genetinius operatorius bei modernių kalbos konstruktų ir lygiagretaus vykdymo palaikymo.
 
-\subsection{Šelo rikiavimo algoritmo variantai}
-
-Kaip ir daugelis algoritmų, Šelo rikiavimo algoritmas turi keletą variantų.
-Kaip pabrėžia \cite{Radavičius_Baranauskas_2013}, vadovėlinė šio algoritmo implementacija nėra
-naši, kadangi atlieka nereikalingus priskyrimus,
-todėl buvo pasirinkta atlikti matavimus naudojant ir vadovėlinę, ir patobulintą šio algoritmo versiją.
-Abiejų algoritmų pseudokodas pateikiamas žemiau.
-
-\begin{algorithm}
-  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{css}
-  \begin{algorithmic}[1]
-  \ForEach {$gap$ \textbf{in} $H$}
-    \For {$i\gets gap+1$ \textbf{to} $N$}
-      \State $j\gets i$
-      \State $temp\gets S[i]$
-      \While {$j > gap$ \textbf{and} $S[j - gap] > S[j]$}
-        \State $S[j]\gets S[j - gap]$
-        \State $j\gets j-gap$
-      \EndWhile
-      \State $S[j]\gets temp$
-    \EndFor
-  \EndFor
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}
-  \caption{Patobulintas Šelo rikiavimo algoritmas}\label{iss}
-  \begin{algorithmic}[1]
-  \ForEach {$gap$ \textbf{in} $H$}
-    \For {$i\gets gap+1$ \textbf{to} $N$}
-      \If {$S[i-gap] > S[i]$}
-        \State $j\gets i$
-        \State $temp\gets S[i]$
-        \Repeat
-          \State $S[j]\gets S[j - gap]$
-          \State $j\gets j-gap$
-        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}
-        \State $S[j]\gets temp$
-      \EndIf
-    \EndFor
-  \EndFor
-  \end{algorithmic}
-\end{algorithm}
-
 \subsection{Pasiruošimas matavimų atlikimui}
-Siekant išmatuoti abiejų algoritmų atliekamų operacijų skaičių, buvo parengtos modifikuotos jų
-versijos, kurios kaip rezultatą grąžina atliktus palyginimus bei priskyrimus.
-Tiesa, matuoti algoritmų veikimo laiką naudojant šias versijas nėra tinkama,
-kadangi jos atlieka papildomus žingsnius ir gali iškreipti gautus rezultatus.
-Atsižvelgiant į tai, veikimo laiko matavimui naudotos nemodifikuotos abiejų algoritmų implementacijos. 
 
-\begin{algorithm}
-  \caption{Vadovėlinis operacijas skaičiuojantis Šelo rikiavimo algoritmas}\label{css_reported}
-  \begin{algorithmic}[1]
-  \State $cmp\gets 0$
-  \State $asn\gets 0$
-  \ForEach {$gap$ \textbf{in} $H$}
-    \For {$i\gets gap+1$ \textbf{to} $N$}
-      \State $cmp\gets cmp+1$
-      \State $j\gets i$
-      \State $temp\gets S[i]$
-      \State $asn\gets asn+2$
-      \While {$j > gap$  \textbf{and} $S[j - gap] > S[j]$}
-        \State $S[j]\gets S[j - gap]$
-        \State $j\gets j-gap$
-        \State $asn\gets asn+2$
-        \State $cmp\gets cmp+2$
-      \EndWhile
-      \If {$j < gap$}
-        \State $cmp\gets cmp+1$
-      \Else
-        \State $cmp\gets cmp+2$
-      \EndIf
-      \State $S[j]\gets temp$
-      \State $asn\gets asn+1$
-    \EndFor
-  \EndFor
-  \State \textbf{return} $(asn, cmp)$
-  \end{algorithmic}
-\end{algorithm}
+\subsubsection{Operacijas skaičiuojantis vadovėlinis Šelo algoritmas}
 
-\begin{algorithm}
-  \caption{Patobulintas operacijas skaičiuojantis Šelo rikiavimo algoritmas}\label{iss_reported}
-  \begin{algorithmic}[1]
-  \ForEach {$gap$ \textbf{in} $H$}
-    \For {$i\gets gap+1$ \textbf{to} $N$}
-      \If {$S[i-gap] > S[i]$}
-        \State $j\gets i$
-        \State $temp\gets S[i]$
-        \Repeat
-          \State $S[j]\gets S[j - gap]$
-          \State $j\gets j-gap$
-        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}
-        \State $S[j]\gets temp$
-      \EndIf
-    \EndFor
-  \EndFor
-  \end{algorithmic}
-\end{algorithm}
+Siekant išmatuoti vadovėlinio Šelo algoritmo atliekamų operacijų skaičių,
+buvo parengtas \ref{alg:tss_reported} algoritmas, kuris kaip rezultatą grąžina atliktus palyginimus bei priskyrimus.
 
-\section{Sekų generavimas}
+\subsubsection{Operacijas skaičiuojantis patobulintas Šelo algoritmas}
 
-\subsection{Genetinis algoritmas}
+Siekant išmatuoti patobulinto Šelo algoritmo atliekamų operacijų skaičių,
+buvo parengtas \ref{alg:iss_reported} algoritmas, kuris kaip rezultatą grąžina atliktus palyginimus bei priskyrimus.
 
-\subsection{Galinių sekų generavimas}
-Pirmame sekų generavimo etape buvo generuojamos tarpų sekos, kurios efektyvios kai $N=1000$.
-Remiantis \cite{simpson1999faster}, tokios sekos chromosoma buvo modeliuojama kaip
-septynių sveikų skaičių masyvas.
+\subsubsection{Veikimo laiko matavimas}
+
+Verta pastebėti, jog matuoti veikimo laiką naudojant \ref{alg:tss_reported} ir \ref{alg:iss_reported} algoritmus nėra tinkama,
+kadangi jie skaičiuodami atliekamas operacijas vykdo papildomus žingsnius, o tai gali iškreipti gautus rezultatus.
+Atsižvelgiant į tai, veikimo laiko matavimui naudoti \ref{alg:tss} ir \ref{alg:iss} algoritmai. 
+
+\section{Tarpų sekų generavimas}
+
+\subsection{Galinių tarpų sekų generavimas}
+Pirmame etape buvo generuojamos tarpų sekos, kurios efektyvios kai $N=1000$.
 Toliau šios sekos vadinamos galinėmis sekomis.
+Remiantis \cite{simpson1999faster}, galinės sekos chromosoma buvo modeliuojama kaip
+septynių sveikų skaičių masyvas.
 Galinių sekų generavimui buvo paruoštas vienkriterinis genetinis algoritmas.
 Chromosomos buvo vertinamos jas naudojant 20-ties atsitiktinai
 sugeneruotų sveikų skaičių masyvų rikiavimui vadovėline Šelo rikiavimo algoritmo versija ir skaičiuojant atliktas palyginimo operacijas.
@@ -297,6 +372,8 @@ Rekombinacijos operatorius buvo įgyvendintas tolygia strategija, kur abiejų t�
 būti perduoti vaikinei chromosomai.
 Mutacijos operatorius buvo įgyvendintas su $\frac{1}{2}$ tikimybe keičiant kiekvieną chromosomos geną,
 pridedant prie jo atsitiktinį skaičių iš intervalo $[-100, 100]$ su apribojimu, jog pakeistas genas turi priklausyti intervalui $[1, 1000]$.
+Siekiant išvengti netinkamų sprendinių, kiekviena seka po rekombinacijos ar mutacijos operatorių taikymo buvo išrikiuojama,
+taip pat užtikrinant, jog pirmas sekos narys yra $1$.
 
 Pirmiausia algoritmas buvo vykdomas su atsitiktinai sugeneruota 10000 individų populiacija, kiekvieną iteraciją pritaikant mutacijos ir rekombinacijos operatorius
 atitinkamai $\frac{8}{10}$ ir $\frac{1}{10}$ populiacijos.
@@ -305,28 +382,53 @@ Po to algoritmas buvo vykdomas su atsitiktinai sugeneruota 15000 individų popul
 ir kiekvieną iteraciją pritaikant mutacijos ir rekombinacijos operatorius
 atitinkamai $\frac{9}{10}$ ir $\frac{1}{100}$ populiacijos.
 Tokiu būdu buvo sugeneruota ir atrinkta dar 10 sekų.
+
 Galiausiai iš visų sugeneruotų sekų buvo atrinkta tinkamiausia.
 Tai buvo atlikta sugeneruotas sekas naudojant 100000 atsitiktinai sugeneruotų masyvų rikiavimui
-vadovėline Šelo rikiavimo algoritmo versija ir matuojant atliktų palyginimo operacijų aritmetinį vidurkį.
-Atliekant matavimus taip pat buvo įtraukta Simpson ir Yachavaram pasiūlyta \cite{simpson1999faster} seka 1, 4, 13, 36, 83, 219, 893.
-Tai buvo atlikta todėl, kad autorių teigimu tai sparčiausiai veikianti jų rasta galinė seka ir ji suteikė puikų kontekstą įvertinti
-darbo metu sugeneruotų galinių sekų tinkamumą.
-Geriausiai pasirodė seka 1, 5, 13, 40, 137, 669, 974.
+ir matuojant atliktų palyginimo operacijų aritmetinį vidurkį.
+Matavimai buvo atlikti 5 kartus, siekiant atmesti sekas, gerai pasirodžiusias dėl palankių pradinių duomenų.
+Žemiau pateikiami atliktų matavimų rezultatai.
+\begin{center}
+  \begin{tabular}{||c c c||} 
+  \hline
+  Matavimo nr. & Geriausia seka & Vidutinis atliktų palyginimų skaičius \\
+  \hline\hline
+  1 & 974, 669, 137, 40, 13, 5, 1 & 32204.4 \\ 
+  \hline
+  2 & 974, 669, 137, 40, 13, 5, 1 & 32205.7 \\
+  \hline
+  3 & 974, 669, 137, 40, 13, 5, 1 & 32201.6 \\
+  \hline
+  4 & 974, 669, 137, 40, 13, 5, 1 & 32202.9 \\
+  \hline
+  5 & 974, 669, 137, 40, 13, 5, 1 & 32203.5 \\
+  \hline
+ \end{tabular}
+ \end{center}
+Iš pateiktų duomenų galima daryti išvadą, jog tinkamiausia seka yra $974, 669, 137, 40, 13, 5, 1$.
+Taip pat verta paminėti, jog ir kitos bandymo metu tirtos sekos pasirodė pakankamai gerai ir vidutiniškai
+atlikdavo mažiau nei $33000$ palyginimų.
+
+\subsection{Vidutinio ilgio tarpų sekų generavimas}
+Antrame etape buvo generuojamos tarpų sekos, kurios efektyvios kai $N=1000000$.
+Remiantis \cite{simpson1999faster}, tarpų sekos chromosoma buvo modeliuojama kaip
+sveikų skaičių masyvas ilgio 15, kurio paskutiniai septyni elementai yra $974, 669, 137, 40, 13, 5, 1$, t.y. sekos, gautos pirmame etape, nariai.
+Sekų generavimui teko iš pagrindų pakeisti genetinį algoritmą, naudotą pirmame etape, kadangi žymiai išaugo uždavinio dydis.
+Buvo atsisakyta chromosomų vertinimo, naudojant 20 skirtingų masyvų, kadangi tai neigiamai įtakojo algoritmo veikimo laiką.
+Vietoje to, kiekvienos sekos vertinimui buvo naudojamas vienas atsitiktinai sugeneruotas masyvas ilgio $1000000$.
+Populiacijos dydis buvo sumažintas iki 2500, kadangi ties šia riba galutinių sprendinių tinkamumas priklausomai nuo populiacijos dydžio nebuvo pakankamai didelis,
+jog atsvertų išaugusį veikimo laiką.
+Taip pat buvo pasirinkta atsisakyti tarpų sekų rikiavimo po mutacijos ir rekombinacijos operatorių taikymo, siekiant sumažinti atliekamų operacijų skaičių.
+Atlikus keletą bandomųjų algoritmo iteracijų ir iššiaiškinus apytikslius optimalios tarpų sekos narių reikšmių rėžius, chromosomos genų inicializacija buvo perdaryta taip,
+jog kiekvieno iš chromosomos genų reikšmė priklausytų tam tikram rėžiui, nesikertančiam su kitų chromosomos genų reikšmių rėžiais. Analogiški pakeitimai buvo pritaikyti ir chromosomų mutacijai.
+Šie pakeitimai taip pat pagerino gaunamų sprendinių kokybę, kadangi dėl jų sumažėjo paieškos erdvė.
+Pirmiausia buvo sugeneruotos 5 sekos naudojant atsitiktinai sugeneruotą individų populiaciją.
+Tada buvo sugeneruotos dar 5 sekos, dalį populiacijos inicializuojant prieš tai gautomis sekomis.
+Iš šių 10 sekų buvo atrinktos 3 tinkamiausios sekos, jas naudojant 100 atsitiktinai sugeneruotų masyvų ilgio $1000000$ rikiavimui
+ir matuojant atliktų palyginimo operacijų aritmetinį vidurkį.
 
 
-
-\section{Sekų efektyvumo įvertinimas}
-placeholder....
-
-% \subsection{Poskyris}
-% Citavimo pavyzdžiai nebereikalingi.
-
-% \subsubsection{Skirsnis}
-% \subsubsubsection{Straipsnis}
-% \subsubsection{Skirsnis}
-% \section{Skyrius}
-% \subsection{Poskyris}
-% \subsection{Poskyris}
+\section{Tarpų sekų efektyvumo įvertinimas}
 
 \sectionnonum{Išvados}
 Gavome tą ir aną, rekomenduojame šitai.
@@ -341,12 +443,60 @@ Gavome tą ir aną, rekomenduojame šitai.
 % diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
 % Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
 
-\section{Paveikslėlis}
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{img/MLP}
-    \caption{Paveikslėlio pavyzdys}   % Antraštė įterpiama po paveikslėlio
-    \label{img:mlp}
-\end{figure}
+\section{Operacijas skaičiuojantis vadovėlinis Šelo algoritmas}
+\begin{algorithm}[H]
+  \caption{Operacijas skaičiuojantis vadovėlinis Šelo algoritmas}
+  \label{alg:tss_reported}
+  \begin{algorithmic}[1]
+  \State $cmp\gets 0$; $asn\gets 0$;
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \State $j\gets i$; $temp\gets S[i]$;
+      \State $cmp\gets cmp+1$; $asn\gets asn+2$;
+      \While {$j > gap$  \textbf{and} $S[j - gap] > S[j]$}
+        \State $S[j]\gets S[j - gap]$;
+        \State $j\gets j-gap$;
+        \State $asn\gets asn+2$; $cmp\gets cmp+2$;
+      \EndWhile
+      \If {$j < gap$}
+        \State $cmp\gets cmp+1$;
+      \Else
+        \State $cmp\gets cmp+2$;
+      \EndIf
+      \State $S[j]\gets temp$;
+      \State $asn\gets asn+1$;
+    \EndFor
+  \EndFor
+  \State \textbf{return} $(asn, cmp)$;
+  \end{algorithmic}
+\end{algorithm}
+
+\section{Operacijas skaičiuojantis patobulintas Šelo algoritmas}
+\begin{algorithm}[H]
+  \caption{Operacijas skaičiuojantis patobulintas Šelo algoritmas}
+  \label{alg:iss_reported}
+  \begin{algorithmic}[1]
+  \State $cmp\gets 0$; $asn\gets 0$;
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \State $j\gets i$; $temp\gets S[i]$;
+      \State $cmp\gets cmp+1$; $asn\gets asn+2$;
+      \While {$j > gap$  \textbf{and} $S[j - gap] > S[j]$}
+        \State $S[j]\gets S[j - gap]$;
+        \State $j\gets j-gap$;
+        \State $asn\gets asn+2$; $cmp\gets cmp+2$;
+      \EndWhile
+      \If {$j < gap$}
+        \State $cmp\gets cmp+1$;
+      \Else
+        \State $cmp\gets cmp+2$;
+      \EndIf
+      \State $S[j]\gets temp$;
+      \State $asn\gets asn+1$;
+    \EndFor
+  \EndFor
+  \State \textbf{return} $(asn, cmp)$;
+  \end{algorithmic}
+\end{algorithm}
 
 \end{document}
