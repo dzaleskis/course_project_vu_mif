@@ -133,18 +133,17 @@ Darbo uždaviniai:
 \begin{itemize}
   \item Atlikti Šelo rikiavimo algoritmo literatūros analizę.
   \item Nustatyti kriterijus tarpų sekų efektyvumui įvertinti.
-  \item Paruošti aplinką eksperimentų vykdymui.
   \item Naudojant genetinius algoritmus sugeneruoti tarpų sekas.
+  \item Paruošti aplinką eksperimentų vykdymui.
   \item Atliekant eksperimentus įvertinti sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumą.
 \end{itemize}
 
-Šis darbas sudarytas iš 6 skyrių.
+Šis darbas sudarytas iš 5 skyrių.
 Pirmame skyriuje atliekama Šelo rikiavimo algoritmo literatūros analizė.
-Antrame skyriuje apžvelgiama genetinio algoritmo sąvoka.
-Trečiame skyriuje nustatomi kriterijai tarpų sekų efektyvumui įvertinti.
+Antrame skyriuje nustatomi kriterijai tarpų sekų efektyvumui įvertinti.
+Trečiame skyriuje naudojant genetinius algoritmus generuojamos tarpų sekos.
 Ketvirtame skyriuje paruošiama eksperimentų vykdymo aplinka.
-Penktame skyriuje generuojamos tarpų sekos, naudojant genetinius algoritmus.
-Šeštame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumas.
+Penktame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumas.
 
 \section{Šelo rikiavimo algoritmas}
 
@@ -156,7 +155,7 @@ Penktame skyriuje generuojamos tarpų sekos, naudojant genetinius algoritmus.
 
 Renkantis kokį algoritmą naudoti, labai svarbu įvertinti tikėtiną duomenų dydį.
 Šelo rikiavimo algoritmas yra efektyviausias, kai duomenų dydis yra ganėtinai mažas \cite{ciura2001best}.
-Kaip teigiama \cite{simpson1999faster}, šis algoritmas veikia geriausiai, kai $N \simeq 106$.
+Kaip teigiama \cite{simpson1999faster}, šis algoritmas veikia geriausiai, kai $N \leq 106$.
 Tokiu atveju, jis lenkia net ir vienu greičiausių laikomą greitojo rikiavimo algoritmą.
 Todėl Šelo rikiavimo algoritmas dažnai naudojamas hibridiniuose rikiavimo algoritmuose, kai pasiekus tam tikrą rekursijos lygį
 rikiuojamų duomenų dalis tampa pakankamai maža ir tolimesnė rekursija asimptotiškai optimaliu algoritmu nebeturi prasmės,
@@ -180,22 +179,19 @@ duomenis pradžioje h-išrikiavus, paskutine iteracija taikomas rikiavimas įter
 Moksliniuose tyrimuose ši savybė retai turi įtakos, kadangi dažniausia siekiama ištirti algoritmo veikimą, kai duomenys
 nėra tvarkingai išdėstyti ir tipiškai renkamasi atsitiktinai generuoti pradinius duomenis šiam tikslui pasiekti.
 Savaime aišku, jog praktikoje retai pavyks sutikti visiškai atsitiktinai išsidėsčiusius duomenis, neturinčius nei vieno išrikiuoto posekio ilgesnio nei 1.
-Kaip praktinį šios idėjos taikymo pavyzdį galima pateikti vieną populiariausių šiuo metu naudojamų algoritmų, Timo rikiavimo algoritmą (angl. Timsort) \cite{auger2018worst}. 
-Timo rikiavimo algoritmas remiasi tuo, jog realiame pasaulyje sutinkami duomenys labai dažnai turi išrikiuotų posekių,
-o juos aptikus rikiavimą galima atlikti greičiau, kadangi šių posekių rikiuoti nebereikia.
 Kaip parodo \cite{10.1145/359024.359026}, Šelo algoritmas veikia net keletą kartų greičiau, kai duomenys yra pilnai
 išrikiuoti ir veikimo sparta nusileidžia tik rikiavimui įterpimu su visais duomenų dydžiais.
 Kai duomenų dydis nedidelis (iki 200 elementų) ir 20\% elementų nėra teisingose pozicijose, Šelo algoritmas veikimo sparta nusileidžia tik greitojo rikiavimo algoritmui.
-Palankūs rezultatai pateikiami ir \cite{7280062} - su dalinai išrikiuotais duomenimis Šelo algoritmas veikia apytiksliai $1.5$ karto greičiau, o su išrikiuotais
-duomenimis pasiekiamas apie $3.8$ karto mažesnis veikimo greitis.
-Taigi, rikiuojant dalinai išrikiuotus duomenis Šelo algoritmas yra labai efektyvus.
+Palankūs rezultatai pateikiami ir \cite{7280062} - su dalinai išrikiuotais duomenimis Šelo algoritmas veikia apytiksliai 1.5 karto greičiau, o su išrikiuotais
+duomenimis pasiekiamas apie 3.8 karto mažesnis veikimo greitis.
+Taigi, rikiuojant bent dalinai išrikiuotus duomenis Šelo algoritmas yra labai efektyvus.
 
 \subsection{Šelo rikiavimo algoritmo versijos}
 
 \subsubsection{Vadovėlinis Šelo rikiavimo algoritmas}
 
 Kaip ir daugelis algoritmų, Šelo rikiavimo algoritmas turi keletą galimų implementacijų.
-Žinomiausia iš jų, be abejo, yra vadovėlinė šio algoritmo versija,
+Žinomiausia iš jų, be abejo, yra vadovėlinė šio algoritmo versija (toliau - VŠA),
 daugeliui pasaulio informatikos studentų žinoma iš duomenų struktūrų ir algoritmų kurso.
 Jos pseudokodas pateikiamas žemiau.
 
@@ -216,6 +212,8 @@ Jos pseudokodas pateikiamas žemiau.
   \end{algorithmic}
 \end{algorithm}
 
+\pagebreak[4]
+
 \subsubsection{Patobulintas Šelo rikiavimo algoritmas}
 
 Verta pastebėti, jog vadovėlinė Šelo algoritmo implementacija nėra naši \cite{Radavičius_Baranauskas_2013}.
@@ -223,9 +221,9 @@ Vykdant vidinį vadovėlinio Šelo algoritmo ciklą (\algref{alg:tss}{alg:tss:wh
 \algref{alg:tss}{alg:tss:while:start} eilutėje yra tikrinama, ar $S[j]$ jau yra tinkamoje pozicijoje.
 Jei $S[j]$ jau yra tinkamoje pozicijoje, vidinis ciklas nėra vykdomas ir jokių elementų pozicijos nėra keičiamos.
 Tačiau \algref{alg:tss}{alg:tss:assign1} ir \algref{alg:tss}{alg:tss:assign2} eilutėse vis tiek yra vykdomi du priskyrimai,
-kurie šiuo atveju nueina veltui (o taip nutinka pakankamai dažnai).
-Siekiant tai ištaisyti, \cite{Radavičius_Baranauskas_2013} pateikė patobulintą Šelo algoritmo versiją, kuri prieš vykdydama
-bet kokias kitas instrukcijas patikrina, ar elementas $S[j]$ jau yra tinkamoje pozicijoje.
+kurie šiuo atveju nueina veltui (ir tai nutinka pakankamai dažnai).
+Siekiant tai ištaisyti, \cite{Radavičius_Baranauskas_2013} pateikė patobulintą Šelo algoritmo versiją (toliau - PŠA), kuri prieš vykdydama
+bet kokius kitus žingsnius patikrina, ar elementas $S[j]$ jau yra tinkamoje pozicijoje.
 Patobulinto Šelo algoritmo pseudokodas pateikiamas žemiau.
 
 \begin{algorithm}[H]
@@ -247,21 +245,67 @@ Patobulinto Šelo algoritmo pseudokodas pateikiamas žemiau.
   \end{algorithmic}
 \end{algorithm}
 
-\section{Genetiniai algoritmai}
+\section{Tarpų sekų efektyvumo kriterijų nustatymas}
+
+Šelo algoritmo tarpų sekų efektyvumo įvertinimas nėra trivialus.
+Rikiavimo algoritmai dažniausiai yra vertinami pagal atliekamų priskyrimų skaičių, kadangi
+daugelyje algoritmų priskyrimų skaičius uždaviniui augant greitai artėja prie palyginimų skaičiaus ir
+tokiu metodu gautas įvertis būna pakankamai tikslus.
+Tačiau Šelo algoritmo atveju, atliekamų palyginimų ir priskyrimų skaičiaus santykis augant $N$ nebūtinai artėja prie 1 \cite{Radavičius_Baranauskas_2013}.
+Taigi, vien priskyrimų skaičius nėra pakankamai tikslus kriterijus tarpų sekų efektyvumui įvertinti,
+kadangi juo remiantis gautas įvertis pilnai neatspindi praktinio sekos efektyvumo.
+Kaip parodo \cite{ciura2001best}, šiame algoritme dominuojanti operacija yra palyginimas ir efektyvios sekos
+turėtų jų atlikti kuo įmanoma mažiau.
+Apibendrinant, atliekamų palyginimų skaičius yra tinkamesnis kriterijus Šelo algoritmo tarpų sekų efektyvumui įvertinti.
+
+Matuojant rikiavimo algoritmo efektyvumą tik naudojant sveikaskaitinius pradinius duomenis, gauti rezultatai gali būti netikslūs,
+kadangi palyginimo ir priskyrimo operacijų sparta priklauso nuo rikiuojamų duomenų tipo.
+Rikiuojant simbolių eilutes, priskyrimas atliekamas naudojant rodykles, kas yra $O(1)$ operacija,
+tačiau palyginimas yra $O(n)$ blogiausiu atveju.
+Ir atvirkščiai, rikiuojant įrašus, priskyrimas reikalauja perkopijuoti visą įrašą, tad šios operacijos sudėtingumas yra $O(n)$,
+o palyginimas gali būti atliekamas naudojant tam tikrą raktą, taigi tik $O(1)$.
+Todėl apsiriboti vien palyginimų ar priskyrimų skaičiumi nepakanka, kadangi tiksliausia praktinio algoritmo
+veikimo laiko aproksimacija (tai, kam ir skaičiuojamos operacijos), bus gauta tik įvertinant abu šiuos rodiklius.
+
+Algoritmo veikimo laikas, nors ir priklausomas nuo platformos, kurioje vykdomas tyrimas, detalių,
+taip pat gali duoti tinkamų įžvalgų įvertinant praktinį efektyvumą.
+Kadangi algoritmo atliekamos operacijos skaičiuojamos tam, jog gauti
+veikimo laiko aproksimaciją, tai realus veikimo laikas
+yra konkretus įvertis, leidžiantis praktiškai įvertinti duotos sekos efektyvumą.
+Taigi, įvertinant tarpų sekų efektyvumą bus remiamasi visomis atliekamomis operacijomis bei realiais veikimo laikais.
+
+
+\section{Tarpų sekų generavimas}
+
+\subsection{Genetiniai algoritmai}
 
 Prieš pradedant generuoti sekas, reikalinga plačiau apžvelgti genetinio algoritmo sąvoką.
 Paprasčiausias genetinis algoritmas susideda iš chromosomų populiacijos bei atrankos, mutacijos ir rekombinacijos operatorių.
+
+\subsubsection{Chromosomos}
+
 Projektuojant genetinį algoritmą tam tikro uždavinio sprendimui, svarbu tinkamai pasirinkti,
 kaip kompiuteriu modeliuoti galimus sprendinius (chromosomas).
 Chromosomos kompiuterio atmintyje standartiškai išreiškiamos bitų eilutėmis,
 kadangi tai palengvina tiek mutaciją (pakanka apversti kurio nors atsitiktinio bito reikšmę),
 tiek rekombinaciją (pakanka perkopijuoti pasirinktus tėvinių chromosomų bitus į vaikinę chromosomą).
 Tiesa, tai nėra vienintelis įmanomas būdas, ir kai kurių uždavinių sprendiniai modeliuojami pvz. grafu ar simbolių eilute.
-Chromosomų rinkinys, literatūroje dažnai vadinamas populiacija, atspindi uždavinio sprendinių aibę, kuri kinta kiekvieną algoritmo iteraciją.
+
+\subsubsection{Tinkamumas}
+
 Sprendinio kokybę įvardijame kaip jo tinkamumą, kuris apibrėžiamas tinkamumo funkcijos reikšme, pateikus sprendinį kaip parametrą.
 Nesunku pastebėti, jog tinkamumo funkcija tėra tikslo funkcijos specializacija, kuri naudojama chromosomų vertinimui.
 Tinkamumo funkcija yra viena svarbiausių genetinio algoritmo dalių,
-kadangi kai ji netinkamai parinkta, algoritmas nekonverguos į tinkamą sprendinį arba užtruks labai ilgai.  
+kadangi kai ji netinkamai parinkta, algoritmas nekonverguos į tinkamą sprendinį arba užtruks labai ilgai.
+
+\subsubsection{Populiacija}
+
+Chromosomų rinkinys, literatūroje dažnai vadinamas populiacija, atspindi uždavinio sprendinių aibę, kuri kinta kiekvieną genetinio algoritmo iteraciją.
+Jei GA suprojektuotas tinkamai, dažnu atveju vidutinis populiacijos tinkamumas gerės kiekvieną iteraciją \cite{simpson1999faster}.
+% add more
+
+\subsubsection{Genetiniai operatoriai}
+
 Genetinis algoritmas vykdymo metu iteratyviai atnaujina esamą populiaciją, kurdamas naujas kartas taikant atrankos, rekombinacijos ir mutacijos operatorius.
 Atrankos operatorius grąžina tinkamiausius populiacijos individus, kuriems yra leidžiama susilaukti palikuonių taikant rekombinacijos operatorių.
 Rekombinacijos operatorius veikia iš dviejų tėvinių chromosomų sukurdamas naują vaikinę chromosomą, kas dažniausiai pasiekiama
@@ -277,12 +321,14 @@ Mutacijos operatorius praplečia vykdomos paieškos erdvę, o tai labai svarbu, 
 į lokaliojo minimumo taškus, taip ir nepasiekdamas globaliojo minimumo.
 Atsižvelgiant į tai, yra laikoma, jog mutacijos operatorius yra kertinė genetinio algoritmo dalis,
 kuri palaiko genetinę individų įvairovę ir padeda rasti tinkamiausius sprendinius.
-Jei algoritmas suprojektuotas tinkamai, dažnu atveju vidutinis populiacijos tinkamumas gerės kiekvieną iteraciją.
-Kad algoritmas neveiktų amžinai, yra pasirenkama tam tikra sustojimo sąlyga, pvz. pasiektas maksimalus
+
+\subsubsection{Genetinio algoritmo sustojimo sąlygos}
+
+Kad genetinis algoritmas neveiktų amžinai, yra pasirenkama viena ar kelios sustojimo sąlygos, pavyzdžiui: pasiektas maksimalus
 kartų skaičius, vidutinio tinkamumo pokytis tarp paskutinių dviejų populiacijos kartų pakankamai mažas.
+Kiekvieną iteraciją GA patikrina, ar kažkuri iš sustojimo sąlygų yra patenkinta, ir jei taip - baigia darbą.
 
-
-\subsection{Galima paprasto genetinio algoritmo implementacija}
+\subsubsection{Galima paprasto genetinio algoritmo implementacija}
 
 Apjungiant visas aukščiau aptartas genetinio algoritmo dalis, galima suformuluoti paprasto genetinio algoritmo pseudokodą.
 
@@ -291,98 +337,43 @@ Apjungiant visas aukščiau aptartas genetinio algoritmo dalis, galima suformulu
   \begin{algorithmic}
     \State Let $current\_population$ be a random population of chromosomes.
     \State Let $mutation\_rate$ be a real value between 0 and 1.
-    \State Let $recombination\_fraction$ be a real value between 0 and 1.
+    \State Let $crossover\_fraction$ be a real value between 0 and 1.
     \Repeat
       \State Apply the fitness function to each chromosome in $current\_population$.
-      \State Sort the chromosomes in $current\_population$ based on their fitness.
+      \State Sort the chromosomes in $current\_population$ based on their fitness. % cia reikia pataisyti
       \State Let $new\_population$ be an empty set.
       \Repeat
-        \State Let $(parent1, parent2)$ be a pair of parent chromosomes selected randomly from the first $[N * recombination\_fraction]$ elements of $current\_population$.
-        \State Let $child\_chromosome$ be the result of applying the recombination operator to $parent1$ and $parent2$.
-        \State Let $rand$ be a random real value between 0 and 1.
-        \If {$rand < mutation\_rate$}
+        \State Let $(parent1, parent2)$ be a pair of parent chromosomes selected randomly from the first $[N * crossover\_fraction]$ elements of $current\_population$.
+        \State Let $child\_chromosome$ be the result of applying the crossover operator to $parent1$ and $parent2$.
+        \If {$rand() < mutation\_rate$}
           \State Apply the mutation operator to $child\_chromosome$
         \EndIf
         \State Add $child\_chromosome$ to $new\_population$
       \Until N offspring have been created.
       \State Assign $new\_population$ to $current\_population$.
-    \Until termination criteria are satisfied.
+    \Until Termination criteria are satisfied.
   \end{algorithmic}
 \end{algorithm}
 
-\section{Tarpų sekų efektyvumo kriterijų nustatymas}
-
-Šelo algoritmo tarpų sekų efektyvumo įvertinimas nėra trivialus.
-Rikiavimo algoritmai dažniausiai yra vertinami pagal atliekamų priskyrimų skaičių.
-Skaičiuojant algoritmo atliekamus priskyrimus, gana paprasta jais išreikšti inversijų skaičių. % o kodel inversijos svarbu?
-Daugelyje algoritmų priskyrimų skaičius uždaviniui augant greitai artėja prie palyginimų skaičiaus,
-tad tokiu metodu gautas įvertis būna pakankamai tikslus.
-Šelo algoritmo atveju, vien priskyrimų skaičius nėra pakankamai tikslus kriterijus tarpų sekų efektyvumui įvertinti,
-kadangi remiantis tik juo, gautas įvertis neatspindi praktinio efektyvumo.
-Kaip parodo \cite{ciura2001best}, šiame algoritme dominuojanti operacija yra palyginimas.
-Tad galima daryti išvadą, jog atliekamų palyginimų skaičius yra tinkamesnis kriterijus efektyvumui įvertinti.
-
-Matuojant rikiavimo algoritmo efektyvumą tik naudojant sveikaskaitinius pradinius duomenis, gauti rezultatai gali būti netikslūs,
-kadangi šių operacijų sparta priklauso nuo rikiuojamų duomenų tipo.
-Rikiuojant simbolių eilutes, priskyrimas atliekamas naudojant rodykles, kas yra $O(1)$ operacija,
-tačiau palyginimas yra $O(n)$ blogiausiu atveju.
-Ir atvirkščiai, rikiuojant įrašus kurie saugomi steke, priskyrimas reikalauja perkopijuoti visą įrašą,
-o palyginimas gali būti atliekamas naudojant tam tikrą raktą.
-Todėl apsiriboti vien palyginimų ar priskyrimų skaičiumi nepakanka, kadangi tiksliausia praktinio algoritmo
-veikimo laiko aproksimacija (tai, kam ir skaičiuojamos operacijos), bus gauta tik įvertinant abu šiuos rodiklius.
-
-Algoritmo veikimo laikas, nors ir priklausomas nuo platformos, kurioje vykdomas tyrimas, detalių,
-taip pat gali duoti tinkamų įžvalgų įvertinant praktinį efektyvumą.
-Kadangi algoritmo atliekamos operacijos skaičiuojamos tam, jog gauti praktinio
-veikimo laiko aproksimaciją, tai realus veikimo laikas
-yra konkretus įvertis, leidžiantis praktiškai įvertinti duotos sekos efektyvumą.
-Taigi, įvertinant tarpų sekų efektyvumą bus remiamasi visomis atliekamomis operacijomis bei realiais veikimo laikais.
-
-\section{Eksperimentų vykdymo aplinkos paruošimas}
-
-\subsection{Techninės detalės}
-Tyrimui buvo naudotas kompiuteris su 2.70 GHz Intel(R) Core(TM) i7-10850H procesoriumi,
-32 GB operatyviosios atminties ir Windows 10 operacine sistema.
-Tyrimas buvo įgyvendintas C++ kalba su GNU g++ 8.1.0 kompiliatoriumi.
-Genetinio algoritmo implementacijai buvo pasirinkta OpenGA biblioteka \cite{mohammadi2017openga}
-dėl suteikiamos laisvės pasirinkti, kaip įgyvendinti genetinius operatorius bei modernių kalbos konstruktų ir lygiagretaus vykdymo palaikymo.
-
-\subsection{Pasiruošimas matavimų atlikimui}
-
-\subsubsection{Operacijas skaičiuojantis vadovėlinis Šelo algoritmas}
-
-Siekant išmatuoti vadovėlinio Šelo algoritmo atliekamų operacijų skaičių,
-buvo parengtas \ref{alg:tss_reported} algoritmas, kuris kaip rezultatą grąžina atliktus palyginimus bei priskyrimus.
-
-\subsubsection{Operacijas skaičiuojantis patobulintas Šelo algoritmas}
-
-Siekant išmatuoti patobulinto Šelo algoritmo atliekamų operacijų skaičių,
-buvo parengtas \ref{alg:iss_reported} algoritmas, kuris kaip rezultatą grąžina atliktus palyginimus bei priskyrimus.
-
-\subsubsection{Veikimo laiko matavimas}
-
-Verta pastebėti, jog matuoti veikimo laiką naudojant \ref{alg:tss_reported} ir \ref{alg:iss_reported} algoritmus nėra tinkama,
-kadangi jie skaičiuodami atliekamas operacijas vykdo papildomus žingsnius, o tai gali iškreipti gautus rezultatus.
-Atsižvelgiant į tai, veikimo laiko matavimui naudoti \ref{alg:tss} ir \ref{alg:iss} algoritmai. 
-
-\section{Tarpų sekų generavimas}
-
 \subsection{Trumpų tarpų sekų generavimas}
 Pirmame etape buvo generuojamos tarpų sekos, kurios efektyvios kai $N=1000$.
+Trumpų sekų generavimui buvo paruoštas vienkriterinis genetinis algoritmas.
+GA implementacijai buvo pasirinkta OpenGA biblioteka \cite{mohammadi2017openga}
+dėl suteikiamos laisvės pasirinkti, kaip įgyvendinti genetinius operatorius bei modernių kalbos konstruktų ir lygiagretaus vykdymo palaikymo.
 Remiantis \cite{simpson1999faster}, trumpos sekos chromosoma buvo modeliuojama kaip
 septynių sveikų skaičių masyvas.
-Trumpų sekų generavimui buvo paruoštas vienkriterinis genetinis algoritmas.
 Chromosomos buvo vertinamos jas naudojant 20-ties atsitiktinai
 sugeneruotų sveikų skaičių masyvų rikiavimui vadovėline Šelo rikiavimo algoritmo versija ir skaičiuojant atliktas palyginimo operacijas.
 Chromosomos tinkamumo funkcija buvo apibrėžta kaip atliktų palyginimų skaičiaus aritmetinis vidurkis.
 Rekombinacijos operatorius buvo įgyvendintas tolygia strategija, kur abiejų tėvų genai turi vienodą tikimybę
 būti perduoti vaikinei chromosomai.
+GA sustojimo kriterijumi buvo pasirinkta laikyti tinkamiausio individo nepakitimą 25 iteracijas.
 Mutacijos operatorius buvo įgyvendintas su $\frac{1}{5}$ tikimybe keičiant tam tikrą chromosomą,
-pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand()-rand())*25*\frac{2}{10*\sqrt{kartos\_numeris}}$ su apribojimu, jog pakeistas genas turi priklausyti intervalui $[1, 1000]$.
+pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand()-rand())*\frac{25}{\sqrt{karta}}$ su apribojimu, jog pakeistas genas turi priklausyti intervalui $[1, 1000]$.
 Siekiant išvengti netinkamų sprendinių, kiekviena seka po rekombinacijos ar mutacijos operatorių taikymo buvo išrikiuojama ir
 užtikrinama, jog paskutinis sekos narys yra $1$.
 
-Algoritmas buvo vykdomas su atsitiktinai sugeneruota 10000 individų populiacija, kiekvieną iteraciją pritaikant rekombinacijos operatorių
+GA buvo vykdomas su atsitiktinai sugeneruota 10000 individų populiacija, kiekvieną iteraciją pritaikant rekombinacijos operatorių
 $\frac{1}{2}$ populiacijos.
 Tokiu būdu buvo sugeneruota ir atrinkta 10 sekų.
 Po to iš visų sugeneruotų sekų buvo atrinkta tinkamiausia, sugeneruotas sekas naudojant 10000 atsitiktinai sugeneruotų masyvų ilgio 1000 rikiavimui
@@ -395,19 +386,43 @@ Vidutinio ilgio sekų generavimui buvo pasitelktas modifikuotas genetinis algori
 Tarpų sekos chromosoma buvo modeliuojama kaip sveikų skaičių masyvas ilgio 12.
 Buvo atsisakyta chromosomų vertinimo naudojant 20 skirtingų masyvų, kadangi tai darė neigiamą įtaką genetinio algoritmo veikimo laikui.
 Vietoje to, kiekvienos sekos vertinimui buvo naudojami 5 atsitiktinai sugeneruoti masyvai ilgio $100000$.
+GA buvo nurodyta sustoti, kai kartų skaičius pasieks 100.
 Mutacijos operatorius buvo pakoreguotas ir su $\frac{1}{5}$ tikimybe keitė tam tikrą chromosomą,
-pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand()-rand())*75*\frac{2}{10*\sqrt{kartos\_numeris}}$.
-% pridek apie kartas
+pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand()-rand())*\frac{75}{\sqrt{karta}}$.
 
-Algoritmas buvo vykdomas su atsitiktinai sugeneruota 1000 individų populiacija,
+GA buvo vykdomas su atsitiktinai sugeneruota 1000 individų populiacija,
 paskutinius septynis chromosomos genus inicializuojant elementais $855, 264, 86, 35, 12, 5, 1$, t.y. sekos, gautos pirmame etape, nariais.
 Siekiant išlaikyti tinkamiausius sprendinius, buvo pasitelktas elitizmas - geriausiai pasirodžiusios 75 chromosomos nekeistos
 patekdavo į kitą algoritmo iteraciją.
 Rekombinacijos operatorius buvo taikomas $\frac{1}{2}$ populiacijos kiekvieną algoritmo iteraciją.
 Tokiu būdu buvo sugeneruota ir atrinkta 10 sekų.
-Po to iš visų sugeneruotų sekų buvo atrinkta tinkamiausia, sugeneruotas sekas naudojant 1000 atsitiktinai sugeneruotų masyvų ilgio 100000 rikiavimui
-ir matuojant atliktų palyginimo operacijų aritmetinį vidurkį.
+Po to iš visų sugeneruotų sekų buvo atrinkta tinkamiausia, naudojant tokį pat metodą kaip ir praeitame etape, tik pakeitus rikiuojamo masyvo dydį į 100000.
 Atlikus matavimus, buvo pasirinkta seka $45794, 17396, 7414, 3136, 1206, 561, 264, 86, 35, 12, 5, 1$.
+
+
+\section{Eksperimentų vykdymo aplinkos paruošimas}
+
+\subsubsection{Operacijų skaičiavimas}
+
+Siekant išmatuoti VŠA bei PŠA atliekamų operacijų skaičių,
+buvo parengtos modifikuotos šių algoritmų versijos, kurios kaip rezultatą grąžina atliktus palyginimus bei priskyrimus.
+
+\subsubsection{Veikimo laiko matavimas}
+
+Verta pastebėti, jog matuoti veikimo laiką naudojant operacijas skaičiuojančius algoritmus nėra tinkama,
+kadangi pats operacijų skaičiavimas reikalauja papildomų žingsnių, o tai gali iškreipti gautus rezultatus.
+Atsižvelgiant į tai, veikimo laiko matavimui naudoti nemodifikuoti VŠA ir PŠA algoritmai. 
+
+\subsubsection{Pradinių duomenų generavimas}
+
+Vykdant eksperimentus buvo pasirinkta naudoti sveikaskaitinius pradinius duomenis, kadangi jų generavimas yra pakankamai paprastas.
+Tai buvo įgyvendinta naudojant MT19937 pseudoatsitiktinių skaičių generatorių, inicializuotą sisteminio laiko reikšme.
+Generuojami duomenys buvo tolygiai paskirstyti nuo INT\_MIN iki INT\_MAX, kas leido žymiai sumažinti duomenų duplikacijos tikimybę.
+
+\subsection{Techninės detalės}
+Eksperimentų vykdymui buvo naudotas kompiuteris su 2.70 GHz Intel(R) Core(TM) i7-10850H procesoriumi,
+32 GB operatyviosios atminties ir Windows 10 operacine sistema.
+Tyrimas buvo įgyvendintas C++ kalba su GNU g++ 8.1.0 kompiliatoriumi naudojant -O3 optimizacijos lygį.
 
 \section{Tarpų sekų efektyvumo įvertinimas}
 
@@ -430,103 +445,105 @@ Trumpų tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų sekos:
   \item Simpson-Yachavaram: $893,219,83,36,13,4,1$
   \item Sedgewick: $929,505,209,109,41,19,5,1$
   \item Incerpi-Sedgewick: $861,336,112,48,21,7,3,1$
-  \item Trumpa seka: $855,264,86,35,12,5,1$
+  \item Seka 1: $855,264,86,35,12,5,1$
 \end{itemize}
 Tokuda \cite{10.5555/645569.659879} seka buvo pasirinkta atsižvelgiant į tai, jog praktikoje ji laikoma viena efektyviausių.
-Kiek žinoma autoriui, kai $N=1000$ Ciura \cite{ciura2001best} seka atlieka mažiausiai palyginimų vidutiniu atveju, tad ją buvo būtina įtraukti.
-Simpson ir Yachavaram \cite{simpson1999faster} seka buvo pasirinkta, kadangi pasak autorių,
+Kiek žinoma autoriui, kai $N=1000$ Ciura \cite{ciura2001best} seka atlieka mažiausiai palyginimų vidutiniu atveju, tad jos įtraukimas būtinas.
+Simpson ir Yachavaram \cite{simpson1999faster} seka buvo pasirinkta, nes taip pat buvo sugeneruota naudojant GA ir pasak autorių,
 tai geriausiai veikianti jų rasta seka, kai $N=1000$.
 Sedgewick \cite{SEDGEWICK1986159} ir Incerpi-Sedgewick \cite{incerpi1985improved} sekos pasirinktos dėl tvirto matematinio pagrindo
-(įrodytas $O(n^\frac{4}{3})$ sudėtingumas blogiausiu atveju) bei fakto, jog ilgą laiką šios sekos buvo laikomos vienomis efektyviausių.
+(įrodytas $O(n^\frac{4}{3})$ laiko sudėtingumas blogiausiu atveju) bei fakto, jog ilgą laiką šios sekos buvo laikomos vienomis efektyviausių.
+
+Atsižvelgiant į santykinai nedidelį duomenų dydį, matavimai buvo atlikti 50000 kartų.
+Gauti duomenys pateikiami suapvalinus iki šimtosios dalies, veikimo laikai pateikiami mikrosekundėmis.
 
 \subsubsection{Trumpų tarpų sekų efektyvumo įvertinimas naudojant vadovėlinį Šelo algoritmą}
-matavimai atlikti 50000 kartu. laikas mikrosekundem.
 
 \begin{table}[H]
-  \caption{Vidutinis vadovėlinio Šelo algoritmo atliekamų palyginimų skaičius naudojant trumpas tarpų sekas}
+  \caption{Vidutinis VŠA atliekamų palyginimų skaičius naudojant trumpas tarpų sekas}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & TS      \\ \hline
-  50   & 289.902 & 287.76  & 287.704 & 293.414   & 296.373 & 289.207 \\ \hline
-  100  & 735.822 & 733.353 & 731.492 & 752.139   & 759.577 & 731.877 \\ \hline
+  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & Seka 1      \\ \hline
+  50   & 289.90  & 287.76  & 287.70  & 293.41    & 296.37  & 289.21  \\ \hline
+  100  & 735.82  & 733.35  & 731.49  & 752.13    & 759.57  & 731.87  \\ \hline
   200  & 1812.59 & 1797.92 & 1798.5  & 1840.15   & 1870.94 & 1793.19 \\ \hline
   400  & 4315.6  & 4276.38 & 4284.94 & 4405.07   & 4464.59 & 4273.84 \\ \hline
   800  & 10061.3 & 9946.54 & 9987.18 & 10260.5   & 10528.2 & 9999.9  \\ \hline
   1000 & 13128.9 & 13044.4 & 13075.4 & 13395.4   & 13807.4 & 13054.4 \\ \hline
   \end{tabular}
-\end{table}
+  \end{table}
 
 \begin{table}[H]
-  \caption{Vidutinis vadovėlinio Šelo algoritmo atliekamų priskyrimų skaičius naudojant trumpas tarpų sekas}
+  \caption{Vidutinis VŠA atliekamų priskyrimų skaičius naudojant trumpas tarpų sekas}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & TS      \\ \hline
-  50   & 482.372 & 473.174 & 453.477 & 447.686   & 487.444 & 456.583 \\ \hline
+  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & Seka 1      \\ \hline
+  50   & 482.37  & 473.17  & 453.48  & 447.69    & 487.44  & 456.58  \\ \hline
   100  & 1204.5  & 1186.33 & 1137.21 & 1130.61   & 1227.55 & 1135.35 \\ \hline
   200  & 2933.02 & 2862.17 & 2752.73 & 2761.21   & 2977.03 & 2745.81 \\ \hline
   400  & 6898.23 & 6733.29 & 6522.93 & 6629.27   & 6903.13 & 6444.15 \\ \hline
   800  & 15899.2 & 15487.9 & 14758.6 & 15354.8   & 15950   & 14745.8 \\ \hline
   1000 & 20707.8 & 20273.4 & 19200.7 & 20089.7   & 20841.4 & 19193.6 \\ \hline
   \end{tabular}
-\end{table}
+  \end{table}
 
 \begin{table}[H]
-  \caption{Vidutinis vadovėlinio Šelo algoritmo veikimo laikas naudojant trumpas tarpų sekas}
+  \caption{Vidutinis VŠA veikimo laikas naudojant trumpas tarpų sekas}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & TS      \\ \hline
-  50   & 0.99916 & 1.02294 & 1.0962  & 1.00912   & 1.13534 & 0.8968  \\ \hline
-  100  & 3.03872 & 2.87242 & 2.74936 & 2.9471    & 2.74198 & 3.09066 \\ \hline
-  200  & 6.34908 & 6.24564 & 6.32294 & 6.00468   & 7.19932 & 6.37474 \\ \hline
-  400  & 16.3897 & 15.0581 & 14.2942 & 14.2024   & 14.7652 & 14.9239 \\ \hline
-  800  & 39.9326 & 37.5984 & 35.4103 & 38.5972   & 43.2178 & 33.2975 \\ \hline
-  1000 & 45.7384 & 44.2994 & 42.0728 & 42.58     & 44.4423 & 44.0977 \\ \hline
+  N    & Tokuda & Ciura & S/Y   & Sedgewick & I/S   & Seka 1    \\ \hline
+  50   & 1.00   & 1.02  & 1.10  & 1.01      & 1.14  & 0.90  \\ \hline
+  100  & 3.04   & 2.87  & 2.75  & 2.95      & 2.74  & 3.09  \\ \hline
+  200  & 6.35   & 6.25  & 6.32  & 6.00      & 7.20  & 6.37  \\ \hline
+  400  & 16.39  & 15.06 & 14.29 & 14.20     & 14.77 & 14.92 \\ \hline
+  800  & 39.93  & 37.60 & 35.41 & 38.60     & 43.22 & 33.30 \\ \hline
+  1000 & 45.74  & 44.30 & 42.07 & 42.58     & 44.44 & 44.10 \\ \hline
   \end{tabular}
-\end{table}
+  \end{table}
 
 \subsubsection{Trumpų tarpų sekų efektyvumo įvertinimas naudojant patobulintą Šelo algoritmą}
 
 \begin{table}[H]
-  \caption{Vidutinis patobulinto Šelo algoritmo atliekamų palyginimų skaičius naudojant trumpas tarpų sekas}
+  \caption{Vidutinis PŠA atliekamų palyginimų skaičius naudojant trumpas tarpų sekas}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & TS      \\ \hline
-  50   & 289.845 & 287.85  & 287.829 & 293.697   & 296.326 & 289.093 \\ \hline
-  100  & 736.166 & 733.319 & 731.699 & 751.94    & 759.466 & 732.012 \\ \hline
-  200  & 1812.48 & 1798.04 & 1798.66 & 1840.66   & 1871.29 & 1793.03 \\ \hline
-  400  & 4315.89 & 4276.2  & 4284.83 & 4405.79   & 4464.4  & 4273.78 \\ \hline
-  800  & 10061   & 9945.74 & 9986.13 & 10259.8   & 10525.9 & 9999.26 \\ \hline
-  1000 & 13130.8 & 13044.1 & 13077.2 & 13393     & 13807.5 & 13053.1 \\ \hline
+  N    & Tokuda   & Ciura    & S/Y      & Sedgewick & I/S      & Seka 1       \\ \hline
+  50   & 289.85   & 287.85   & 287.83   & 293.70    & 296.33   & 289.09   \\ \hline
+  100  & 736.17   & 733.32   & 731.70   & 751.94    & 759.47   & 732.01   \\ \hline
+  200  & 1812.48  & 1798.04  & 1798.66  & 1840.66   & 1871.29  & 1793.03  \\ \hline
+  400  & 4315.89  & 4276.20  & 4284.83  & 4405.79   & 4464.40  & 4273.78  \\ \hline
+  800  & 10061.00 & 9945.74  & 9986.13  & 10259.80  & 10525.90 & 9999.26  \\ \hline
+  1000 & 13130.80 & 13044.10 & 13077.20 & 13393.00  & 13807.50 & 13053.10 \\ \hline
   \end{tabular}
-\end{table}
+  \end{table}
 
 \begin{table}[H]
-  \caption{Vidutinis patobulinto Šelo algoritmo atliekamų priskyrimų skaičius naudojant trumpas tarpų sekas}
+  \caption{Vidutinis PŠA atliekamų priskyrimų skaičius naudojant trumpas tarpų sekas}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & TS      \\ \hline
-  50   & 312.134 & 319.661 & 322.804 & 335.367   & 322.303 & 323.758 \\ \hline
-  100  & 791.061 & 797.726 & 811.354 & 853.821   & 822.163 & 814.179 \\ \hline
-  200  & 1931.99 & 1919.31 & 1999.55 & 2061.03   & 1998.26 & 1996.21 \\ \hline
-  400  & 4537.96 & 4545.12 & 4731.2  & 4855.45   & 4767.84 & 4720.75 \\ \hline
-  800  & 10502.1 & 10587.7 & 11134.9 & 11121.3   & 11396.8 & 11222.5 \\ \hline
-  1000 & 13866.1 & 13819.4 & 14510.7 & 14523.7   & 14868.7 & 14490.7 \\ \hline
+  N    & Tokuda   & Ciura    & S/Y      & Sedgewick & I/S      & Seka 1       \\ \hline
+  50   & 312.13   & 319.66   & 322.80   & 335.37    & 322.30   & 323.76   \\ \hline
+  100  & 791.06   & 797.73   & 811.35   & 853.82    & 822.16   & 814.18   \\ \hline
+  200  & 1931.99  & 1919.31  & 1999.55  & 2061.03   & 1998.26  & 1996.21  \\ \hline
+  400  & 4537.96  & 4545.12  & 4731.20  & 4855.45   & 4767.84  & 4720.75  \\ \hline
+  800  & 10502.10 & 10587.70 & 11134.90 & 11121.30  & 11396.80 & 11222.50 \\ \hline
+  1000 & 13866.10 & 13819.40 & 14510.70 & 14523.70  & 14868.70 & 14490.70 \\ \hline
   \end{tabular}
-\end{table}
+  \end{table}
 
 \begin{table}[H]
-  \caption{Vidutinis patobulinto Šelo algoritmo veikimo laikas naudojant trumpas tarpų sekas}
+  \caption{Vidutinis PŠA veikimo laikas naudojant trumpas tarpų sekas}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & TS      \\ \hline
-  50   & 1.29704 & 1.259   & 1.01568 & 1.3169    & 1.31708 & 1.13992 \\ \hline
-  100  & 3.15892 & 3.16134 & 3.13634 & 3.01816   & 3.35856 & 3.21644 \\ \hline
-  200  & 7.53994 & 7.9495  & 7.53608 & 7.60948   & 8.1127  & 7.99592 \\ \hline
-  400  & 18.519  & 18.9963 & 17.6689 & 17.292    & 18.9244 & 18.1828 \\ \hline
-  800  & 42.9637 & 42.603  & 41.8065 & 40.6671   & 42.2326 & 41.1908 \\ \hline
-  1000 & 56.6868 & 56.883  & 53.3879 & 53.4454   & 56.3774 & 52.8437 \\ \hline
+  N    & Tokuda & Ciura & S/Y   & Sedgewick & I/S   & Seka 1    \\ \hline
+  50   & 1.30   & 1.26  & 1.02  & 1.32      & 1.32  & 1.14  \\ \hline
+  100  & 3.16   & 3.16  & 3.14  & 3.02      & 3.36  & 3.22  \\ \hline
+  200  & 7.54   & 7.95  & 7.54  & 7.61      & 8.11  & 8.00  \\ \hline
+  400  & 18.52  & 19.00 & 17.67 & 17.29     & 18.92 & 18.18 \\ \hline
+  800  & 42.96  & 42.60 & 41.81 & 40.67     & 42.23 & 41.19 \\ \hline
+  1000 & 56.69  & 56.88 & 53.39 & 53.45     & 56.38 & 52.84 \\ \hline
   \end{tabular}
-\end{table}
+  \end{table}
 
 \subsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas}
 
@@ -538,8 +555,100 @@ Vidutinio ilgio tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų se
   \item Incerpi-Sedgewick: $86961,33936,13776,4592,1968,861,336,112,48,21,7,3,1$
   \item Sedgewick: $64769,36289,16001,8929,3905,2161,929,505,209,109,41,19,5,1$
   \item Roos-Bennet-Hannon-Zehner: $91433,72985,13229,5267,2585,877,155,149,131,23,8,1$
-  \item Vidutinio ilgio seka: $45794,17396,7414,3136,1206,561,264,86,35,12,5,1$
+  \item Seka 2: $45794,17396,7414,3136,1206,561,264,86,35,12,5,1$
 \end{itemize}
+
+Atsižvelgiant į duomenų dydį, matavimai buvo atlikti 10000 kartų.
+Gauti duomenys pateikiami suapvalinus iki sveikosios dalies, veikimo laikai pateikiami mikrosekundėmis.
+
+\subsubsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas naudojant vadovėlinį Šelo algoritmą}
+
+\begin{table}[H]
+  \caption{Vidutinis VŠA atliekamų palyginimų skaičius naudojant vidutinio ilgio tarpų sekas}
+  \begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \hline
+  N      & Tokuda  & Ciura   & S/Y     & I/S     & Sedgewick & R/B/H/Z & Seka 2     \\ \hline
+  5000   & 86930   & 86490   & 88075   & 93869   & 89056     & 102065  & 87131   \\ \hline
+  10000  & 192625  & 191703  & 195221  & 209514  & 197067    & 225459  & 193092  \\ \hline
+  20000  & 423598  & 421301  & 429228  & 465748  & 433320    & 493530  & 423824  \\ \hline
+  40000  & 922922  & 918490  & 936240  & 1032259 & 943633    & 1070908 & 923609  \\ \hline
+  80000  & 1999095 & 1992131 & 2033327 & 2273358 & 2045446   & 2317061 & 2002290 \\ \hline
+  100000 & 2564038 & 2552126 & 2605061 & 2923557 & 2623763   & 2959526 & 2563334 \\ \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \caption{Vidutinis VŠA atliekamų priskyrimų skaičius naudojant vidutinio ilgio tarpų sekas}
+  \begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \hline
+  N      & Tokuda  & Ciura   & S/Y     & I/S     & Sedgewick & R/B/H/Z & Seka 2     \\ \hline
+  5000   & 134747  & 132482  & 129043  & 138209  & 133685    & 140459  & 129181  \\ \hline
+  10000  & 296787  & 292056  & 284474  & 306461  & 295196    & 311298  & 284895  \\ \hline
+  20000  & 648807  & 638480  & 623546  & 672463  & 650675    & 680242  & 622844  \\ \hline
+  40000  & 1407318 & 1385991 & 1358871 & 1473610 & 1414589   & 1466640 & 1352658 \\ \hline
+  80000  & 3034012 & 3001389 & 2959087 & 3214096 & 3072581   & 3127946 & 2925254 \\ \hline
+  100000 & 3888404 & 3836014 & 3777087 & 4124557 & 3941499   & 4007456 & 3735445 \\ \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \caption{Vidutinis VŠA veikimo laikas naudojant vidutinio ilgio tarpų sekas}
+  \begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \hline
+  N      & Tokuda & Ciura & S/Y   & I/S   & Sedgewick & R/B/H/Z & Seka 2  \\ \hline
+  5000   & 312    & 310   & 294   & 330   & 311       & 296     & 314  \\ \hline
+  10000  & 707    & 702   & 671   & 690   & 695       & 618     & 688  \\ \hline
+  20000  & 1611   & 1550  & 1515  & 1577  & 1484      & 1345    & 1477 \\ \hline
+  40000  & 4207   & 4274  & 4067  & 4273  & 4239      & 3728    & 4135 \\ \hline
+  80000  & 9638   & 9363  & 8541  & 9064  & 9132      & 8058    & 8745 \\ \hline
+  100000 & 13810  & 12058 & 11077 & 11652 & 11976     & 9225    & 9314 \\ \hline
+  \end{tabular}
+  \end{table}
+
+\subsubsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas naudojant patobulintą Šelo algoritmą}
+
+\begin{table}[H]
+  \caption{Vidutinis PŠA atliekamų palyginimų skaičius naudojant vidutinio ilgio tarpų sekas}
+  \begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \hline
+  N      & Tokuda  & Ciura   & S/Y     & I/S     & Sedgewick & R/B/H/Z & Seka 2     \\ \hline
+  5000   & 86926   & 86499   & 88071   & 93852   & 89060     & 102054  & 87125   \\ \hline
+  10000  & 192624  & 191711  & 195229  & 209574  & 197045    & 225524  & 193106  \\ \hline
+  20000  & 423593  & 421326  & 429232  & 465791  & 433302    & 493515  & 423825  \\ \hline
+  40000  & 922899  & 918450  & 936191  & 1032317 & 943633    & 1071022 & 923625  \\ \hline
+  80000  & 1998794 & 1992412 & 2033313 & 2272227 & 2045555   & 2317464 & 2002261 \\ \hline
+  100000 & 2564388 & 2551823 & 2605193 & 2923248 & 2624057   & 2959855 & 2563352 \\ \hline
+  \end{tabular}
+  \end{table}
+
+\begin{table}[H]
+  \caption{Vidutinis PŠA atliekamų priskyrimų skaičius naudojant vidutinio ilgio tarpų sekas}
+  \begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \hline
+  N      & Tokuda  & Ciura   & S/Y     & I/S     & Sedgewick & R/B/H/Z & Seka 2     \\ \hline
+  5000   & 91607   & 91536   & 96002   & 101234  & 94353     & 110577  & 94638   \\ \hline
+  10000  & 201994  & 202938  & 213152  & 226716  & 208567    & 243602  & 209125  \\ \hline
+  20000  & 443461  & 447218  & 469964  & 503670  & 455367    & 529908  & 459749  \\ \hline
+  40000  & 967300  & 979059  & 1019801 & 1120974 & 991883    & 1161681 & 1005877 \\ \hline
+  80000  & 2099578 & 2125122 & 2209278 & 2479564 & 2137726   & 2521194 & 2179979 \\ \hline
+  100000 & 2691737 & 2709969 & 2831031 & 3181857 & 2741611   & 3209010 & 2796455 \\ \hline
+  \end{tabular}
+  \end{table}
+
+\begin{table}[H]
+  \caption{Vidutinis PŠA veikimo laikas naudojant vidutinio ilgio tarpų sekas}
+  \begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \hline
+  N      & Tokuda & Ciura & S/Y   & I/S   & Sedgewick & R/B/H/Z & Seka 2   \\ \hline
+  5000   & 289    & 284   & 307   & 325   & 335       & 300     & 301   \\ \hline
+  10000  & 758    & 773   & 732   & 753   & 666       & 601     & 716   \\ \hline
+  20000  & 1559   & 1635  & 1594  & 1628  & 1647      & 1468    & 1523  \\ \hline
+  40000  & 3810   & 3483  & 3426  & 3630  & 3451      & 3124    & 3441  \\ \hline
+  80000  & 8956   & 8875  & 8077  & 9163  & 9153      & 7673    & 8767  \\ \hline
+  100000 & 11080  & 11200 & 11228 & 12138 & 12006     & 10361   & 11283 \\ \hline
+  \end{tabular}
+  \end{table}
+
 
 \sectionnonum{Išvados}
 Gavome tą ir aną, rekomenduojame šitai.
@@ -553,62 +662,5 @@ Gavome tą ir aną, rekomenduojame šitai.
 % parengta, medžiaga. Savarankiški priedai gali būti pateikiami kompiuterio
 % diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
 % Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
-
-\section{Operacijas skaičiuojantis vadovėlinis Šelo algoritmas}
-% \begin{algorithm}[H]
-%   \caption{Operacijas skaičiuojantis vadovėlinis Šelo algoritmas}
-%   \label{alg:tss_reported}
-%   \begin{algorithmic}[1]
-%   \State $cmp\gets 0$; $asn\gets 0$;
-%   \ForEach {$gap$ \textbf{in} $H$}
-%     \For {$i\gets gap+1$ \textbf{to} $N$}
-%       \State $j\gets i$; $temp\gets S[i]$;
-%       \State $cmp\gets cmp+1$; $asn\gets asn+2$;
-%       \While {$j > gap$  \textbf{and} $S[j - gap] > S[j]$}
-%         \State $S[j]\gets S[j - gap]$;
-%         \State $j\gets j-gap$;
-%         \State $asn\gets asn+2$; $cmp\gets cmp+2$;
-%       \EndWhile
-%       \If {$j < gap$}
-%         \State $cmp\gets cmp+1$;
-%       \Else
-%         \State $cmp\gets cmp+2$;
-%       \EndIf
-%       \State $S[j]\gets temp$;
-%       \State $asn\gets asn+1$;
-%     \EndFor
-%     \State $cmp\gets cmp+1$;
-%   \EndFor
-%   \State \textbf{return} $(asn, cmp)$;
-%   \end{algorithmic}
-% \end{algorithm}
-
-\section{Operacijas skaičiuojantis patobulintas Šelo algoritmas}
-% \begin{algorithm}[H]
-%   \caption{Operacijas skaičiuojantis patobulintas Šelo algoritmas}
-%   \label{alg:iss_reported}
-%   \begin{algorithmic}[1]
-%   \State $cmp\gets 0$; $asn\gets 0$;
-%   \ForEach {$gap$ \textbf{in} $H$}
-%     \For {$i\gets gap+1$ \textbf{to} $N$}
-%       \State $j\gets i$; $temp\gets S[i]$;
-%       \State $cmp\gets cmp+1$; $asn\gets asn+2$;
-%       \While {$j > gap$  \textbf{and} $S[j - gap] > S[j]$}
-%         \State $S[j]\gets S[j - gap]$;
-%         \State $j\gets j-gap$;
-%         \State $asn\gets asn+2$; $cmp\gets cmp+2$;
-%       \EndWhile
-%       \If {$j < gap$}
-%         \State $cmp\gets cmp+1$;
-%       \Else
-%         \State $cmp\gets cmp+2$;
-%       \EndIf
-%       \State $S[j]\gets temp$;
-%       \State $asn\gets asn+1$;
-%     \EndFor
-%   \EndFor
-%   \State \textbf{return} $(asn, cmp)$;
-%   \end{algorithmic}
-% \end{algorithm}
 
 \end{document}
