@@ -45,9 +45,9 @@ Taip informatikos mokslas nuo teorinių šaknų \cite{turing1937computable} įga
 Beveik visus algoritmus galima suskirstyti į dvi klases: kombinatorinius algoritmus ir skaitinius algoritmus.
 Skaitiniai algoritmai sprendžia tolydžius uždavinius: optimizuoti realaus argumento funkciją, išspręsti tiesinių lygčių sistemą su realiais koeficientais, etc.
 Kombinatoriniai algoritmai sprendžia diskrečius uždavinius ir operuoja diskrečiais objektais: skaičiais, sąrašais, grafais, etc.
-Vienas žinomiausių diskretaus uždavinio pavyzdžių yra duomenų rikiavimas.
+Apibendrinant, sunku įsivaizduoti informatikos mokslą be algoritmo sąvokos.
 
-Duomenų rikiavimas yra vienas pamatinių informatikos uždavinių.
+Vienas žinomiausių diskretaus uždavinio pavyzdžių yra duomenų rikiavimas.
 Matematiškai jis formuluojamas taip:
 duotai baigtinei palyginamų elementų sekai $S = (s_1, s_2, ..., s_n)$ pateikti tokį
 kėlinį, kad pradinės sekos elementai būtų išdėstyti didėjančia (mažėjančia) tvarka \cite{Radavičius_Baranauskas_2013}.
@@ -56,7 +56,7 @@ pagrindinių diskrečių uždavinių, kuriuos turėtų gebėti spręsti kompiute
 Rikiavimo uždavinio sprendimas dažnai padeda pagrindą efektyviam kito uždavinio sprendimui,
 pavyzdžiui, atliekant paiešką sąraše, galima taikyti dvejetainės paieškos algoritmą tik tada,
 kai sąrašas yra išrikiuotas.
-Kadangi rikiavimo uždavinys yra fundamentalus, jam spręsti egzistuoja labai skirtingų algoritmų.
+Taigi rikiavimas yra vienas pamatinių informatikos uždavinių.
 
 Rikiavimo algoritmų yra įvairių:
 paremtų palyginimu (elementų tvarką nustato naudojant palyginimo operatorius),
@@ -96,8 +96,9 @@ $2^p3^p$ ir turi $\Theta(n\,log^2\,n)$ laiko sudėtingumą \cite{pratt1972shells
 tačiau praktikoje ji veikia lėčiau už Ciura \cite{ciura2001best} ar Tokuda \cite{10.5555/645569.659879} pasiūlytas sekas.
 Daugelio praktikoje efektyvių sekų asimptotinis sudėtingumas laiko atžvilgiu lieka atvira problema,
 nes jos yra rastos eksperimentiškai.
-Vienas iš metodų, kuriuos galima taikyti efektyvių tarpų sekų radimui, yra genetinis algoritmas.
+Todėl ir dabar yra tikslinga ieškoti naujų ir efektyvesnių Šelo algoritmo tarpų sekų.
 
+Vienas iš metodų, kuriuos galima taikyti efektyvių tarpų sekų radimui, yra genetinis algoritmas.
 Genetinis algoritmas (GA) yra metodas rasti euristikas, paremtas biologijos žiniomis apie natūralios atrankos procesą.
 Kartu su genetiniu programavimu, evoliuciniais algoritmais ir kitais metodais, % citations needed
 genetiniai algoritmai sudaro evoliucinių skaičiavimų šeimą.
@@ -109,7 +110,7 @@ rekombinacijos (tėvinių chromosomų genų perdavimo palikuonims),
 atrankos (tinkamiausių chromosomų atrinkimo) ir mutacijos (savaiminio chromosomos genų kitimo) operatorių koncepcijas.
 Genetinių algoritmų veikimo strategija pagrįsta pradinės chromosomų populiacijos evoliucija, kiekvienos naujos chromosomų kartos
 gavimui naudojant rekombinacijos, atrankos ir mutacijos operatorius.
-Toliau bus aptariamos genetinių algoritmų taikymo galimybės.
+Nesunku pastebėti, jog genetiniai algoritmai gali palengvinti tam tikrų rūšių uždavinių sprendimą.
 
 Genetiniai algoritmai taikomi sprendžiant įvairius paieškos ir optimizavimo uždavinius, kuomet nesunku nustatyti, ar sprendinys tinkamas,
 tačiau tinkamo sprendinio radimas reikalauja daug resursų ar net pilno perrinkimo.
@@ -149,7 +150,7 @@ Penktame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir pateiktų
 
 \subsection{Šelo rikiavimo algoritmo efektyvumas}
 
-\subsubsection{Šelo rikiavimo algoritmo asimptotinė analizė}
+% \subsubsection{Šelo rikiavimo algoritmo asimptotinė analizė}
 
  % add text here!
 
@@ -255,7 +256,7 @@ seka, kuri atlieka daug priskyrimų, nebūtinai yra neefektyvi - daug svarbesnis
 Tai galima paaiškinti paprastu pavyzdžiu: jei su tam tikra tarpų seka Šelo algoritmas atlieka santykinai mažai palyginimų ir daug priskyrimų, galima laikyti,
 jog su ja algoritmas dirba labai efektyviai, kadangi atlikti palyginimai nenueina veltui ir rikiuojamos sekos $S$ elementai greitai artėja link galutinės pozicijos.
 Reikia atsižvelgti ir į tai, jog vadovėlinė Šelo algoritmo implementacija dažnai atlieka nereikalingus priskyrimus,
-tad atliekant sekų vertinimą, yra tikslinga įvertinti sekas naudojant ir VŠA, ir PŠA.
+tad atliekant sekų vertinimą, yra tikslinga įvertinti sekas naudojant ir VŠA, ir PŠA \cite{Radavičius_Baranauskas_2013}.
 Savaime suprantama, jog į veikimo laiką verta žvelgti kritiškai, kadangi jis priklauso nuo algoritmo implementacijos,
 eksperimentams naudojamos mašinos techninių parametrų, operacinės sistemos, pasirinktos programavimo kalbos ar net kompiliatoriaus versijos.
 Todėl vertinant veikimo laiką, svarbiausia atsižvelgti į santykinius gautų rezultatų skirtumus naudojant skirtingas tarpų sekas.
@@ -266,9 +267,11 @@ Todėl vertinant veikimo laiką, svarbiausia atsižvelgti į santykinius gautų 
 
 Prieš pradedant generuoti sekas, reikalinga plačiau apžvelgti genetinio algoritmo sąvoką.
 Paprasčiausias genetinis algoritmas susideda iš chromosomų populiacijos bei atrankos, mutacijos ir rekombinacijos operatorių.
+Toliau bus nagrinėjamos šių terminų reikšmės ir GA veikimo principai.
 
 \subsubsection{Chromosomos}
 
+Chromosoma GA kontekste vadiname potencialų uždavinio sprendinį.
 Projektuojant genetinį algoritmą tam tikro uždavinio sprendimui, svarbu tinkamai pasirinkti,
 kaip kompiuteriu modeliuoti galimus sprendinius (chromosomas).
 Chromosomos kompiuterio atmintyje standartiškai išreiškiamos bitų eilutėmis,
@@ -287,18 +290,29 @@ kadangi kai ji netinkamai parinkta, algoritmas nekonverguos į tinkamą sprendin
 
 Chromosomų rinkinys, literatūroje dažnai vadinamas populiacija, atspindi uždavinio sprendinių aibę, kuri kinta kiekvieną genetinio algoritmo iteraciją.
 Jei GA suprojektuotas tinkamai, dažnu atveju vidutinis populiacijos tinkamumas gerės kiekvieną iteraciją \cite{simpson1999faster}.
-% add more
+Esminė GA dalis yra populiacijos genetinės įvairovės užtikrinimas, geriausių individų atranka ir kryžminimasis.
+Šiems procesams nesunku rasti atitikmenis nagrinėjant gamtoje vykstančius evoliucinius reiškinius.
 
 \subsubsection{Genetiniai operatoriai}
 
 Genetinis algoritmas vykdymo metu iteratyviai atnaujina esamą populiaciją, kurdamas naujas kartas taikant atrankos, rekombinacijos ir mutacijos operatorius.
+
+\subsubsubsection{Atrankos operatorius}
+
 Atrankos operatorius grąžina tinkamiausius populiacijos individus, kuriems yra leidžiama susilaukti palikuonių taikant rekombinacijos operatorių.
+Dažniausiai atranka vykdoma atsižvelgiant į populiacijos individų tinkamumą, atrenkant ir pateikiant rekombinacijai tuos, kurių tinkamumas yra geriausias.
+
+\subsubsubsection{Rekombinacijos operatorius}
+
 Rekombinacijos operatorius veikia iš dviejų tėvinių chromosomų sukurdamas naują vaikinę chromosomą, kas dažniausiai pasiekiama
 tam tikru būdu perkopijuojant tėvų genų atkarpas į vaikinę chromosomą.
 Rekombinacijos strategijų yra įvairių, tačiau ne kiekvienam uždaviniui visos jos tinka, kadangi
 kai kuriais atvejais netinkamai parinkta rekombinacijos strategija pagamina neatitinkančią uždavinio apribojimų vaikinę chromosomą.
 Pavyzdžiui, jei modeliuojama chromosoma yra sąrašas, turintis susidėti iš tam tikrų elementų, neįmanoma garantuoti, jog atsitiktinai
 perkopijavus tėvinių chromosomų genus į vaikinę chromosomą šis apribojimas bus išlaikytas.
+
+\subsubsubsection{Mutacijos operatorius}
+
 Galiausiai tam tikrai populiacijos daliai yra pritaikomas mutacijos operatorius.
 Jo veikimo principas yra gana paprastas: pasirinktos chromosomos vienas ar keli genai yra modifikuojami,
 nežymiai pakeičiant jų reikšmes ar sukeičiant kelių genų reikšmes vietomis.
@@ -310,13 +324,13 @@ kuri palaiko genetinę individų įvairovę ir padeda rasti tinkamiausius sprend
 \subsubsection{Genetinio algoritmo sustojimo sąlygos}
 
 Kad genetinis algoritmas neveiktų amžinai, yra pasirenkama viena ar kelios sustojimo sąlygos, pavyzdžiui: pasiektas maksimalus
-kartų skaičius, vidutinio tinkamumo pokytis tarp paskutinių dviejų populiacijos kartų pakankamai mažas.
+kartų skaičius, vidutinio tinkamumo pokytis tarp paskutinių dviejų populiacijos kartų pakankamai mažas, etc.
 Kiekvieną iteraciją GA patikrina, ar kažkuri iš sustojimo sąlygų yra patenkinta, ir jei taip - baigia darbą.
 
 \subsubsection{Galima paprasto genetinio algoritmo implementacija}
 
 Apjungiant visas aukščiau aptartas genetinio algoritmo dalis, galima suformuluoti paprasto genetinio algoritmo pseudokodą.
-
+Jis pateikiamas \ref{simple_GA} algoritme.
 
 \subsection{Trumpų tarpų sekų generavimas}
 Pirmame etape buvo generuojamos tarpų sekos, kurios efektyvios kai $N=1000$.
@@ -414,7 +428,7 @@ Trumpų tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų sekos:
 Atsižvelgiant į santykinai nedidelį duomenų dydį, matavimai buvo atlikti 50000 kartų.
 Gauti duomenys pateikiami suapvalinus iki šimtosios dalies, veikimo laikai pateikiami mikrosekundėmis.
 
-\subsubsection{Trumpų tarpų sekų efektyvumo įvertinimas naudojant vadovėlinį Šelo algoritmą}
+\subsubsection{Efektyvumo tyrimas naudojant vadovėlinį Šelo algoritmą}
 
 Kaip galima pastebėti iš \ref{tss_small_comparisons} lentelės, mažiausiai palyginimų bendru atveju atliko Ciura seka,
 nedaug atsiliko S1 ir Simpson-Yachavaram sekos. Mažiausiai priskyrimų, remiantis \ref{tss_small_assignments} lentele, atliko S1 seka, nežymiai daugiau - Simpson-Yachavaram ir Sedgewick sekos.
@@ -422,7 +436,7 @@ Vertinant vidutinį veikimo laiką pateiktą \ref{tss_small_runtimes} lentelėje
 tačiau palankiausi rezultatai gauti su Sedgewick ir Simpson-Yachavaram sekomis bei S1 seka.
 Todėl, įvertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura, S1 ir Simpson-Yachavaram sekos.
 
-\subsubsection{Trumpų tarpų sekų efektyvumo įvertinimas naudojant patobulintą Šelo algoritmą}
+\subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
 
 Verta pastebėti, jog patobulintas Šelo algoritmas atliekamų palyginimų skaičiumi teoriškai neturėtų skirtis nuo vadovėlinės implementacijos ir
 sekas pakartotinai vertinti pagal šį kriterijų nėra tikslinga, tad bus remiamasi vertinimu pateiktu naudojant VŠA.
@@ -463,14 +477,14 @@ Vidutinio ilgio tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų se
 Atsižvelgiant į duomenų dydį, matavimai buvo atlikti 10000 kartų.
 Gauti duomenys pateikiami suapvalinus iki sveikosios dalies, veikimo laikai pateikiami mikrosekundėmis.
 
-\subsubsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas naudojant vadovėlinį Šelo algoritmą}
+\subsubsection{Efektyvumo tyrimas naudojant vadovėlinį Šelo algoritmą}
 
 Kaip galima pastebėti \ref{tss_medium_comparisons} lentelėje, mažiausiai palyginimų bendru atveju atliko Ciura ir Tokuda sekos, šiek tiek daugiau - seka S2.
 Mažiausiai priskyrimų, remiantis \ref{tss_medium_assignments} lentele, atliko Simpson-Yachavaram ir S2 sekos.
 Geriausi veikimo laikai, pateikti \ref{tss_medium_runtimes} lentelėje, pastebimi su Roos et al. seka, sekos S2 rezultatai taip pat palankūs.
 Vertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura ir Tokuda sekos bei seka S2.
 
-\subsubsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas naudojant patobulintą Šelo algoritmą}
+\subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
 
 Kaip ir tiriant trumpas tarpų sekas, yra pakankama remtis atliktų palyginimų vertinimu, gautu naudojant PŠA.
 Vertinant atliktus priskyrimus, geriausi rezultatai, pateikti \ref{iss_medium_assignments} lentelėje, buvo gauti su Tokuda, Ciura ir Sedgewick sekomis.
