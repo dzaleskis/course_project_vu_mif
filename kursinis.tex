@@ -347,7 +347,7 @@ Rekombinacijos operatorius buvo įgyvendintas tolygia strategija, kur abiejų t�
 būti perduoti vaikinei chromosomai.
 GA sustojimo kriterijumi buvo pasirinkta laikyti tinkamiausio individo nepakitimą 25 iteracijas.
 Mutacijos operatorius buvo įgyvendintas su $\frac{1}{5}$ tikimybe keičiant tam tikrą chromosomą,
-pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand01()-rand01())*\frac{25}{\sqrt{karta}}$ su apribojimu, jog pakeistas genas turi priklausyti intervalui $[1, 1000]$.
+pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $\left[(rand01()-rand01())*\frac{25}{\sqrt{karta}}\right]$ su apribojimu, jog pakeistas genas turi priklausyti intervalui $[1, 1000]$.
 Siekiant išvengti netinkamų sprendinių, kiekviena seka po rekombinacijos ar mutacijos operatorių taikymo buvo išrikiuojama ir
 užtikrinama, jog paskutinis sekos narys yra 1.
 
@@ -366,7 +366,7 @@ Buvo atsisakyta chromosomų vertinimo naudojant 20 skirtingų masyvų, kadangi t
 Vietoje to, kiekvienos sekos vertinimui buvo naudojami 5 atsitiktinai sugeneruoti 100000 elementų masyvai.
 GA buvo nurodyta sustoti, kai kartų skaičius pasieks 100.
 Mutacijos operatorius buvo pakoreguotas ir su $\frac{1}{5}$ tikimybe keitė tam tikrą chromosomą,
-pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand01()-rand01())*\frac{75}{\sqrt{karta}}$.
+pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $\left[(rand01()-rand01())*\frac{75}{\sqrt{karta}}\right]$.
 
 GA buvo vykdomas su atsitiktinai sugeneruota 1000 individų populiacija,
 paskutinius septynis kiekvienos chromosomos genus inicializuojant elementais $855, 264, 86, 35, 12, 5, 1$, t.y. sekos, gautos pirmame etape, nariais.
