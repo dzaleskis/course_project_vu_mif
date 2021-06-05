@@ -148,18 +148,14 @@ Penktame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir pateiktų
 
 \section{Šelo rikiavimo algoritmas}
 
-\subsection{Šelo rikiavimo algoritmo efektyvumas}
+\subsection{Šelo rikiavimo algoritmo sparta}
 
-% \subsubsection{Šelo rikiavimo algoritmo asimptotinė analizė}
-
- % add text here!
-
-\subsubsection{Šelo rikiavimo algoritmo efektyvumas priklausomai nuo duomenų dydžio}
+\subsubsection{Veikimo greitis priklausomai nuo duomenų dydžio}
 
 Renkantis kokį algoritmą naudoti, labai svarbu įvertinti tikėtiną duomenų dydį.
-Šelo rikiavimo algoritmas yra efektyviausias, kai duomenų dydis yra ganėtinai mažas \cite{ciura2001best}.
-Kaip teigiama \cite{simpson1999faster}, šis algoritmas veikia geriausiai, kai $N \leq 106$.
-Tokiu atveju, jis lenkia net ir vienu greičiausių laikomą greitojo rikiavimo algoritmą.
+Šelo rikiavimo algoritmas veikia greičiausiai, kai duomenų dydis yra ganėtinai mažas \cite{ciura2001best}.
+Kaip teigiama \cite{simpson1999faster}, ši savybė galioja, kai $N \leq 106$.
+Tokiu atveju, Šelo algoritmas lenkia net ir vienu greičiausių laikomą greitojo rikiavimo algoritmą.
 Todėl Šelo rikiavimo algoritmas dažnai naudojamas hibridiniuose rikiavimo algoritmuose, kai pasiekus tam tikrą rekursijos lygį
 rikiuojamų duomenų dalis tampa pakankamai maža ir tolimesnė rekursija asimptotiškai optimaliu algoritmu nebeturi prasmės,
 kadangi jos tęsimas reikalautų per daug mašinos resursų.
@@ -168,10 +164,10 @@ bzip2 failų glaudinimo programoje \cite{bzip2sort}.
 Tiesa, net ir rikiuojant didesnius duomenų dydžius, Šelo algoritmas nėra labai lėtas \cite{ciura2001best}.
 Todėl jis yra vertingas įrankis įgyvendinant operacinės sistemos branduolį ar programuojant įterptinėms sistemoms, kadangi dėl ribotų atminties išteklių
 asimptotiškai optimalūs algoritmai, kurie dažniausia yra rekursyvūs ir naudoja daugiau atminties, tokiais atvejais netinka.
-Taigi, nors Šelo rikiavimo algoritmas nėra vienas greičiausių kai uždavinys didelis,
-yra scenarijų, kuriais šį algoritmą rinktis tikrai verta.
+Taigi, nors Šelo rikiavimo algoritmas nėra labai greitas, kai uždavinys didelis,
+yra scenarijų, kuriais jį rinktis tikrai verta.
 
-\subsubsection{Šelo rikiavimo algoritmo efektyvumas priklausomai nuo duomenų specifikos}
+\subsubsection{Veikimo greitis priklausomai nuo duomenų specifikos}
 
 Viena palankiausių Šelo algoritmo savybių yra jo adaptyvumas.
 Adaptyvumas rikiavimo algoritmų kontekste reiškia, jog algoritmas atlieka mažiau operacijų, jei duomenys dalinai išrikiuoti.
@@ -187,7 +183,12 @@ išrikiuoti ir veikimo sparta nusileidžia tik rikiavimui įterpimu su visais du
 Kai duomenų dydis nedidelis (iki 200 elementų) ir 20\% elementų nėra teisingose pozicijose, Šelo algoritmas veikimo sparta nusileidžia tik greitojo rikiavimo algoritmui.
 Palankūs rezultatai pateikiami ir \cite{7280062} - su dalinai išrikiuotais duomenimis Šelo algoritmas veikia apytiksliai 1.5 karto greičiau, o su išrikiuotais
 duomenimis pasiekiamas apie 3.8 karto mažesnis veikimo greitis.
-Taigi, rikiuojant bent dalinai išrikiuotus duomenis Šelo algoritmas yra labai efektyvus.
+Taigi rikiuojant bent dalinai išrikiuotus duomenis Šelo algoritmas veikia žymiai greičiau.
+
+
+% \subsection{Šelo rikiavimo algoritmo asimptotinė analizė}
+
+
 
 \subsection{Šelo rikiavimo algoritmo versijos}
 
@@ -200,7 +201,7 @@ Jos pseudokodas pateikiamas \ref{alg:tss} algoritme.
 
 \subsubsection{Patobulintas Šelo rikiavimo algoritmas}
 
-Verta pastebėti, jog vadovėlinė Šelo algoritmo implementacija nėra naši \cite{Radavičius_Baranauskas_2013}.
+Verta pastebėti, jog vadovėlinė Šelo algoritmo implementacija nėra pilnai efektyvi \cite{Radavičius_Baranauskas_2013}.
 Vykdant vidinį vadovėlinio Šelo algoritmo ciklą (\ref{alg:tss} algoritmo \ref{alg:tss:while:start}-\ref{alg:tss:while:end} eilutės),
 \ref{alg:tss:while:start} eilutėje yra tikrinama, ar $S[j]$ jau yra tinkamoje pozicijoje.
 Jei $S[j]$ jau yra tinkamoje pozicijoje, vidinis ciklas nėra vykdomas ir jokių elementų pozicijos nėra keičiamos.
@@ -339,33 +340,33 @@ GA implementacijai buvo pasirinkta OpenGA biblioteka \cite{mohammadi2017openga}
 dėl suteikiamos laisvės pasirinkti, kaip įgyvendinti genetinius operatorius bei modernių kalbos konstruktų ir lygiagretaus vykdymo palaikymo.
 Remiantis \cite{simpson1999faster}, trumpos sekos chromosoma buvo modeliuojama kaip
 septynių sveikų skaičių masyvas.
-Chromosomos buvo vertinamos jas naudojant 20-ties atsitiktinai
-sugeneruotų sveikų skaičių masyvų rikiavimui vadovėline Šelo rikiavimo algoritmo versija ir skaičiuojant atliktas palyginimo operacijas.
+Chromosomos buvo vertinamos jas naudojant 20 atsitiktinai
+sugeneruotų sveikų skaičių masyvų, turinčių po 1000 elementų, rikiavimui vadovėline Šelo rikiavimo algoritmo versija ir skaičiuojant atliktas palyginimo operacijas.
 Chromosomos tinkamumo funkcija buvo apibrėžta kaip atliktų palyginimų skaičiaus aritmetinis vidurkis.
 Rekombinacijos operatorius buvo įgyvendintas tolygia strategija, kur abiejų tėvų genai turi vienodą tikimybę
 būti perduoti vaikinei chromosomai.
 GA sustojimo kriterijumi buvo pasirinkta laikyti tinkamiausio individo nepakitimą 25 iteracijas.
 Mutacijos operatorius buvo įgyvendintas su $\frac{1}{5}$ tikimybe keičiant tam tikrą chromosomą,
-pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand()-rand())*\frac{25}{\sqrt{karta}}$ su apribojimu, jog pakeistas genas turi priklausyti intervalui $[1, 1000]$.
+pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand01()-rand01())*\frac{25}{\sqrt{karta}}$ su apribojimu, jog pakeistas genas turi priklausyti intervalui $[1, 1000]$.
 Siekiant išvengti netinkamų sprendinių, kiekviena seka po rekombinacijos ar mutacijos operatorių taikymo buvo išrikiuojama ir
-užtikrinama, jog paskutinis sekos narys yra $1$.
+užtikrinama, jog paskutinis sekos narys yra 1.
 
 GA buvo vykdomas su atsitiktinai sugeneruota 10000 individų populiacija, kiekvieną iteraciją pritaikant rekombinacijos operatorių
 $\frac{1}{2}$ populiacijos.
 Tokiu būdu buvo sugeneruota ir atrinkta 10 sekų.
-Po to iš visų sugeneruotų sekų buvo atrinkta tinkamiausia, sugeneruotas sekas naudojant 10000 atsitiktinai sugeneruotų masyvų ilgio 1000 rikiavimui
+Po to iš visų sugeneruotų sekų buvo atrinkta tinkamiausia, sugeneruotas sekas naudojant 10000 atsitiktinai sugeneruotų masyvų, turinčių po 1000 elementų, rikiavimui
 ir matuojant atliktų palyginimo operacijų aritmetinį vidurkį.
 Atlikus matavimus, buvo pasirinkta seka $855, 264, 86, 35, 12, 5, 1$ (toliau - S1).
 
 \subsection{Vidutinio ilgio tarpų sekų generavimas}
 Antrame etape buvo generuojamos tarpų sekos, kurios efektyvios kai $N=100000$.
 Vidutinio ilgio sekų generavimui buvo pasitelktas modifikuotas genetinis algoritmas, naudotas generuojant trumpas tarpų sekas.
-Tarpų sekos chromosoma buvo modeliuojama kaip sveikų skaičių masyvas ilgio 12.
+Tarpų sekos chromosoma buvo modeliuojama kaip 12 sveikų skaičių masyvas.
 Buvo atsisakyta chromosomų vertinimo naudojant 20 skirtingų masyvų, kadangi tai darė neigiamą įtaką genetinio algoritmo veikimo laikui.
-Vietoje to, kiekvienos sekos vertinimui buvo naudojami 5 atsitiktinai sugeneruoti masyvai ilgio $100000$.
+Vietoje to, kiekvienos sekos vertinimui buvo naudojami 5 atsitiktinai sugeneruoti 100000 elementų masyvai.
 GA buvo nurodyta sustoti, kai kartų skaičius pasieks 100.
 Mutacijos operatorius buvo pakoreguotas ir su $\frac{1}{5}$ tikimybe keitė tam tikrą chromosomą,
-pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand()-rand())*\frac{75}{\sqrt{karta}}$.
+pridedant prie atsitiktinai pasirinkto geno reikšmės skaičių $(rand01()-rand01())*\frac{75}{\sqrt{karta}}$.
 
 GA buvo vykdomas su atsitiktinai sugeneruota 1000 individų populiacija,
 paskutinius septynis kiekvienos chromosomos genus inicializuojant elementais $855, 264, 86, 35, 12, 5, 1$, t.y. sekos, gautos pirmame etape, nariais.
@@ -373,7 +374,7 @@ Siekiant išlaikyti tinkamiausius sprendinius, buvo pasitelktas elitizmas - did�
 patekdavo į kitą algoritmo iteraciją.
 Rekombinacijos operatorius buvo taikomas $\frac{1}{2}$ populiacijos kiekvieną algoritmo iteraciją.
 Tokiu būdu buvo sugeneruota ir atrinkta 10 sekų.
-Po to iš visų sugeneruotų sekų buvo atrinkta tinkamiausia, naudojant tokį pat metodą kaip ir praeitame etape, tik pakeitus rikiuojamo masyvo dydį į 100000.
+Po to iš visų sugeneruotų sekų buvo atrinkta tinkamiausia, naudojant tokį pat metodą kaip ir praeitame etape, tik pakeitus rikiuojamų masyvų dydį į 100000.
 Atlikus matavimus, buvo pasirinkta seka $45794, 17396, 7414, 3136, 1206, 561, 264, 86, 35, 12, 5, 1$ (toliau - S2).
 
 
@@ -417,16 +418,16 @@ Todėl tiriant trumpesnes sekas buvo stengtasi atlikti daugiau matavimų.
 \subsection{Trumpų tarpų sekų efektyvumo įvertinimas}
 Trumpų tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų sekos:
 \begin{itemize}
-  \item Tokuda: $525,233,103,46,20,9,4,1$ \cite{10.5555/645569.659879}
-  \item Ciura: $701,301,132,57,23,10,4,1$ \cite{ciura2001best}
-  \item Simpson-Yachavaram: $893,219,83,36,13,4,1$ \cite{simpson1999faster}
-  \item Sedgewick: $929,505,209,109,41,19,5,1$ \cite{SEDGEWICK1986159}
-  \item Incerpi-Sedgewick: $861,336,112,48,21,7,3,1$ \cite{incerpi1985improved}
-  \item S1: $855,264,86,35,12,5,1$
+  \item Tokuda: $525, 233, 103, 46, 20, 9, 4, 1$ \cite{10.5555/645569.659879}
+  \item Ciura: $701, 301, 132, 57, 23, 10, 4, 1$ \cite{ciura2001best}
+  \item Simpson-Yachavaram: $893, 219, 83, 36, 13, 4, 1$ \cite{simpson1999faster}
+  \item Sedgewick: $929, 505, 209, 109, 41, 19, 5, 1$ \cite{SEDGEWICK1986159}
+  \item Incerpi-Sedgewick: $861, 336, 112, 48, 21, 7, 3, 1$ \cite{incerpi1985improved}
+  \item S1: $855, 264, 86, 35, 12, 5, 1$
 \end{itemize}
 
 Atsižvelgiant į santykinai nedidelį duomenų dydį, matavimai buvo atlikti 50000 kartų.
-Gauti duomenys pateikiami suapvalinus iki šimtosios dalies, veikimo laikai pateikiami mikrosekundėmis.
+Gauti duomenys pateikiami suapvalinus iki šimtosios dalies.
 
 \subsubsection{Efektyvumo tyrimas naudojant vadovėlinį Šelo algoritmą}
 
@@ -438,28 +439,27 @@ Todėl, įvertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura, S
 
 \subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
 
-Verta pastebėti, jog patobulintas Šelo algoritmas atliekamų palyginimų skaičiumi teoriškai neturėtų skirtis nuo vadovėlinės implementacijos ir
-sekas pakartotinai vertinti pagal šį kriterijų nėra tikslinga, tad bus remiamasi vertinimu pateiktu naudojant VŠA.
-Tačiau vardan nuoseklumo, gauti įverčiai yra pateikiami \ref{iss_small_comparisons} lentelėje - tai taip pat leidžia įvertinti atliktų matavimų tikslumą atspindint
-Šelo algoritmo atliekamų palyginimų skaičių naudojant šias tarpų sekas vidutiniu atveju.
+Analizuojant atliktų palyginimų skaičių, pateikiamą \ref{iss_small_comparisons}, rezultatai beveik nesiskiria nuo VŠA
+ir geriausiai pasirodė Ciura, S1 ir Simpson-Yachavaram sekos.
 Vertinant atliktų priskyrimų skaičių, rezultatai labai stipriai skiriasi nuo gautų naudojant VŠA.
 Kaip matoma \ref{iss_small_assignments} lentelėje, mažiausiai priskyrimų atlieka Tokuda ir Ciura sekos.
-Taip pat verta pastebėti, jog atliktų palyginimų ir priskyrimų skaičiaus santykis artėja prie 1 augant N, kas nebuvo pastebėta naudojant VŠA.
-Analizuojant vidutinį veikimo laiką, pateiktą \ref{iss_small_runtimes} lentelėje, stebina faktas, jog
-naudojant VŠA gauti rezultatai yra 10-20\% geresni kai $N \geq 200$, nei gauti naudojant PŠA, nors su PŠA atliktų operacijų skaičiai yra žymiai mažesni.
-Vertinant pačias sekas, geriausiai šiame etape vidutinio veikimo laiko atžvilgiu pasirodė Sedgewick ir Simpson-Yachavaram sekos bei S1 seka.
+Geriausiai šiame etape vidutinio veikimo laiko atžvilgiu pasirodė Sedgewick ir Simpson-Yachavaram sekos bei S1 seka.
 Įvertinant visus kriterijus, geriausi rezultatai šioje tyrimo dalyje gauti su Tokuda, Ciura ir S1 sekomis.
 
 \subsubsection{Gautų rezultatų apibendrinimas}
 
-Apibendrinant gautus rezultatus, galima prieiti prie keletos išvadų.
-Gauti rezultatai rodo, jog Ciura seka atlieka mažiausiai priskyrimų vidutiniu atveju, kai $N leq 1000$, kaip ir teigta \cite{ciura2001best}.
-Atsižvelgiant į pastebimai prastesnius veikimo laikus, sunku rekomenduoti PŠA nesudėtingų tipų duomenų rikiavimui, kai $N leq 1000$.
+Verta pastebėti, jog patobulintas Šelo algoritmas atliekamų palyginimų skaičiumi teoriškai neturėtų skirtis nuo vadovėlinės implementacijos,
+tad gauti įverčiai leidžia įvertinti matavimų tikslumą atspindint Šelo algoritmo atliekamų palyginimų skaičių naudojant šias tarpų sekas vidutiniu atveju.
+Gauti rezultatai rodo, jog Ciura seka atlieka mažiausiai priskyrimų vidutiniu atveju, kai $N \leq 1000$, kaip ir teigta \cite{ciura2001best}.
+Atsižvelgiant į pastebimai prastesnius veikimo laikus, sunku rekomenduoti PŠA nesudėtingų tipų duomenų rikiavimui, kai $N \leq 1000$.
 Tiesa, rikiuojant duomenis, kurių priskyrimas brangus, PŠA veikimo laikas tikėtinai būtų geresnis, nei VŠA, tačiau tuo įsitikinti reikėtų atskiro tyrimo.  
-GA naudojimas Šelo algoritmo trumpų tarpų sekų generavimui yra tikslingas ir duoda gerus rezultatus, kadangi abi naudojant GA gautos sekos (Simpson-Yachavaram ir S1)
+GA naudojimas Šelo algoritmo trumpų tarpų sekų generavimui duoda gerus rezultatus, kadangi abi GA sugeneruotos sekos (Simpson-Yachavaram ir S1)
 vidutiniu atveju atlieka daugiau palyginimų tik už Ciura seką, yra vienos iš lyderių vertinant atliktų priskyrimų skaičių naudojant VŠA ir pateikia vienus geriausių veikimo laikų.
 Tiesa, naudojant GA sugeneruotos sekos nėra be trūkumų: lyginant su Tokuda ir Ciura sekomis, kurios atlieka daugiau priskyrimų naudojant VŠA, šios sekos atlieka žymiai daugiau priskyrimų
 naudojant PŠA, nei Tokuda ir Ciura sekos. Tai sukelia klausimų dėl jų efektyvumo, kadangi PŠA pašalina tik nereikalingai atliekamus priskyrimus.
+Stebina faktas, jog naudojant VŠA gauti rezultatai yra 10-20\% geresni kai $N \geq 200$, nei gauti
+naudojant PŠA, nors su PŠA atliktų operacijų skaičiai yra žymiai mažesni.
+Taip pat verta pastebėti, jog su PŠA atliktų palyginimų ir priskyrimų skaičiaus santykis artėja prie 1 augant N, priešingai nei naudojant VŠA.
 
 \subsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas}
 
@@ -475,7 +475,7 @@ Vidutinio ilgio tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų se
 \end{itemize}
 
 Atsižvelgiant į duomenų dydį, matavimai buvo atlikti 10000 kartų.
-Gauti duomenys pateikiami suapvalinus iki sveikosios dalies, veikimo laikai pateikiami mikrosekundėmis.
+Gauti duomenys pateikiami suapvalinus iki sveikosios dalies.
 
 \subsubsection{Efektyvumo tyrimas naudojant vadovėlinį Šelo algoritmą}
 
@@ -486,28 +486,27 @@ Vertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura ir Tokuda se
 
 \subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
 
-Kaip ir tiriant trumpas tarpų sekas, yra pakankama remtis atliktų palyginimų vertinimu, gautu naudojant PŠA.
+Analizuojant atliktų palyginimų skaičių, pateikiamą \ref{iss_medium_comparisons}, rezultatai yra panašūs į gautus tiriant VŠA
+ir geriausiai pasirodė Ciura, Tokuda ir S2 sekos.
 Vertinant atliktus priskyrimus, geriausi rezultatai, pateikti \ref{iss_medium_assignments} lentelėje, buvo gauti su Tokuda, Ciura ir Sedgewick sekomis.
-Veikimo laiko atžvilgiu geriausi rezultatai gauti su Roos et al. ir Simpson-Yachavaram sekomis.
 Vertinant visus kriterijus, geriausiai pasirodė Ciura ir Tokuda sekos.
 
 \subsubsection{Gautų rezultatų apibendrinimas}
 
-Apibendrinant gautus rezultatus, galima prieiti prie keletos išvadų. % kazka naujo sugalvok ablamute
 Gauti rezultatai rodo, jog Roos et al. seka, kaip ir teigta \cite{roos2002genetic},
-veikia greičiau už Sedgewick ir Simpson-Yachavaram sekas, bent jau kai $N leq 100000$, o pradiniai duomenys - sveiki skaičiai.
+veikia greičiau už Sedgewick ir Simpson-Yachavaram sekas, bent jau kai $N \leq 100000$, o pradiniai duomenys - sveiki skaičiai.
 Iš tiesų, ši seka pagal gautus rezultatus yra absoliuti lyderė vertinant vidutinį veikimo laiką, tačiau būtina atsižvelgti į faktą, jog ji atlieka labai daug operacijų,
 tad yra tikėtina, jog rikiuojant duomenis, kurių priskyrimas ar palyginimas yra brangus, gauti veikimo laiko rezultatai nebūtų tokie palankūs.
 Ciura seka, kaip ir tiriant trumpas tarpų sekas, pagal gautus rezultatus atlieka mažiausiai priskyrimų, kas dalinai pateisina autoriaus spėjimą \cite{ciura2001best},
 jog seką $701,301,132,57,23,10,4,1$ pratęsus bus gauta palyginimų atžvilgiu optimali seka ir didesniems $N$.
 Simpson-Yachavaram seka, kaip ir teigė \cite{simpson1999faster} autoriai, atlieka mažiau priskyrimų ir veikia greičiau, nei Sedgewick seka.
-GA naudojimas generuojant vidutinio ilgio tarpų sekas duoda neblogus rezultatus: nors nė viena iš naudojant GA gautų sekų (Simpson-Yachavaram, Roos et al. ir S2) nelenkia Tokuda ir Ciura pateiktų sekų
+GA naudojimas generuojant vidutinio ilgio tarpų sekas duoda gerus rezultatus: nors nė viena iš GA sugeneruotų sekų (Simpson-Yachavaram, Roos et al. ir S2) nelenkia Tokuda ir Ciura pateiktų sekų
 vertinant atliktus palyginimus, S2 ir Simpson-Yachavaram sekos naudojant VŠA atlieka mažiau priskyrimų, o Roos et al. seka, kaip ir minėta anksčiau, veikia labai greitai. 
 Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia pastebimai greičiau, nei naudojant VŠA, ypač augant duomenų dydžiui.
 
 \sectionnonum{Išvados}
 
-Įvertinant darbo metu gautus rezultatus, galima teigti, jog genetiniai algoritmai yra tinkamas metodas efektyvių tarpų sekų radimui.
+Įvertinant darbe gautus rezultatus, galima teigti, jog genetiniai algoritmai yra tinkamas metodas efektyvių tarpų sekų radimui.
 Šelo algoritmu rikiuojant nedidelius ($N \leq 1000$) duomenų dydžius, galima rekomenduoti Ciura ir S1 tarpų sekas.
 Šelo algoritmu rikiuojant didesnius ($1000 \leq N \leq 100000$) duomenų dydžius, galima rekomenduoti Ciura ir Tokuda tarpų sekas bei patobulintą Šelo algoritmo implementaciją.
 
@@ -619,7 +618,7 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \end{table}
 
 \begin{table}[H]
-  \caption{Vidutinis VŠA veikimo laikas naudojant trumpas tarpų sekas}
+  \caption{Vidutinis VŠA veikimo laikas (μs) naudojant trumpas tarpų sekas}
   \label{tss_small_runtimes}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
@@ -666,7 +665,7 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \end{table}
 
 \begin{table}[H]
-  \caption{Vidutinis PŠA veikimo laikas naudojant trumpas tarpų sekas}
+  \caption{Vidutinis PŠA veikimo laikas (μs) naudojant trumpas tarpų sekas}
   \label{iss_small_runtimes}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
@@ -713,7 +712,7 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
 \end{table}
 
 \begin{table}[H]
-  \caption{Vidutinis VŠA veikimo laikas naudojant vidutinio ilgio tarpų sekas}
+  \caption{Vidutinis VŠA veikimo laikas (μs) naudojant vidutinio ilgio tarpų sekas}
   \label{tss_medium_runtimes}
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
@@ -760,7 +759,7 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
 \end{table}
 
 \begin{table}[H]
-  \caption{Vidutinis PŠA veikimo laikas naudojant vidutinio ilgio tarpų sekas}
+  \caption{Vidutinis PŠA veikimo laikas (μs) naudojant vidutinio ilgio tarpų sekas}
   \label{iss_medium_runtimes}
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
