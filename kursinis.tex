@@ -248,8 +248,6 @@ Patobulinto Šelo algoritmo pseudokodas pateikiamas \ref{alg:tss} algoritme.
 
 \section{Tarpų sekų efektyvumo kriterijų nustatymas}
 
-\subsection{Tarpų sekų efektyvumo įvertinimo problema}
-
 Šelo algoritmo tarpų sekų efektyvumo įvertinimas nėra trivialus.
 Rikiavimo algoritmai dažniausiai yra vertinami pagal atliekamų priskyrimų skaičių, kadangi
 daugelyje algoritmų priskyrimų skaičius uždaviniui augant greitai artėja prie palyginimų skaičiaus ir
@@ -261,8 +259,6 @@ Kaip parodo \cite{ciura2001best}, šiame algoritme dominuojanti operacija yra pa
 turėtų jų atlikti kuo įmanoma mažiau.
 Apibendrinant, atliekamų palyginimų skaičius yra tinkamesnis kriterijus Šelo algoritmo tarpų sekų efektyvumui įvertinti.
 
-\subsection{Atliekamų operacijų vertinimas}
-
 Matuojant rikiavimo algoritmo efektyvumą tik naudojant sveikaskaitinius pradinius duomenis, gauti rezultatai gali būti netikslūs,
 kadangi palyginimo ir priskyrimo operacijų sparta priklauso nuo rikiuojamų duomenų tipo.
 Rikiuojant simbolių eilutes, priskyrimas atliekamas naudojant rodykles, kas yra $O(1)$ operacija,
@@ -272,16 +268,12 @@ o palyginimas gali būti atliekamas naudojant tam tikrą raktą, taigi tik $O(1)
 Todėl apsiriboti vien palyginimų ar priskyrimų skaičiumi nepakanka, kadangi tiksliausia praktinio algoritmo
 veikimo laiko aproksimacija (tai, kam ir skaičiuojamos operacijos), bus gauta tik įvertinant abu šiuos rodiklius.
 
-\subsection{Veikimo laiko vertinimas}
-
 Algoritmo veikimo laikas, nors ir priklausomas nuo platformos, kurioje vykdomas tyrimas, detalių,
 taip pat gali duoti tinkamų įžvalgų įvertinant praktinį efektyvumą.
 Kadangi algoritmo atliekamos operacijos skaičiuojamos tam, jog gauti
 veikimo laiko aproksimaciją, tai realus veikimo laikas
 yra konkretus įvertis, leidžiantis praktiškai įvertinti duotos sekos efektyvumą.
 Taigi, įvertinant tarpų sekų efektyvumą bus remiamasi visomis atliekamomis operacijomis bei realiais veikimo laikais.
-
-\subsection{Tarpų sekų efektyvumo vertinimas}
 
 Autoriaus nuomone, atliktų palyginimų skaičius yra svarbiausias kriterijus tarpų sekų efektyvumui įvertinti ir
 atliekant vertinimą didžiausias svoris turėtų būti teikiamas būtent jam.
@@ -305,8 +297,6 @@ Prieš pradedant generuoti sekas, reikalinga plačiau apžvelgti genetinio algor
 Paprasčiausias genetinis algoritmas susideda iš chromosomų populiacijos bei atrankos, mutacijos ir rekombinacijos operatorių.
 Toliau bus nagrinėjamos šių terminų reikšmės ir GA veikimo principai.
 
-\subsubsection{Chromosomos}
-
 Chromosoma GA kontekste vadiname potencialų uždavinio sprendinį.
 Projektuojant genetinį algoritmą tam tikro uždavinio sprendimui, svarbu tinkamai pasirinkti,
 kaip kompiuteriu modeliuoti galimus sprendinius (chromosomas).
@@ -315,30 +305,20 @@ kadangi tai palengvina tiek mutaciją (pakanka apversti kurio nors atsitiktinio 
 tiek rekombinaciją (pakanka perkopijuoti pasirinktus tėvinių chromosomų bitus į vaikinę chromosomą).
 Tiesa, tai nėra vienintelis įmanomas būdas, ir kai kurių uždavinių sprendiniai modeliuojami pvz. grafu ar simbolių eilute.
 
-\subsubsection{Tinkamumas}
-
 Sprendinio kokybę įvardijame kaip jo tinkamumą, kuris apibrėžiamas tinkamumo funkcijos reikšme, pateikus sprendinį kaip parametrą.
 Nesunku pastebėti, jog tinkamumo funkcija tėra tikslo funkcijos specializacija, kuri naudojama chromosomų vertinimui.
 Tinkamumo funkcija yra viena svarbiausių genetinio algoritmo dalių,
 kadangi kai ji netinkamai parinkta, algoritmas nekonverguos į tinkamą sprendinį arba užtruks labai ilgai.
-
-\subsubsection{Populiacija}
 
 Chromosomų rinkinys, literatūroje dažnai vadinamas populiacija, atspindi uždavinio sprendinių aibę, kuri kinta kiekvieną genetinio algoritmo iteraciją.
 Jei GA suprojektuotas tinkamai, dažnu atveju vidutinis populiacijos tinkamumas gerės kiekvieną iteraciją \cite{simpson1999faster}.
 Esminė GA dalis yra populiacijos genetinės įvairovės užtikrinimas, geriausių individų atranka ir kryžminimasis.
 Šiems procesams nesunku rasti atitikmenis nagrinėjant gamtoje vykstančius evoliucinius reiškinius.
 
-\subsubsection{Genetiniai operatoriai}
-
 Genetinis algoritmas vykdymo metu iteratyviai atnaujina esamą populiaciją, kurdamas naujas kartas taikant atrankos, rekombinacijos ir mutacijos operatorius.
-
-\subsubsubsection{Atrankos operatorius}
 
 Atrankos operatorius grąžina tinkamiausius populiacijos individus, kuriems yra leidžiama susilaukti palikuonių taikant rekombinacijos operatorių.
 Dažniausiai atranka vykdoma atsižvelgiant į populiacijos individų tinkamumą, atrenkant ir pateikiant rekombinacijai tuos, kurių tinkamumas yra geriausias.
-
-\subsubsubsection{Rekombinacijos operatorius}
 
 Rekombinacijos operatorius veikia iš dviejų tėvinių chromosomų sukurdamas naują vaikinę chromosomą, kas dažniausiai pasiekiama
 tam tikru būdu perkopijuojant tėvų genų atkarpas į vaikinę chromosomą.
@@ -346,8 +326,6 @@ Rekombinacijos strategijų yra įvairių, tačiau ne kiekvienam uždaviniui viso
 kai kuriais atvejais netinkamai parinkta rekombinacijos strategija pagamina neatitinkančią uždavinio apribojimų vaikinę chromosomą.
 Pavyzdžiui, jei modeliuojama chromosoma yra sąrašas, turintis susidėti iš tam tikrų elementų, neįmanoma garantuoti, jog atsitiktinai
 perkopijavus tėvinių chromosomų genus į vaikinę chromosomą šis apribojimas bus išlaikytas.
-
-\subsubsubsection{Mutacijos operatorius}
 
 Galiausiai tam tikrai populiacijos daliai yra pritaikomas mutacijos operatorius.
 Jo veikimo principas yra gana paprastas: pasirinktos chromosomos vienas ar keli genai yra modifikuojami,
@@ -357,13 +335,9 @@ Mutacijos operatorius praplečia vykdomos paieškos erdvę, o tai labai svarbu, 
 Atsižvelgiant į tai, yra laikoma, jog mutacijos operatorius yra kertinė genetinio algoritmo dalis,
 kuri palaiko genetinę individų įvairovę ir padeda rasti tinkamiausius sprendinius.
 
-\subsubsection{Genetinio algoritmo sustojimo sąlygos}
-
 Kad genetinis algoritmas neveiktų amžinai, yra pasirenkama viena ar kelios sustojimo sąlygos, pavyzdžiui: pasiektas maksimalus
 kartų skaičius, vidutinio tinkamumo pokytis tarp paskutinių dviejų populiacijos kartų pakankamai mažas, etc.
 Kiekvieną iteraciją GA patikrina, ar kažkuri iš sustojimo sąlygų yra patenkinta, ir jei taip - baigia darbą.
-
-\subsubsection{Galima paprasto genetinio algoritmo implementacija}
 
 Apjungiant visas aukščiau aptartas genetinio algoritmo dalis, galima suformuluoti paprasto genetinio algoritmo pseudokodą.
 Jis pateikiamas \ref{simple_GA} algoritme.
@@ -438,31 +412,22 @@ Atlikus matavimus, buvo pasirinkta seka $45794, 17396, 7414, 3136, 1206, 561, 26
 
 \section{Eksperimentų vykdymo aplinkos paruošimas}
 
-\subsection{Operacijų skaičiavimas}
-
 Siekant išmatuoti VŠA bei PŠA atliekamų operacijų skaičių,
 buvo parengtos modifikuotos šių algoritmų versijos, kurios kaip rezultatą grąžina atliktus palyginimus bei priskyrimus.
-
-\subsection{Veikimo laiko matavimas}
 
 Verta pastebėti, jog matuoti veikimo laiką naudojant operacijas skaičiuojančius algoritmus nėra tinkama,
 kadangi pats operacijų skaičiavimas reikalauja papildomų žingsnių, o tai gali iškreipti gautus rezultatus.
 Atsižvelgiant į tai, veikimo laiko matavimui naudoti nemodifikuoti VŠA ir PŠA algoritmai. 
 
-\subsection{Pradinių duomenų generavimas}
-
 Vykdant eksperimentus buvo pasirinkta naudoti sveikaskaitinius pradinius duomenis, kadangi jų generavimas yra pakankamai paprastas.
 Tai buvo įgyvendinta naudojant MT19937 pseudoatsitiktinių skaičių generatorių, inicializuotą sisteminio laiko reikšme.
 Generuojami duomenys buvo tolygiai paskirstyti nuo INT\_MIN iki INT\_MAX, kas leido žymiai sumažinti duomenų duplikacijos tikimybę.
 
-\subsection{Techninės detalės}
 Eksperimentų vykdymui buvo naudojamas kompiuteris su 2.70 GHz Intel(R) Core(TM) i7-10850H procesoriumi,
 32 GB operatyviosios atminties ir Windows 10 operacine sistema.
 Tyrimas buvo įgyvendintas C++ kalba su GNU g++ 8.1.0 kompiliatoriumi naudojant -O3 optimizacijos lygį.
 
 \section{Tarpų sekų efektyvumo įvertinimas}
-
-\subsection{Pasiruošimas tarpų sekų vertinimui}
 
 Iš anksto verta pastebėti, jog ne visos šiame skyriuje tiriamos tarpų sekos iš tiesų yra būtent tokio ilgio, koks pateikiamas šiame darbe.
 Tačiau būtina atsižvelgti į faktą, jog tai galėtų sukelti nelygias sąlygas atliekamuose matavimuose,
