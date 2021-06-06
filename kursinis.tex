@@ -188,8 +188,6 @@ Taigi rikiuojant bent dalinai išrikiuotus duomenis Šelo algoritmas veikia žym
 
 % \subsection{Šelo rikiavimo algoritmo asimptotinė analizė}
 
-
-
 \subsection{Šelo rikiavimo algoritmo versijos}
 
 \subsubsection{Vadovėlinis Šelo rikiavimo algoritmas}
@@ -198,6 +196,24 @@ Kaip ir daugelis algoritmų, Šelo rikiavimo algoritmas turi keletą galimų imp
 Žinomiausia iš jų, be abejo, yra vadovėlinė šio algoritmo versija (toliau - VŠA),
 kurią D. L. Shell paskelbė dar 1959 metais \cite{shell1959high}.
 Jos pseudokodas pateikiamas \ref{alg:tss} algoritme.
+% parasyti daugiau cia
+
+\begin{algorithm}[H]
+  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{alg:tss}
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \State $j\gets i$
+      \State $temp\gets S[i]$\label{alg:tss:assign1}
+      \While {$j > gap$ \textbf{and} $S[j - gap] > S[j]$}\label{alg:tss:while:start}
+        \State $S[j]\gets S[j - gap]$
+        \State $j\gets j-gap$
+      \EndWhile\label{alg:tss:while:end}
+      \State $S[j]\gets temp$\label{alg:tss:assign2}
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
 
 \subsubsection{Patobulintas Šelo rikiavimo algoritmas}
 
@@ -209,7 +225,26 @@ Tačiau \ref{alg:tss:assign1} ir \ref{alg:tss:assign2} eilutėse vis tiek yra vy
 kurie šiuo atveju nueina veltui (o taip nutinka pakankamai dažnai).
 Siekiant tai ištaisyti, \cite{Radavičius_Baranauskas_2013} pateikė patobulintą Šelo algoritmo versiją (toliau - PŠA), kuri prieš vykdydama
 bet kokius kitus žingsnius patikrina, ar elementas $S[j]$ jau yra tinkamoje pozicijoje.
-Patobulinto Šelo algoritmo pseudokodas pateikiamas \ref{alg:iss} algoritme.
+Patobulinto Šelo algoritmo pseudokodas pateikiamas \ref{alg:tss} algoritme.
+
+\begin{algorithm}[H]
+  \caption{Patobulintas Šelo rikiavimo algoritmas}\label{alg:iss}
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \If {$S[i-gap] > S[i]$}
+        \State $j\gets i$
+        \State $temp\gets S[i]$
+        \Repeat
+          \State $S[j]\gets S[j - gap]$
+          \State $j\gets j-gap$
+        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}
+        \State $S[j]\gets temp$
+      \EndIf
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
 
 \section{Tarpų sekų efektyvumo kriterijų nustatymas}
 
@@ -249,7 +284,7 @@ Taigi, įvertinant tarpų sekų efektyvumą bus remiamasi visomis atliekamomis o
 \subsection{Tarpų sekų efektyvumo vertinimas}
 
 Autoriaus nuomone, atliktų palyginimų skaičius yra svarbiausias kriterijus tarpų sekų efektyvumui įvertinti ir
-atliekant bendrą visų kriterijų vertinimą didžiausias svoris turėtų būti teikiamas būtent jam.
+atliekant vertinimą didžiausias svoris turėtų būti teikiamas būtent jam.
 Vertinant kitus du kriterijus, didesnis svoris turėtų atitekti atliekamų palyginimų skaičiui,
 kadangi veikimo laiko įvertis nėra universalus.
 Verta pastebėti, jog atliktų priskyrimų skaičių reikia vertinti, atsižvelgiant į kontekstą, kadangi
@@ -332,6 +367,29 @@ Kiekvieną iteraciją GA patikrina, ar kažkuri iš sustojimo sąlygų yra paten
 
 Apjungiant visas aukščiau aptartas genetinio algoritmo dalis, galima suformuluoti paprasto genetinio algoritmo pseudokodą.
 Jis pateikiamas \ref{simple_GA} algoritme.
+
+\begin{algorithm}[H]
+  \caption{Paprastas GA}\label{simple_GA}
+  \begin{algorithmic}
+    \State Let $current\_population$ be a random population of chromosomes.
+    \State Let $mutation\_rate$ be a real value between 0 and 1.
+    \State Let $crossover\_fraction$ be a real value between 0 and 1.
+    \Repeat
+      \State Apply the fitness function to each chromosome in $current\_population$.
+      \State Sort the chromosomes in $current\_population$ based on their fitness. % cia reikia pataisyti
+      \State Let $new\_population$ be an empty set.
+      \Repeat
+        \State Let $(parent1, parent2)$ be a pair of parent chromosomes selected randomly from the first $[N * crossover\_fraction]$ elements of $current\_population$.
+        \State Let $child\_chromosome$ be the result of applying the crossover operator to $parent1$ and $parent2$.
+        \If {$rand() < mutation\_rate$}
+          \State Apply the mutation operator to $child\_chromosome$
+        \EndIf
+        \State Add $child\_chromosome$ to $new\_population$
+      \Until N offspring have been created.
+      \State Assign $new\_population$ to $current\_population$.
+    \Until Termination criteria are satisfied.
+  \end{algorithmic}
+\end{algorithm}
 
 \subsection{Trumpų tarpų sekų generavimas}
 Pirmame etape buvo generuojamos tarpų sekos, kurios efektyvios kai $N=1000$.
@@ -522,68 +580,6 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
 % diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
 % Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
 
-\section{Šelo rikiavimo algoritmo versijos}
-
-\begin{algorithm}[H]
-  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{alg:tss}
-  \begin{algorithmic}[1]
-  \ForEach {$gap$ \textbf{in} $H$}
-    \For {$i\gets gap+1$ \textbf{to} $N$}
-      \State $j\gets i$
-      \State $temp\gets S[i]$\label{alg:tss:assign1}
-      \While {$j > gap$ \textbf{and} $S[j - gap] > S[j]$}\label{alg:tss:while:start}
-        \State $S[j]\gets S[j - gap]$
-        \State $j\gets j-gap$
-      \EndWhile\label{alg:tss:while:end}
-      \State $S[j]\gets temp$\label{alg:tss:assign2}
-    \EndFor
-  \EndFor
-  \end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-  \caption{Patobulintas Šelo rikiavimo algoritmas}\label{alg:iss}
-  \begin{algorithmic}[1]
-  \ForEach {$gap$ \textbf{in} $H$}
-    \For {$i\gets gap+1$ \textbf{to} $N$}
-      \If {$S[i-gap] > S[i]$}
-        \State $j\gets i$
-        \State $temp\gets S[i]$
-        \Repeat
-          \State $S[j]\gets S[j - gap]$
-          \State $j\gets j-gap$
-        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}
-        \State $S[j]\gets temp$
-      \EndIf
-    \EndFor
-  \EndFor
-  \end{algorithmic}
-\end{algorithm}
-
-\section{Paprasto genetinio algoritmo implementacija}
-
-\begin{algorithm}[H]
-  \caption{Paprastas GA}\label{simple_GA}
-  \begin{algorithmic}
-    \State Let $current\_population$ be a random population of chromosomes.
-    \State Let $mutation\_rate$ be a real value between 0 and 1.
-    \State Let $crossover\_fraction$ be a real value between 0 and 1.
-    \Repeat
-      \State Apply the fitness function to each chromosome in $current\_population$.
-      \State Sort the chromosomes in $current\_population$ based on their fitness. % cia reikia pataisyti
-      \State Let $new\_population$ be an empty set.
-      \Repeat
-        \State Let $(parent1, parent2)$ be a pair of parent chromosomes selected randomly from the first $[N * crossover\_fraction]$ elements of $current\_population$.
-        \State Let $child\_chromosome$ be the result of applying the crossover operator to $parent1$ and $parent2$.
-        \If {$rand() < mutation\_rate$}
-          \State Apply the mutation operator to $child\_chromosome$
-        \EndIf
-        \State Add $child\_chromosome$ to $new\_population$
-      \Until N offspring have been created.
-      \State Assign $new\_population$ to $current\_population$.
-    \Until Termination criteria are satisfied.
-  \end{algorithmic}
-\end{algorithm}
 
 \section{Trumpų tarpų sekų efektyvumo tyrimo rezultatai naudojant vadovėlinį Šelo algoritmą}
 
@@ -592,13 +588,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{tss_small_comparisons}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & S1      \\ \hline
-  50   & 289.90  & 287.76  & 287.70  & 293.41    & 296.37  & 289.21  \\ \hline
-  100  & 735.82  & 733.35  & 731.49  & 752.13    & 759.57  & 731.87  \\ \hline
-  200  & 1812.59 & 1797.92 & 1798.5  & 1840.15   & 1870.94 & 1793.19 \\ \hline
-  400  & 4315.6  & 4276.38 & 4284.94 & 4405.07   & 4464.59 & 4273.84 \\ \hline
-  800  & 10061.3 & 9946.54 & 9987.18 & 10260.5   & 10528.2 & 9999.9  \\ \hline
-  1000 & 13128.9 & 13044.4 & 13075.4 & 13395.4   & 13807.4 & 13054.4 \\ \hline
+  N    & Tokuda  & Ciura            & S/Y              & Sedgewick & I/S     & S1               \\ \hline
+  50   & 289.90  & \textbf{287.76}  & \textbf{287.70}  & 293.41    & 296.37  & \textbf{289.21}  \\ \hline
+  100  & 735.82  & \textbf{733.35}  & \textbf{731.49}  & 752.13    & 759.57  & \textbf{731.87}  \\ \hline
+  200  & 1812.59 & \textbf{1797.92} & \textbf{1798.5}  & 1840.15   & 1870.94 & \textbf{1793.19} \\ \hline
+  400  & 4315.6  & \textbf{4276.38} & \textbf{4284.94} & 4405.07   & 4464.59 & \textbf{4273.84} \\ \hline
+  800  & 10061.3 & \textbf{9946.54} & \textbf{9987.18} & 10260.5   & 10528.2 & \textbf{9999.9}  \\ \hline
+  1000 & 13128.9 & \textbf{13044.4} & \textbf{13075.4} & 13395.4   & 13807.4 & \textbf{13054.4} \\ \hline
   \end{tabular}
   \end{table}
 
@@ -607,13 +603,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{tss_small_assignments}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda  & Ciura   & S/Y     & Sedgewick & I/S     & S1      \\ \hline
-  50   & 482.37  & 473.17  & 453.48  & 447.69    & 487.44  & 456.58  \\ \hline
-  100  & 1204.5  & 1186.33 & 1137.21 & 1130.61   & 1227.55 & 1135.35 \\ \hline
-  200  & 2933.02 & 2862.17 & 2752.73 & 2761.21   & 2977.03 & 2745.81 \\ \hline
-  400  & 6898.23 & 6733.29 & 6522.93 & 6629.27   & 6903.13 & 6444.15 \\ \hline
-  800  & 15899.2 & 15487.9 & 14758.6 & 15354.8   & 15950   & 14745.8 \\ \hline
-  1000 & 20707.8 & 20273.4 & 19200.7 & 20089.7   & 20841.4 & 19193.6 \\ \hline
+  N    & Tokuda  & Ciura   & S/Y              & Sedgewick        & I/S     & S1               \\ \hline
+  50   & 482.37  & 473.17  & \textbf{453.48}  & \textbf{447.69}  & 487.44  & \textbf{456.58}  \\ \hline
+  100  & 1204.5  & 1186.33 & \textbf{1137.21} & \textbf{1130.61} & 1227.55 & \textbf{1135.35} \\ \hline
+  200  & 2933.02 & 2862.17 & \textbf{2752.73} & \textbf{2761.21} & 2977.03 & \textbf{2745.81} \\ \hline
+  400  & 6898.23 & 6733.29 & \textbf{6522.93} & \textbf{6629.27} & 6903.13 & \textbf{6444.15} \\ \hline
+  800  & 15899.2 & 15487.9 & \textbf{14758.6} & \textbf{15354.8} & 15950   & \textbf{14745.8} \\ \hline
+  1000 & 20707.8 & 20273.4 & \textbf{19200.7} & \textbf{20089.7} & 20841.4 & \textbf{19193.6} \\ \hline
   \end{tabular}
   \end{table}
 
@@ -622,13 +618,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{tss_small_runtimes}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda & Ciura & S/Y   & Sedgewick & I/S   & S1    \\ \hline
-  50   & 1.00   & 1.02  & 1.10  & 1.01      & 1.14  & 0.90  \\ \hline
-  100  & 3.04   & 2.87  & 2.75  & 2.95      & 2.74  & 3.09  \\ \hline
-  200  & 6.35   & 6.25  & 6.32  & 6.00      & 7.20  & 6.37  \\ \hline
-  400  & 16.39  & 15.06 & 14.29 & 14.20     & 14.77 & 14.92 \\ \hline
-  800  & 39.93  & 37.60 & 35.41 & 38.60     & 43.22 & 33.30 \\ \hline
-  1000 & 45.74  & 44.30 & 42.07 & 42.58     & 44.44 & 44.10 \\ \hline
+  N    & Tokuda        & Ciura          & S/Y            & Sedgewick      & I/S            & S1             \\ \hline
+  50   & \textbf{1.00} & 1.02           & 1.10           & \textbf{1.01}  & 1.14           & \textbf{0.90}  \\ \hline
+  100  & 3.04          & \textbf{2.87}  & \textbf{2.75}  & 2.95           & \textbf{2.74}  & 3.09           \\ \hline
+  200  & 6.35          & \textbf{6.25}  & \textbf{6.32}  & \textbf{6.00}  & 7.20           & 6.37           \\ \hline
+  400  & 16.39         & 15.06          & \textbf{14.29} & \textbf{14.20} & \textbf{14.77} & 14.92          \\ \hline
+  800  & 39.93         & \textbf{37.60} & \textbf{35.41} & 38.60          & 43.22          & \textbf{33.30} \\ \hline
+  1000 & 45.74         & 44.30          & \textbf{42.07} & \textbf{42.58} & 44.44          & \textbf{44.10} \\ \hline
   \end{tabular}
   \end{table}
 
@@ -639,13 +635,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{iss_small_comparisons}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda   & Ciura    & S/Y      & Sedgewick & I/S      & S1       \\ \hline
-  50   & 289.85   & 287.85   & 287.83   & 293.70    & 296.33   & 289.09   \\ \hline
-  100  & 736.17   & 733.32   & 731.70   & 751.94    & 759.47   & 732.01   \\ \hline
-  200  & 1812.48  & 1798.04  & 1798.66  & 1840.66   & 1871.29  & 1793.03  \\ \hline
-  400  & 4315.89  & 4276.20  & 4284.83  & 4405.79   & 4464.40  & 4273.78  \\ \hline
-  800  & 10061.00 & 9945.74  & 9986.13  & 10259.80  & 10525.90 & 9999.26  \\ \hline
-  1000 & 13130.80 & 13044.10 & 13077.20 & 13393.00  & 13807.50 & 13053.10 \\ \hline
+  N    & Tokuda   & Ciura             & S/Y               & Sedgewick & I/S      & S1                \\ \hline
+  50   & 289.85   & \textbf{287.85}   & \textbf{287.83}   & 293.70    & 296.33   & \textbf{289.09}   \\ \hline
+  100  & 736.17   & \textbf{733.32}   & \textbf{731.70}   & 751.94    & 759.47   & \textbf{732.01}   \\ \hline
+  200  & 1812.48  & \textbf{1798.04}  & \textbf{1798.66}  & 1840.66   & 1871.29  & \textbf{1793.03}  \\ \hline
+  400  & 4315.89  & \textbf{4276.20}  & \textbf{4284.83}  & 4405.79   & 4464.40  & \textbf{4273.78}  \\ \hline
+  800  & 10061.00 & \textbf{9945.74}  & \textbf{9986.13}  & 10259.80  & 10525.90 & \textbf{9999.26}  \\ \hline
+  1000 & 13130.80 & \textbf{13044.10} & \textbf{13077.20} & 13393.00  & 13807.50 & \textbf{13053.10} \\ \hline
   \end{tabular}
   \end{table}
 
@@ -654,13 +650,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{iss_small_assignments}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda   & Ciura    & S/Y      & Sedgewick & I/S      & S1       \\ \hline
-  50   & 312.13   & 319.66   & 322.80   & 335.37    & 322.30   & 323.76   \\ \hline
-  100  & 791.06   & 797.73   & 811.35   & 853.82    & 822.16   & 814.18   \\ \hline
-  200  & 1931.99  & 1919.31  & 1999.55  & 2061.03   & 1998.26  & 1996.21  \\ \hline
-  400  & 4537.96  & 4545.12  & 4731.20  & 4855.45   & 4767.84  & 4720.75  \\ \hline
-  800  & 10502.10 & 10587.70 & 11134.90 & 11121.30  & 11396.80 & 11222.50 \\ \hline
-  1000 & 13866.10 & 13819.40 & 14510.70 & 14523.70  & 14868.70 & 14490.70 \\ \hline
+  N    & Tokuda            & Ciura             & S/Y             & Sedgewick         & I/S             & S1                \\ \hline
+  50   & \textbf{312.13}   & \textbf{319.66}   & 322.80          & 335.37            & \textbf{322.30} & 323.76            \\ \hline
+  100  & \textbf{791.06}   & \textbf{797.73}   & \textbf{811.35} & 853.82            & 822.16          & 814.18            \\ \hline
+  200  & \textbf{1931.99}  & \textbf{1919.31}  & 1999.55         & 2061.03           & 1998.26         & \textbf{1996.21}  \\ \hline
+  400  & \textbf{4537.96}  & \textbf{4545.12}  & 4731.20         & 4855.45           & 4767.84         & \textbf{4720.75}  \\ \hline
+  800  & \textbf{10502.10} & \textbf{10587.70} & 11134.90        & \textbf{11121.30} & 11396.80        & 11222.50          \\ \hline
+  1000 & \textbf{13866.10} & \textbf{13819.40} & 14510.70        & 14523.70          & 14868.70        & \textbf{14490.70} \\ \hline
   \end{tabular}
   \end{table}
 
@@ -669,13 +665,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{iss_small_runtimes}
   \begin{tabular}{|l|l|l|l|l|l|l|}
   \hline
-  N    & Tokuda & Ciura & S/Y   & Sedgewick & I/S   & S1    \\ \hline
-  50   & 1.30   & 1.26  & 1.02  & 1.32      & 1.32  & 1.14  \\ \hline
-  100  & 3.16   & 3.16  & 3.14  & 3.02      & 3.36  & 3.22  \\ \hline
-  200  & 7.54   & 7.95  & 7.54  & 7.61      & 8.11  & 8.00  \\ \hline
-  400  & 18.52  & 19.00 & 17.67 & 17.29     & 18.92 & 18.18 \\ \hline
-  800  & 42.96  & 42.60 & 41.81 & 40.67     & 42.23 & 41.19 \\ \hline
-  1000 & 56.69  & 56.88 & 53.39 & 53.45     & 56.38 & 52.84 \\ \hline
+  N    & Tokuda        & Ciura         & S/Y            & Sedgewick      & I/S   & S1             \\ \hline
+  50   & 1.30          & \textbf{1.26} & \textbf{1.02}  & 1.32           & 1.32  & \textbf{1.14}  \\ \hline
+  100  & \textbf{3.16} & \textbf{3.16} & \textbf{3.14}  & \textbf{3.02}  & 3.36  & 3.22           \\ \hline
+  200  & \textbf{7.54} & 7.95          & \textbf{7.54}  & \textbf{7.61}  & 8.11  & 8.00           \\ \hline
+  400  & 18.52         & 19.00         & \textbf{17.67} & \textbf{17.29} & 18.92 & \textbf{18.18} \\ \hline
+  800  & 42.96         & 42.60         & \textbf{41.81} & \textbf{40.67} & 42.23 & \textbf{41.19} \\ \hline
+  1000 & 56.69         & 56.88         & \textbf{53.39} & \textbf{53.45} & 56.38 & \textbf{52.84} \\ \hline
   \end{tabular}
   \end{table}
 
@@ -686,13 +682,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{tss_medium_comparisons}
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
-  N      & Tokuda  & Ciura   & S/Y     & I/S     & Sedgewick & R/B/H/Z & S2     \\ \hline
-  5000   & 86930   & 86490   & 88075   & 93869   & 89056     & 102065  & 87131   \\ \hline
-  10000  & 192625  & 191703  & 195221  & 209514  & 197067    & 225459  & 193092  \\ \hline
-  20000  & 423598  & 421301  & 429228  & 465748  & 433320    & 493530  & 423824  \\ \hline
-  40000  & 922922  & 918490  & 936240  & 1032259 & 943633    & 1070908 & 923609  \\ \hline
-  80000  & 1999095 & 1992131 & 2033327 & 2273358 & 2045446   & 2317061 & 2002290 \\ \hline
-  100000 & 2564038 & 2552126 & 2605061 & 2923557 & 2623763   & 2959526 & 2563334 \\ \hline
+  N      & Tokuda           & Ciura            & S/Y     & I/S     & Sedgewick & R/B/H/Z & S2               \\ \hline
+  5000   & \textbf{86930}   & \textbf{86490}   & 88075   & 93869   & 89056     & 102065  & \textbf{87131}   \\ \hline
+  10000  & \textbf{192625}  & \textbf{191703}  & 195221  & 209514  & 197067    & 225459  & \textbf{193092}  \\ \hline
+  20000  & \textbf{423598}  & \textbf{421301}  & 429228  & 465748  & 433320    & 493530  & \textbf{423824}  \\ \hline
+  40000  & \textbf{922922}  & \textbf{918490}  & 936240  & 1032259 & 943633    & 1070908 & \textbf{923609}  \\ \hline
+  80000  & \textbf{1999095} & \textbf{1992131} & 2033327 & 2273358 & 2045446   & 2317061 & \textbf{2002290} \\ \hline
+  100000 & \textbf{2564038} & \textbf{2552126} & 2605061 & 2923557 & 2623763   & 2959526 & \textbf{2563334} \\ \hline
   \end{tabular}
 \end{table}
 
@@ -701,13 +697,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{tss_medium_assignments}
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
-  N      & Tokuda  & Ciura   & S/Y     & I/S     & Sedgewick & R/B/H/Z & S2     \\ \hline
-  5000   & 134747  & 132482  & 129043  & 138209  & 133685    & 140459  & 129181  \\ \hline
-  10000  & 296787  & 292056  & 284474  & 306461  & 295196    & 311298  & 284895  \\ \hline
-  20000  & 648807  & 638480  & 623546  & 672463  & 650675    & 680242  & 622844  \\ \hline
-  40000  & 1407318 & 1385991 & 1358871 & 1473610 & 1414589   & 1466640 & 1352658 \\ \hline
-  80000  & 3034012 & 3001389 & 2959087 & 3214096 & 3072581   & 3127946 & 2925254 \\ \hline
-  100000 & 3888404 & 3836014 & 3777087 & 4124557 & 3941499   & 4007456 & 3735445 \\ \hline
+  N      & Tokuda  & Ciura            & S/Y              & I/S     & Sedgewick & R/B/H/Z & S2               \\ \hline
+  5000   & 134747  & \textbf{132482}  & \textbf{129043}  & 138209  & 133685    & 140459  & \textbf{129181}  \\ \hline
+  10000  & 296787  & \textbf{292056}  & \textbf{284474}  & 306461  & 295196    & 311298  & \textbf{284895}  \\ \hline
+  20000  & 648807  & \textbf{638480}  & \textbf{623546}  & 672463  & 650675    & 680242  & \textbf{622844}  \\ \hline
+  40000  & 1407318 & \textbf{1385991} & \textbf{1358871} & 1473610 & 1414589   & 1466640 & \textbf{1352658} \\ \hline
+  80000  & 3034012 & \textbf{3001389} & \textbf{2959087} & 3214096 & 3072581   & 3127946 & \textbf{2925254} \\ \hline
+  100000 & 3888404 & \textbf{3836014} & \textbf{3777087} & 4124557 & 3941499   & 4007456 & \textbf{3735445} \\ \hline
   \end{tabular}
 \end{table}
 
@@ -716,13 +712,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{tss_medium_runtimes}
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
-  N      & Tokuda & Ciura & S/Y   & I/S   & Sedgewick & R/B/H/Z & S2  \\ \hline
-  5000   & 312    & 310   & 294   & 330   & 311       & 296     & 314  \\ \hline
-  10000  & 707    & 702   & 671   & 690   & 695       & 618     & 688  \\ \hline
-  20000  & 1611   & 1550  & 1515  & 1577  & 1484      & 1345    & 1477 \\ \hline
-  40000  & 4207   & 4274  & 4067  & 4273  & 4239      & 3728    & 4135 \\ \hline
-  80000  & 9638   & 9363  & 8541  & 9064  & 9132      & 8058    & 8745 \\ \hline
-  100000 & 13810  & 12058 & 11077 & 11652 & 11976     & 9225    & 9314 \\ \hline
+  N      & Tokuda & Ciura        & S/Y            & I/S   & Sedgewick     & R/B/H/Z       & S2            \\ \hline
+  5000   & 312    & \textbf{310} & \textbf{294}   & 330   & 311           & \textbf{296}  & 314           \\ \hline
+  10000  & 707    & 702          & \textbf{671}   & 690   & 695           & \textbf{618}  & \textbf{688}  \\ \hline
+  20000  & 1611   & 1550         & 1515           & 1577  & \textbf{1484} & \textbf{1345} & \textbf{1477} \\ \hline
+  40000  & 4207   & 4274         & \textbf{4067}  & 4273  & 4239          & \textbf{3728} & \textbf{4135} \\ \hline
+  80000  & 9638   & 9363         & \textbf{8541}  & 9064  & 9132          & \textbf{8058} & \textbf{8745} \\ \hline
+  100000 & 13810  & 12058        & \textbf{11077} & 11652 & 11976         & \textbf{9225} & \textbf{9314} \\ \hline
   \end{tabular}
 \end{table}
 
@@ -733,13 +729,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{iss_medium_comparisons}
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
-  N      & Tokuda  & Ciura   & S/Y     & I/S     & Sedgewick & R/B/H/Z & S2     \\ \hline
-  5000   & 86926   & 86499   & 88071   & 93852   & 89060     & 102054  & 87125   \\ \hline
-  10000  & 192624  & 191711  & 195229  & 209574  & 197045    & 225524  & 193106  \\ \hline
-  20000  & 423593  & 421326  & 429232  & 465791  & 433302    & 493515  & 423825  \\ \hline
-  40000  & 922899  & 918450  & 936191  & 1032317 & 943633    & 1071022 & 923625  \\ \hline
-  80000  & 1998794 & 1992412 & 2033313 & 2272227 & 2045555   & 2317464 & 2002261 \\ \hline
-  100000 & 2564388 & 2551823 & 2605193 & 2923248 & 2624057   & 2959855 & 2563352 \\ \hline
+  N      & Tokuda           & Ciura            & S/Y     & I/S     & Sedgewick & R/B/H/Z & S2               \\ \hline
+  5000   & \textbf{86926}   & \textbf{86499}   & 88071   & 93852   & 89060     & 102054  & \textbf{87125}   \\ \hline
+  10000  & \textbf{192624}  & \textbf{191711}  & 195229  & 209574  & 197045    & 225524  & \textbf{193106}  \\ \hline
+  20000  & \textbf{423593}  & \textbf{421326}  & 429232  & 465791  & 433302    & 493515  & \textbf{423825}  \\ \hline
+  40000  & \textbf{922899}  & \textbf{918450}  & 936191  & 1032317 & 943633    & 1071022 & \textbf{923625}  \\ \hline
+  80000  & \textbf{1998794} & \textbf{1992412} & 2033313 & 2272227 & 2045555   & 2317464 & \textbf{2002261} \\ \hline
+  100000 & \textbf{2564388} & \textbf{2551823} & 2605193 & 2923248 & 2624057   & 2959855 & \textbf{2563352} \\ \hline
   \end{tabular}
 \end{table}
 
@@ -748,13 +744,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{iss_medium_assignments}
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
-  N      & Tokuda  & Ciura   & S/Y     & I/S     & Sedgewick & R/B/H/Z & S2     \\ \hline
-  5000   & 91607   & 91536   & 96002   & 101234  & 94353     & 110577  & 94638   \\ \hline
-  10000  & 201994  & 202938  & 213152  & 226716  & 208567    & 243602  & 209125  \\ \hline
-  20000  & 443461  & 447218  & 469964  & 503670  & 455367    & 529908  & 459749  \\ \hline
-  40000  & 967300  & 979059  & 1019801 & 1120974 & 991883    & 1161681 & 1005877 \\ \hline
-  80000  & 2099578 & 2125122 & 2209278 & 2479564 & 2137726   & 2521194 & 2179979 \\ \hline
-  100000 & 2691737 & 2709969 & 2831031 & 3181857 & 2741611   & 3209010 & 2796455 \\ \hline
+  N      & Tokuda           & Ciura            & S/Y     & I/S     & Sedgewick        & R/B/H/Z & S2      \\ \hline
+  5000   & \textbf{91607}   & \textbf{91536}   & 96002   & 101234  & \textbf{94353}   & 110577  & 94638   \\ \hline
+  10000  & \textbf{201994}  & \textbf{202938}  & 213152  & 226716  & \textbf{208567}  & 243602  & 209125  \\ \hline
+  20000  & \textbf{443461}  & \textbf{447218}  & 469964  & 503670  & \textbf{455367}  & 529908  & 459749  \\ \hline
+  40000  & \textbf{967300}  & \textbf{979059}  & 1019801 & 1120974 & \textbf{991883}  & 1161681 & 1005877 \\ \hline
+  80000  & \textbf{2099578} & \textbf{2125122} & 2209278 & 2479564 & \textbf{2137726} & 2521194 & 2179979 \\ \hline
+  100000 & \textbf{2691737} & \textbf{2709969} & 2831031 & 3181857 & \textbf{2741611} & 3209010 & 2796455 \\ \hline
   \end{tabular}
 \end{table}
 
@@ -763,13 +759,13 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \label{iss_medium_runtimes}
   \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
-  N      & Tokuda & Ciura & S/Y   & I/S   & Sedgewick & R/B/H/Z & S2   \\ \hline
-  5000   & 289    & 284   & 307   & 325   & 335       & 300     & 301   \\ \hline
-  10000  & 758    & 773   & 732   & 753   & 666       & 601     & 716   \\ \hline
-  20000  & 1559   & 1635  & 1594  & 1628  & 1647      & 1468    & 1523  \\ \hline
-  40000  & 3810   & 3483  & 3426  & 3630  & 3451      & 3124    & 3441  \\ \hline
-  80000  & 8956   & 8875  & 8077  & 9163  & 9153      & 7673    & 8767  \\ \hline
-  100000 & 11080  & 11200 & 11228 & 12138 & 12006     & 10361   & 11283 \\ \hline
+  N      & Tokuda         & Ciura          & S/Y           & I/S   & Sedgewick    & R/B/H/Z        & S2            \\ \hline
+  5000   & \textbf{289}   & \textbf{284}   & 307           & 325   & 335          & \textbf{300}   & 301           \\ \hline
+  10000  & 758            & 773            & 732           & 753   & \textbf{666} & \textbf{601}   & \textbf{716}  \\ \hline
+  20000  & \textbf{1559}  & 1635           & 1594          & 1628  & 1647         & \textbf{1468}  & \textbf{1523} \\ \hline
+  40000  & 3810           & 3483           & \textbf{3426} & 3630  & 3451         & \textbf{3124}  & \textbf{3441} \\ \hline
+  80000  & 8956           & 8875           & \textbf{8077} & 9163  & 9153         & \textbf{7673}  & \textbf{8767} \\ \hline
+  100000 & \textbf{11080} & \textbf{11200} & 11228         & 12138 & 12006        & \textbf{10361} & 11283         \\ \hline
   \end{tabular}
 \end{table}
 
