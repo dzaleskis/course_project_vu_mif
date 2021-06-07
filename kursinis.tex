@@ -454,99 +454,6 @@ Gauti duomenys pateikiami suapvalinus iki šimtosios dalies.
 
 \subsubsection{Efektyvumo tyrimas naudojant vadovėlinį Šelo algoritmą}
 
-Kaip galima pastebėti iš \ref{tss_small_comparisons} lentelės, mažiausiai palyginimų bendru atveju atliko Ciura seka,
-nedaug atsiliko S1 ir Simpson-Yachavaram sekos. Mažiausiai priskyrimų, remiantis \ref{tss_small_assignments} lentele, atliko S1 seka, nežymiai daugiau - Simpson-Yachavaram ir Sedgewick sekos.
-Vertinant vidutinį veikimo laiką pateiktą \ref{tss_small_runtimes} lentelėje, sunku išskirti geriausią,
-tačiau palankiausi rezultatai gauti su Sedgewick ir Simpson-Yachavaram sekomis bei S1 seka.
-Todėl, įvertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura, S1 ir Simpson-Yachavaram sekos.
-
-\subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
-
-Analizuojant atliktų palyginimų skaičių, pateikiamą \ref{iss_small_comparisons}, rezultatai beveik nesiskiria nuo VŠA
-ir geriausiai pasirodė Ciura, S1 ir Simpson-Yachavaram sekos.
-Vertinant atliktų priskyrimų skaičių, rezultatai labai stipriai skiriasi nuo gautų naudojant VŠA.
-Kaip matoma \ref{iss_small_assignments} lentelėje, mažiausiai priskyrimų atlieka Tokuda ir Ciura sekos.
-Geriausiai šiame etape vidutinio veikimo laiko atžvilgiu pasirodė Sedgewick ir Simpson-Yachavaram sekos bei S1 seka.
-Įvertinant visus kriterijus, geriausi rezultatai šioje tyrimo dalyje gauti su Tokuda, Ciura ir S1 sekomis.
-
-\subsubsection{Gautų rezultatų apibendrinimas}
-
-Verta pastebėti, jog patobulintas Šelo algoritmas atliekamų palyginimų skaičiumi teoriškai neturėtų skirtis nuo vadovėlinės implementacijos,
-tad gauti įverčiai leidžia įvertinti matavimų tikslumą atspindint Šelo algoritmo atliekamų palyginimų skaičių naudojant šias tarpų sekas vidutiniu atveju.
-Gauti rezultatai rodo, jog Ciura seka atlieka mažiausiai priskyrimų vidutiniu atveju, kai $N \leq 1000$, kaip ir teigta \cite{ciura2001best}.
-Atsižvelgiant į pastebimai prastesnius veikimo laikus, sunku rekomenduoti PŠA nesudėtingų tipų duomenų rikiavimui, kai $N \leq 1000$.
-Tiesa, rikiuojant duomenis, kurių priskyrimas brangus, PŠA veikimo laikas tikėtinai būtų geresnis, nei VŠA, tačiau tuo įsitikinti reikėtų atskiro tyrimo.  
-GA naudojimas Šelo algoritmo trumpų tarpų sekų generavimui duoda gerus rezultatus, kadangi abi GA sugeneruotos sekos (Simpson-Yachavaram ir S1)
-vidutiniu atveju atlieka daugiau palyginimų tik už Ciura seką, yra vienos iš lyderių vertinant atliktų priskyrimų skaičių naudojant VŠA ir pateikia vienus geriausių veikimo laikų.
-Tiesa, naudojant GA sugeneruotos sekos nėra be trūkumų: lyginant su Tokuda ir Ciura sekomis, kurios atlieka daugiau priskyrimų naudojant VŠA, šios sekos atlieka žymiai daugiau priskyrimų
-naudojant PŠA, nei Tokuda ir Ciura sekos. Tai sukelia klausimų dėl jų efektyvumo, kadangi PŠA pašalina tik nereikalingai atliekamus priskyrimus.
-Stebina faktas, jog naudojant VŠA gauti rezultatai yra 10-20\% geresni kai $N \geq 200$, nei gauti
-naudojant PŠA, nors su PŠA atliktų operacijų skaičiai yra žymiai mažesni.
-Taip pat verta pastebėti, jog su PŠA atliktų palyginimų ir priskyrimų skaičiaus santykis artėja prie 1 augant N, priešingai nei naudojant VŠA.
-
-\subsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas}
-
-Vidutinio ilgio tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų sekos:
-\begin{itemize}
-  \item Tokuda: $68178,30301,13467,5985,2660,1182,525,233,103,46,20,9,4,1$ \cite{10.5555/645569.659879}
-  \item Ciura: $90927,40412,17961,7983,3548,1577,701,301,132,57,23,10,4,1$ \cite{ciura2001best}
-  \item Simpson-Yachavaram: $38291,22927,8992,3568,1488,893,219,83,36,13,4,1$ \cite{simpson1999faster}
-  \item Incerpi-Sedgewick: $86961,33936,13776,4592,1968,861,336,112,48,21,7,3,1$ \cite{incerpi1985improved}
-  \item Sedgewick: $64769,36289,16001,8929,3905,2161,929,505,209,109,41,19,5,1$ \cite{SEDGEWICK1986159}
-  \item Roos et al.: $91433,72985,13229,5267,2585,877,155,149,131,23,8,1$ \cite{roos2002genetic}
-  \item S2: $45794,17396,7414,3136,1206,561,264,86,35,12,5,1$
-\end{itemize}
-
-Atsižvelgiant į duomenų dydį, matavimai buvo atlikti 10000 kartų.
-Gauti duomenys pateikiami suapvalinus iki sveikosios dalies.
-
-\subsubsection{Efektyvumo tyrimas naudojant vadovėlinį Šelo algoritmą}
-
-Kaip galima pastebėti \ref{tss_medium_comparisons} lentelėje, mažiausiai palyginimų bendru atveju atliko Ciura ir Tokuda sekos, šiek tiek daugiau - seka S2.
-Mažiausiai priskyrimų, remiantis \ref{tss_medium_assignments} lentele, atliko Simpson-Yachavaram ir S2 sekos.
-Geriausi veikimo laikai, pateikti \ref{tss_medium_runtimes} lentelėje, pastebimi su Roos et al. seka, sekos S2 rezultatai taip pat palankūs.
-Vertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura ir Tokuda sekos bei seka S2.
-
-\subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
-
-Analizuojant atliktų palyginimų skaičių, pateikiamą \ref{iss_medium_comparisons}, rezultatai yra panašūs į gautus tiriant VŠA
-ir geriausiai pasirodė Ciura, Tokuda ir S2 sekos.
-Vertinant atliktus priskyrimus, geriausi rezultatai, pateikti \ref{iss_medium_assignments} lentelėje, buvo gauti su Tokuda, Ciura ir Sedgewick sekomis.
-Vertinant visus kriterijus, geriausiai pasirodė Ciura ir Tokuda sekos.
-
-\subsubsection{Gautų rezultatų apibendrinimas}
-
-Gauti rezultatai rodo, jog Roos et al. seka, kaip ir teigta \cite{roos2002genetic},
-veikia greičiau už Sedgewick ir Simpson-Yachavaram sekas, bent jau kai $N \leq 100000$, o pradiniai duomenys - sveiki skaičiai.
-Iš tiesų, ši seka pagal gautus rezultatus yra absoliuti lyderė vertinant vidutinį veikimo laiką, tačiau būtina atsižvelgti į faktą, jog ji atlieka labai daug operacijų,
-tad yra tikėtina, jog rikiuojant duomenis, kurių priskyrimas ar palyginimas yra brangus, gauti veikimo laiko rezultatai nebūtų tokie palankūs.
-Ciura seka, kaip ir tiriant trumpas tarpų sekas, pagal gautus rezultatus atlieka mažiausiai priskyrimų, kas dalinai pateisina autoriaus spėjimą \cite{ciura2001best},
-jog seką $701,301,132,57,23,10,4,1$ pratęsus bus gauta palyginimų atžvilgiu optimali seka ir didesniems $N$.
-Simpson-Yachavaram seka, kaip ir teigė \cite{simpson1999faster} autoriai, atlieka mažiau priskyrimų ir veikia greičiau, nei Sedgewick seka.
-GA naudojimas generuojant vidutinio ilgio tarpų sekas duoda gerus rezultatus: nors nė viena iš GA sugeneruotų sekų (Simpson-Yachavaram, Roos et al. ir S2) nelenkia Tokuda ir Ciura pateiktų sekų
-vertinant atliktus palyginimus, S2 ir Simpson-Yachavaram sekos naudojant VŠA atlieka mažiau priskyrimų, o Roos et al. seka, kaip ir minėta anksčiau, veikia labai greitai. 
-Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia pastebimai greičiau, nei naudojant VŠA, ypač augant duomenų dydžiui.
-
-\sectionnonum{Išvados}
-
-Įvertinant darbe gautus rezultatus, galima teigti, jog genetiniai algoritmai yra tinkamas metodas efektyvių tarpų sekų radimui.
-Šelo algoritmu rikiuojant nedidelius ($N \leq 1000$) duomenų dydžius, galima rekomenduoti Ciura ir S1 tarpų sekas.
-Šelo algoritmu rikiuojant didesnius ($1000 \leq N \leq 100000$) duomenų dydžius, galima rekomenduoti Ciura ir Tokuda tarpų sekas bei patobulintą Šelo algoritmo implementaciją.
-
-
-% Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
-% suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
-
-\printbibliography[heading=bibintoc] % Literatūros šaltiniai
-
-\appendix  % Priedai
-% Prieduose gali būti pateikiama pagalbinė, ypač darbo autoriaus savarankiškai
-% parengta, medžiaga. Savarankiški priedai gali būti pateikiami kompiuterio
-% diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
-% Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
-
-
-\section{Trumpų tarpų sekų efektyvumo tyrimo rezultatai naudojant vadovėlinį Šelo algoritmą}
 
 \begin{table}[H]
   \caption{Vidutinis VŠA atliktų palyginimų skaičius naudojant trumpas tarpų sekas}
@@ -593,7 +500,14 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \end{tabular}
   \end{table}
 
-\section{Trumpų tarpų sekų efektyvumo tyrimo rezultatai naudojant patobulintą Šelo algoritmą}
+Kaip galima pastebėti iš \ref{tss_small_comparisons} lentelės, mažiausiai palyginimų bendru atveju atliko Ciura seka,
+nedaug atsiliko S1 ir Simpson-Yachavaram sekos. Mažiausiai priskyrimų, remiantis \ref{tss_small_assignments} lentele, atliko S1 seka, nežymiai daugiau - Simpson-Yachavaram ir Sedgewick sekos.
+Vertinant vidutinį veikimo laiką pateiktą \ref{tss_small_runtimes} lentelėje, sunku išskirti geriausią,
+tačiau palankiausi rezultatai gauti su Sedgewick ir Simpson-Yachavaram sekomis bei S1 seka.
+Todėl, įvertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura, S1 ir Simpson-Yachavaram sekos.
+
+\subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
+
 
 \begin{table}[H]
   \caption{Vidutinis PŠA atliktų palyginimų skaičius naudojant trumpas tarpų sekas}
@@ -640,7 +554,45 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \end{tabular}
   \end{table}
 
-\section{Vidutinio ilgio tarpų sekų efektyvumo tyrimo rezultatai naudojant vadovėlinį Šelo algoritmą}
+Analizuojant atliktų palyginimų skaičių, pateikiamą \ref{iss_small_comparisons} lentelėje, rezultatai beveik nesiskiria nuo VŠA
+ir geriausiai pasirodė Ciura, S1 ir Simpson-Yachavaram sekos.
+Vertinant atliktų priskyrimų skaičių, rezultatai labai stipriai skiriasi nuo gautų naudojant VŠA.
+Kaip matoma \ref{iss_small_assignments} lentelėje, mažiausiai priskyrimų atlieka Tokuda ir Ciura sekos.
+Geriausiai šiame etape vidutinio veikimo laiko atžvilgiu, remiantis \ref{iss_small_runtimes} lentele, pasirodė Sedgewick ir Simpson-Yachavaram sekos bei S1 seka.
+Įvertinant visus kriterijus, geriausi rezultatai šioje tyrimo dalyje gauti su Tokuda, Ciura ir S1 sekomis.
+
+\subsubsection{Gautų rezultatų apibendrinimas}
+
+Verta pastebėti, jog patobulintas Šelo algoritmas atliekamų palyginimų skaičiumi teoriškai neturėtų skirtis nuo vadovėlinės implementacijos,
+tad gauti įverčiai leidžia įvertinti matavimų tikslumą atspindint Šelo algoritmo atliekamų palyginimų skaičių naudojant šias tarpų sekas vidutiniu atveju.
+Gauti rezultatai rodo, jog Ciura seka atlieka mažiausiai priskyrimų vidutiniu atveju, kai $N \leq 1000$, kaip ir teigta \cite{ciura2001best}.
+Atsižvelgiant į pastebimai prastesnius veikimo laikus, sunku rekomenduoti PŠA nesudėtingų tipų duomenų rikiavimui, kai $N \leq 1000$.
+Tiesa, rikiuojant duomenis, kurių priskyrimas brangus, PŠA veikimo laikas tikėtinai būtų geresnis, nei VŠA, tačiau tuo įsitikinti reikėtų atskiro tyrimo.  
+GA naudojimas Šelo algoritmo trumpų tarpų sekų generavimui duoda gerus rezultatus, kadangi abi GA sugeneruotos sekos (Simpson-Yachavaram ir S1)
+vidutiniu atveju atlieka daugiau palyginimų tik už Ciura seką, yra vienos iš lyderių vertinant atliktų priskyrimų skaičių naudojant VŠA ir pateikia vienus geriausių veikimo laikų.
+Tiesa, naudojant GA sugeneruotos sekos nėra be trūkumų: lyginant su Tokuda ir Ciura sekomis, kurios atlieka daugiau priskyrimų naudojant VŠA, šios sekos atlieka žymiai daugiau priskyrimų
+naudojant PŠA, nei Tokuda ir Ciura sekos. Tai sukelia klausimų dėl jų efektyvumo, kadangi PŠA pašalina tik nereikalingai atliekamus priskyrimus.
+Stebina faktas, jog naudojant VŠA gauti rezultatai yra 10-20\% geresni kai $N \geq 200$, nei gauti
+naudojant PŠA, nors su PŠA atliktų operacijų skaičiai yra žymiai mažesni.
+Taip pat verta pastebėti, jog su PŠA atliktų palyginimų ir priskyrimų skaičiaus santykis artėja prie 1 augant N, priešingai nei naudojant VŠA.
+
+\subsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas}
+
+Vidutinio ilgio tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų sekos:
+\begin{itemize}
+  \item Tokuda: $68178,30301,13467,5985,2660,1182,525,233,103,46,20,9,4,1$ \cite{10.5555/645569.659879}
+  \item Ciura: $90927,40412,17961,7983,3548,1577,701,301,132,57,23,10,4,1$ \cite{ciura2001best}
+  \item Simpson-Yachavaram: $38291,22927,8992,3568,1488,893,219,83,36,13,4,1$ \cite{simpson1999faster}
+  \item Incerpi-Sedgewick: $86961,33936,13776,4592,1968,861,336,112,48,21,7,3,1$ \cite{incerpi1985improved}
+  \item Sedgewick: $64769,36289,16001,8929,3905,2161,929,505,209,109,41,19,5,1$ \cite{SEDGEWICK1986159}
+  \item Roos et al.: $91433,72985,13229,5267,2585,877,155,149,131,23,8,1$ \cite{roos2002genetic}
+  \item S2: $45794,17396,7414,3136,1206,561,264,86,35,12,5,1$
+\end{itemize}
+
+Atsižvelgiant į duomenų dydį, matavimai buvo atlikti 10000 kartų.
+Gauti duomenys pateikiami suapvalinus iki sveikosios dalies.
+
+\subsubsection{Efektyvumo tyrimas naudojant vadovėlinį Šelo algoritmą}
 
 \begin{table}[H]
   \caption{Vidutinis VŠA atliktų palyginimų skaičius naudojant vidutinio ilgio tarpų sekas}
@@ -687,7 +639,12 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   \end{tabular}
 \end{table}
 
-\section{Vidutinio ilgio tarpų sekų efektyvumo tyrimo rezultatai naudojant patobulintą Šelo algoritmą}
+Kaip galima pastebėti \ref{tss_medium_comparisons} lentelėje, mažiausiai palyginimų bendru atveju atliko Ciura ir Tokuda sekos, šiek tiek daugiau - seka S2.
+Mažiausiai priskyrimų, remiantis \ref{tss_medium_assignments} lentele, atliko Simpson-Yachavaram ir S2 sekos.
+Mažiausi veikimo laikai, pateikiami \ref{tss_medium_runtimes} lentelėje, pastebimi su Roos et al. seka, sekos S2 rezultatai taip pat palankūs.
+Vertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura ir Tokuda sekos bei seka S2.
+
+\subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
 
 \begin{table}[H]
   \caption{Vidutinis PŠA atliktų palyginimų skaičius naudojant vidutinio ilgio tarpų sekas}
@@ -733,5 +690,42 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
   100000 & \textbf{11080} & \textbf{11200} & 11228         & 12138 & 12006        & \textbf{10361} & 11283         \\ \hline
   \end{tabular}
 \end{table}
+
+Analizuojant atliktų palyginimų skaičių, pateikiamą \ref{iss_medium_comparisons} lentelėje, rezultatai yra panašūs į gautus tiriant VŠA
+ir geriausiai pasirodė Ciura, Tokuda ir S2 sekos.
+Vertinant atliktus priskyrimus, geriausi rezultatai, pateikiami \ref{iss_medium_assignments} lentelėje, buvo gauti su Tokuda, Ciura ir Sedgewick sekomis.
+Nagrinėjant vidutinį veikimo laiką, pateikiamą \ref{iss_medium_runtimes} lentelėje, bendru atveju didžiausia sparta gaunama su Roos et al. ir S2 sekomis.
+Vertinant visus kriterijus, geriausiai pasirodė Ciura ir Tokuda sekos.
+
+\subsubsection{Gautų rezultatų apibendrinimas}
+
+Gauti rezultatai rodo, jog Roos et al. seka, kaip ir teigta \cite{roos2002genetic},
+veikia greičiau už Sedgewick ir Simpson-Yachavaram sekas, bent jau kai $N \leq 100000$, o pradiniai duomenys - sveiki skaičiai.
+Iš tiesų, ši seka pagal gautus rezultatus yra absoliuti lyderė vertinant vidutinį veikimo laiką, tačiau būtina atsižvelgti į faktą, jog ji atlieka labai daug operacijų,
+tad yra tikėtina, jog rikiuojant duomenis, kurių priskyrimas ar palyginimas yra brangus, gauti veikimo laiko rezultatai nebūtų tokie palankūs.
+Ciura seka, kaip ir tiriant trumpas tarpų sekas, pagal gautus rezultatus atlieka mažiausiai priskyrimų, kas dalinai pateisina autoriaus spėjimą \cite{ciura2001best},
+jog seką $701,301,132,57,23,10,4,1$ pratęsus bus gauta palyginimų atžvilgiu optimali seka ir didesniems $N$.
+Simpson-Yachavaram seka, kaip ir teigė \cite{simpson1999faster} autoriai, atlieka mažiau priskyrimų ir veikia greičiau, nei Sedgewick seka.
+GA naudojimas generuojant vidutinio ilgio tarpų sekas duoda gerus rezultatus: nors nė viena iš GA sugeneruotų sekų (Simpson-Yachavaram, Roos et al. ir S2) nelenkia Tokuda ir Ciura pateiktų sekų
+vertinant atliktus palyginimus, S2 ir Simpson-Yachavaram sekos naudojant VŠA atlieka mažiau priskyrimų, o Roos et al. seka, kaip ir minėta anksčiau, veikia labai greitai. 
+Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia pastebimai greičiau, nei naudojant VŠA, ypač augant duomenų dydžiui.
+
+\sectionnonum{Išvados}
+
+Įvertinant darbe gautus rezultatus, galima teigti, jog genetiniai algoritmai yra tinkamas metodas efektyvių tarpų sekų radimui.
+Šelo algoritmu rikiuojant nedidelius ($N \leq 1000$) duomenų dydžius, galima rekomenduoti Ciura ir S1 tarpų sekas.
+Šelo algoritmu rikiuojant didesnius ($1000 \leq N \leq 100000$) duomenų dydžius, galima rekomenduoti Ciura ir Tokuda tarpų sekas bei patobulintą Šelo algoritmo implementaciją.
+
+
+% Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
+% suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
+
+\printbibliography[heading=bibintoc] % Literatūros šaltiniai
+
+% \appendix  % Priedai
+% Prieduose gali būti pateikiama pagalbinė, ypač darbo autoriaus savarankiškai
+% parengta, medžiaga. Savarankiški priedai gali būti pateikiami kompiuterio
+% diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
+% Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
 
 \end{document}
