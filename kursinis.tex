@@ -92,7 +92,7 @@ Yra įrodyta, kad Šelo algoritmo laiko sudėtingumo blogiausiu atveju apatinė 
 $\Omega(\frac{n\,log^2\,n}{log\,log\,n^2})$ \cite{267769}, taigi jis nėra asimptotiškai optimalus.
 Tiesa, kol kas nėra rasta seka, su kuria Šelo algoritmas pasiektų šią apatinę ribą.
 Kiek žinoma autoriui, asimptotiškai geriausia tarpų seka yra rasta Pratt, kuri yra formos
-$2^p3^p$ ir turi $\Theta(n\,log^2\,n)$ laiko sudėtingumą \cite{pratt1972shellsort},
+$2^p3^p$ ir turi $\Theta(n\,log^2\,n)$ laiko sudėtingumą blogiausiu atveju \cite{pratt1972shellsort},
 tačiau praktikoje ji veikia lėčiau už Ciura \cite{ciura2001best} ar Tokuda \cite{10.5555/645569.659879} pasiūlytas sekas.
 Daugelio praktikoje efektyvių sekų asimptotinis sudėtingumas laiko atžvilgiu lieka atvira problema,
 nes jos yra rastos eksperimentiškai.
@@ -172,9 +172,6 @@ yra scenarijų, kuriais jį rinktis tikrai verta.
 Viena palankiausių Šelo algoritmo savybių yra jo adaptyvumas.
 Adaptyvumas rikiavimo algoritmų kontekste reiškia, jog algoritmas atlieka mažiau operacijų, jei duomenys dalinai išrikiuoti.
 Adaptyvumą Šelo algoritmas paveldi iš rikiavimo įterpimu, nes yra jo optimizacija.
-Verta pastebėti, jog Šelo algoritmas būtent šia savybe ir remiasi rikiavimo įterpimu optimizavimui:
-kadangi rikiavimas įterpimu veikia labai greitai, kai duomenys išrikiuoti (tokiu atveju sudėtingumas laiko atžvilgiu yra $O(n)$),
-duomenis pradžioje h-išrikiavus, paskutine iteracija taikomas rikiavimas įterpimu veikia daug greičiau.
 Moksliniuose tyrimuose ši savybė retai turi įtakos, kadangi dažniausia siekiama ištirti algoritmo veikimą, kai duomenys
 nėra tvarkingai išdėstyti ir tipiškai renkamasi atsitiktinai generuoti pradinius duomenis šiam tikslui pasiekti.
 Savaime aišku, jog praktikoje retai pavyks sutikti visiškai atsitiktinai išsidėsčiusius duomenis, neturinčius nei vieno išrikiuoto posekio ilgesnio nei 1.
@@ -185,9 +182,6 @@ Palankūs rezultatai pateikiami ir \cite{7280062} - su dalinai išrikiuotais duo
 duomenimis pasiekiamas apie 3.8 karto mažesnis veikimo greitis.
 Taigi rikiuojant bent dalinai išrikiuotus duomenis Šelo algoritmas veikia žymiai greičiau.
 
-
-% \subsection{Šelo rikiavimo algoritmo asimptotinė analizė}
-
 \subsection{Šelo rikiavimo algoritmo versijos}
 
 \subsubsection{Vadovėlinis Šelo rikiavimo algoritmas}
@@ -196,7 +190,23 @@ Kaip ir daugelis algoritmų, Šelo rikiavimo algoritmas turi keletą galimų imp
 Žinomiausia iš jų, be abejo, yra vadovėlinė šio algoritmo versija (toliau - VŠA),
 kurią D. L. Shell paskelbė dar 1959 metais \cite{shell1959high}.
 Jos pseudokodas pateikiamas \ref{alg:tss} algoritme.
-% parasyti daugiau cia
+
+Įdėmiau įsižiūrėjus, nesunku pastebėti Šelo algoritmo panašumą į paprastą rikiavimą įterpimu - pašalinus išorinį ciklą, iteruojantį tarpų sekos narius bei pakeitus
+kintamąjį $gap$ į $1$, gaunamas būtent šio algoritmo kodas.
+Paties rikiavimo įterpimu idėja yra gana paprasta: pradžioje rikiuojama seka yra suskaidoma į du posekius,
+kur kairysis (susidedantis iš kairiausio sekos elemento) yra išrikiuotas, o dešinysis (susidedantis iš visų likusių sekos elementų) - ne.
+Tada kiekvieną iteraciją išrikiuotas posekis yra plečiamas, imant kairiausią neišrikiuoto posekio elementą ir įterpiant jį į išrikiuotą posekį.
+Naujų elementų įterpimas į išrikiuotą posekį vyksta iteratyviai sukeičiant įterpiamą elementą su elementu, esančiu jam iš kairės, jei šis yra didesnis už įterpiamą elementą.
+Algoritmas baigia darbą, kai neišrikiuoto posekio ilgis yra 0.
+
+Verta pastebėti, jog Šelo algoritmas tėra rikiavimo įterpimu generalizacija, kur įterpimas gali vykti atstumu, didesniu nei 1.
+Būtent didesnis įterpimo atstumas ir suteikia Šelo algoritmui pranašumą, kadangi labiausiai nuo galutinės pozicijos nutolę elementai gali greičiau patekti į reikiamą poziciją.
+Šelo algoritmo idėjos turi tvirtą matematinį pagrindą: rikiavimas įterpimu turi $O(n^2)$ laiko sudėtingumą blogiausiu atveju (pavyzdžiui, kai rikiuojama seka yra išrikiuota atgaline tvarka),
+tačiau kai didžiausias atstumas tarp dviejų neišrikiuotų elementų yra $k$, rikiavimo įterpimu laiko sudėtingumas yra $O(kn)$.
+Taigi seką $h$-išrikiavus, paskutinė iteracija turės $O(hn)$ laiko sudėtingumą.
+Iteracijos su dideliais tarpais taip pat yra gana greitos, kadangi dirbama su daug mažesniais elementų kiekias,
+o šiuo atveju rikiavimas įterpimu yra vienas greičiausių.
+
 
 \begin{algorithm}[H]
   \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{alg:tss}
@@ -223,23 +233,35 @@ Vykdant vidinį vadovėlinio Šelo algoritmo ciklą (\ref{alg:tss} algoritmo \re
 Jei $S[j]$ jau yra tinkamoje pozicijoje, vidinis ciklas nėra vykdomas ir jokių elementų pozicijos nėra keičiamos.
 Tačiau \ref{alg:tss:assign1} ir \ref{alg:tss:assign2} eilutėse vis tiek yra vykdomi du priskyrimai,
 kurie šiuo atveju nueina veltui (o taip nutinka pakankamai dažnai).
-Siekiant tai ištaisyti, \cite{Radavičius_Baranauskas_2013} pateikė patobulintą Šelo algoritmo versiją (toliau - PŠA), kuri prieš vykdydama
-bet kokius kitus žingsnius patikrina, ar elementas $S[j]$ jau yra tinkamoje pozicijoje.
-Patobulinto Šelo algoritmo pseudokodas pateikiamas \ref{alg:tss} algoritme.
+Siekiant tai ištaisyti, \cite{Radavičius_Baranauskas_2013} pateikė patobulintą Šelo algoritmo versiją (toliau - PŠA),
+kurią galima rasti \ref{alg:iss} algoritme.
+
+PŠA prieš vykdydamas bet kokius kitus žingsnius patikrina, ar elementas $S[j]$ jau yra tinkamoje pozicijoje
+(žr. \ref{alg:iss} algoritmo \ref{alg:iss:check} eil.), kas leidžia sumažinti atliekamų priskyrimų skaičių,
+kai su $S[j]$ pagrindinės rikiavimo logikos (\ref{alg:iss} algoritmo \ref{alg:iss:inner:start}-\ref{alg:iss:inner:end} eil.) nėra reikalo vykdyti.
+Taip pat, kadangi iš pat pradžių yra užtikrinama, jog galima atlikti nors vieną sukeitimą,
+vadovėlinio Šelo algoritmo $while$ ciklą (\ref{alg:tss} algoritmo \ref{alg:tss:while:start}-\ref{alg:tss:while:end} eil.)
+galima pakeisti $repeat\,...\,until$ tipo ciklu, kas ir yra atliekama \ref{alg:iss} algoritmo \ref{alg:iss:loop:start}-\ref{alg:iss:loop:end} eilutėse.
+
+Reikia pastebėti, jog patobulintas Šelo algoritmas nuo vadovėlinės versijos atliekamų operacijų prasme skiriasi tik
+atliekamais priskyrimais.
+Tačiau šios optimizacijos svarba pasirodo pakankamai didelė -
+autorių teigimu \cite{Radavičius_Baranauskas_2013}, PŠA vidutiniškai atlieka 40-80\% mažiau priskyrimų ir veikia 20\% greičiau, nei VŠA.
+Tiesa, PŠA nėra plačiai naudojamas, o jo veikimas vidutiniu atveju originaliame darbe ištirtas tik rėžyje $500 \leq N \leq 2000$.
 
 \begin{algorithm}[H]
   \caption{Patobulintas Šelo rikiavimo algoritmas}\label{alg:iss}
   \begin{algorithmic}[1]
   \ForEach {$gap$ \textbf{in} $H$}
     \For {$i\gets gap+1$ \textbf{to} $N$}
-      \If {$S[i-gap] > S[i]$}
-        \State $j\gets i$
+      \If {$S[i-gap] > S[i]$}\label{alg:iss:check}
+        \State $j\gets i$\label{alg:iss:inner:start}
         \State $temp\gets S[i]$
-        \Repeat
+        \Repeat\label{alg:iss:loop:start}
           \State $S[j]\gets S[j - gap]$
           \State $j\gets j-gap$
-        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}
-        \State $S[j]\gets temp$
+        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}\label{alg:iss:loop:end}
+        \State $S[j]\gets temp$\label{alg:iss:inner:end}
       \EndIf
     \EndFor
   \EndFor
@@ -282,7 +304,7 @@ kadangi veikimo laiko įvertis nėra universalus.
 Verta pastebėti, jog atliktų priskyrimų skaičių reikia vertinti, atsižvelgiant į kontekstą, kadangi
 seka, kuri atlieka daug priskyrimų, nebūtinai yra neefektyvi - daug svarbesnis yra atliekamų palyginimų ir priskyrimų santykis.
 Tai galima paaiškinti paprastu pavyzdžiu: jei su tam tikra tarpų seka Šelo algoritmas atlieka santykinai mažai palyginimų ir daug priskyrimų, galima laikyti,
-jog su ja algoritmas dirba labai efektyviai, kadangi atlikti palyginimai nenueina veltui ir rikiuojamos sekos $S$ elementai greitai artėja link galutinės pozicijos.
+jog su ja algoritmas dirba pakankamai efektyviai, kadangi atlikti palyginimai nenueina veltui ir rikiuojamos sekos $S$ elementai greitai artėja link galutinės pozicijos.
 Reikia atsižvelgti ir į tai, jog vadovėlinė Šelo algoritmo implementacija dažnai atlieka nereikalingus priskyrimus,
 tad atliekant sekų vertinimą, yra tikslinga įvertinti sekas naudojant ir VŠA, ir PŠA \cite{Radavičius_Baranauskas_2013}.
 Savaime suprantama, jog į veikimo laiką verta žvelgti kritiškai, kadangi jis priklauso nuo algoritmo implementacijos,
