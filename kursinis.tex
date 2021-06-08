@@ -133,6 +133,7 @@ pritaikyti genetinius algoritmus Šelo algoritmo tarpų sekoms generuoti.
 Darbo uždaviniai:
 \begin{itemize}
   \item Atlikti Šelo rikiavimo algoritmo literatūros analizę.
+  \item Atlikti genetinių algoritmų literatūros analizę.
   \item Nustatyti kriterijus tarpų sekų efektyvumui įvertinti.
   \item Naudojant genetinius algoritmus sugeneruoti tarpų sekas.
   \item Paruošti aplinką eksperimentų vykdymui.
@@ -141,14 +142,21 @@ Darbo uždaviniai:
 
 Šis darbas sudarytas iš 5 skyrių.
 Pirmame skyriuje atliekama Šelo rikiavimo algoritmo literatūros analizė.
-Antrame skyriuje nustatomi kriterijai tarpų sekų efektyvumui įvertinti.
-Trečiame skyriuje naudojant genetinius algoritmus generuojamos tarpų sekos.
-Ketvirtame skyriuje paruošiama eksperimentų vykdymo aplinka.
-Penktame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumas.
+Antrame skyriuje atliekama genetinių algoritmų literatūros analizė.
+Trečiame skyriuje nustatomi kriterijai tarpų sekų efektyvumui įvertinti.
+Ketvirtame skyriuje naudojant genetinius algoritmus generuojamos tarpų sekos.
+Penktame skyriuje paruošiama eksperimentų vykdymo aplinka.
+Šeštame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir pateiktų literatūroje tarpų sekų efektyvumas.
 
 \section{Šelo rikiavimo algoritmas}
 
-\subsection{Šelo rikiavimo algoritmo sparta}
+Šis skyrius sudarytas iš 2 poskyrių.
+Pirmame poskyryje nagrinėjama Šelo algoritmo veikimo sparta.
+Antrame poskyryje analizuojamos Šelo algoritmo versijos.
+
+\subsection{Šelo rikiavimo algoritmo veikimo sparta}
+
+Šiame poskyryje nagrinėjamas Šelo algoritmo veikimo greitis priklausomai nuo duomenų dydžio ir duomenų specifikos.
 
 \subsubsection{Veikimo greitis priklausomai nuo duomenų dydžio}
 
@@ -183,6 +191,8 @@ duomenimis pasiekiamas apie 3.8 karto mažesnis veikimo greitis.
 Taigi rikiuojant bent dalinai išrikiuotus duomenis Šelo algoritmas veikia žymiai greičiau.
 
 \subsection{Šelo rikiavimo algoritmo versijos}
+
+Šiame poskyryje analizuojami du Šelo algoritmo variantai: vadovėlinis Šelo algoritmas ir patobulintas Šelo algoritmas. 
 
 \subsubsection{Vadovėlinis Šelo rikiavimo algoritmas}
 
@@ -268,6 +278,117 @@ Tiesa, PŠA nėra plačiai naudojamas, o jo veikimas vidutiniu atveju originalia
   \end{algorithmic}
 \end{algorithm}
 
+\section{Genetiniai algoritmai}
+
+Paprasčiausias genetinis algoritmas susideda iš chromosomų populiacijos bei atrankos, mutacijos ir rekombinacijos operatorių \cite{simpson1999faster}.
+Šiame skyriuje bus nagrinėjamos šių terminų reikšmės ir genetinių algoritmų veikimo principai.
+
+\subsection{Chromosomų populiacija}
+
+Chromosoma GA kontekste vadiname potencialų uždavinio sprendinį.
+Projektuojant genetinį algoritmą tam tikro uždavinio sprendimui, svarbu tinkamai pasirinkti,
+kaip kompiuteriu modeliuoti galimus sprendinius (chromosomas).
+Chromosomos kompiuterio atmintyje standartiškai išreiškiamos bitų eilutėmis \cite{whitley1994genetic},
+kadangi tai palengvina tiek mutaciją (pakanka apversti kurio nors atsitiktinio bito reikšmę),
+tiek rekombinaciją (pakanka perkopijuoti pasirinktus tėvinių chromosomų bitus į vaikinę chromosomą).
+Tiesa, tai nėra vienintelis įmanomas būdas, ir kai kurių uždavinių sprendiniai modeliuojami pvz. grafu ar simbolių eilute.
+
+Sprendinio kokybę įvardijame kaip jo tinkamumą, kuris apibrėžiamas tinkamumo funkcijos reikšme, pateikus sprendinį kaip parametrą.
+Nesunku pastebėti, jog tinkamumo funkcija tėra tikslo funkcijos specializacija, kuri naudojama chromosomų vertinimui.
+Tinkamumo funkcija yra viena svarbiausių genetinio algoritmo dalių,
+kadangi kai ji netinkamai parinkta, algoritmas nekonverguos į tinkamą sprendinį arba užtruks labai ilgai.
+
+Chromosomų rinkinys, literatūroje dažnai vadinamas populiacija, atspindi uždavinio sprendinių aibę, kuri kinta kiekvieną genetinio algoritmo iteraciją.
+Populiaciją dažnu atveju sudaro šimtai ar net tūkstančiai individų.
+Tiesa, populiacijos dydį būtina nustatyti priklausomai nuo sprendžiamo uždavinio, kadangi per didelės populiacijos pasirinkimas
+chromosomų kokybės gali nepadidinti ir privesti prie resursų švaistymo.
+Jei GA suprojektuotas tinkamai, dažnu atveju vidutinis populiacijos tinkamumas gerės kiekvieną iteraciją \cite{simpson1999faster}.
+
+\subsection{Genetiniai operatoriai}
+
+Esminė GA dalis yra populiacijos genetinės įvairovės užtikrinimas, geriausių individų atranka ir kryžminimasis.
+Šiems procesams nesunku rasti atitikmenis nagrinėjant gamtoje vykstančius evoliucinius reiškinius.
+Siekiant užtikrinti šių biologinių procesų išpildymą, genetinis algoritmas vykdymo metu
+iteratyviai atnaujina esamą populiaciją ir kuria naujas kartas
+taikydamas biologijos žiniomis paremtus atrankos, rekombinacijos ir mutacijos operatorius.
+
+Atrankos operatorius grąžina tinkamiausius populiacijos individus, kuriems yra leidžiama susilaukti palikuonių taikant rekombinacijos operatorių.
+Dažniausiai atranka vykdoma atsižvelgiant į populiacijos individų tinkamumą, atrenkant ir pateikiant rekombinacijai tuos, kurių tinkamumas yra geriausias.
+Verta pastebėti, jog įprastai rekombinacijai yra pasirenkama tam tikra fiksuota einamosios populiacijos dalis
+ir daugelyje GA implementacijų šis dydis yra nurodomas kaip veikimo parametras.
+Įprastai populiacijos dalis, kuri nebuvo atrinkta rekombinacijai, būna mažesnė.
+Dažniausiai ir jai priklausančios chromosomos yra perkeliamos į kitą GA iteraciją, siekiant užtikrinti naujos populiacijos genetinę įvairovę.
+Tinkamas rekombinacijai atrenkamos populiacijos dalies pasirinkimas yra svarbus, kadangi
+kai šis parametras per didelis, populiacija pradeda konverguoti per anksti ir nėra atliekama pakankamai plati galimų sprendinių paieška.
+
+Rekombinacijos operatorius įprastai veikia iš dviejų tėvinių chromosomų sukurdamas naują vaikinę chromosomą, kas dažniausiai pasiekiama
+tam tikru būdu perkopijuojant tėvų genų atkarpas į vaikinę chromosomą.
+Tiesa, kai kurie tyrimai \cite{ting2005mean,eiben1994genetic} rodo, jog rekombinacijai naudojant daugiau nei du tėvus,
+gautų vaikinių chromosomų kokybė yra geresnė.
+Šiame darbe paprastumo dėlėi bus laikoma, jog rekombinacija vyksta naudojant tik du tėvus.
+Rekombinacijos strategijų yra įvairių, tačiau ne kiekvienam uždaviniui visos jos tinka, kadangi
+kai kuriais atvejais netinkamai parinkta rekombinacijos strategija pagamina neatitinkančią uždavinio apribojimų vaikinę chromosomą.
+Pavyzdžiui, jei modeliuojama chromosoma yra sąrašas, turintis susidėti iš tam tikrų elementų, neįmanoma garantuoti, jog atsitiktinai
+perkopijavus tėvinių chromosomų genus į vaikinę chromosomą šis apribojimas bus išlaikytas.
+Šiai problemai spręsti yra pasitelkiamos specializuotos rekombinacijos strategijos \cite{larranaga1996learning} arba įvedama chromosomų normalizacija.
+
+Galiausiai tam tikrai populiacijos daliai yra pritaikomas mutacijos operatorius.
+Jo veikimo principas yra gana paprastas: pasirinktos chromosomos vienas ar keli genai yra modifikuojami,
+nežymiai pakeičiant jų reikšmes ar sukeičiant kelių genų reikšmes vietomis.
+Mutacijos operatorius praplečia vykdomos paieškos erdvę, o tai labai svarbu, kadangi kitaip algoritmas gali konverguoti
+į lokaliojo minimumo taškus, taip ir nepasiekdamas globaliojo minimumo.
+Atsižvelgiant į tai, yra laikoma, jog mutacijos operatorius yra kertinė genetinio algoritmo dalis,
+kuri palaiko genetinę individų įvairovę ir padeda rasti tinkamiausius sprendinius.
+Įprastai mutacija kiekvienai chromosomai taikoma su tam tikra tikimybe, kuri nurodoma kaip vienas iš GA veikimo parametrų.
+Tinkamas chromosomos mutacijos tikimybės parinkimas yra vienas iš svarbiausių sprendimų projektuojant GA,
+kadangi nuo mutacijos tikimybės dažnu atveju priklauso gaunamų sprendinių kokybė.
+Jei mutacijos tikimybė yra per didelė, GA išsigimsta į primityvią atsitiktinę paiešką \cite{hassanat2019choosing} ir rizikuojama prarasti geriausius sprendinius.
+Jei mutacijos tikimybė per maža, tai gali vesti prie genetinio dreifo \cite{masel2011genetic},
+kas reiškia, jog populiacijos genetinė įvairovė palaipsniui mažės.
+
+\subsection{Genetinių algoritmų veikimo principai}
+
+Apjungiant visas aukščiau aptartas genetinio algoritmo dalis, galima suformuluoti paprasto genetinio algoritmo pseudokodą.
+Jis pateikiamas \ref{simple_GA} algoritme.
+Kintamieji $N$ (populiacijos dydis), $mutation\_rate$ (mutacijos tikimybė) bei $recombination\_frac$ (rekombinacijai pateikiamų chromosomų dalis)
+tipiškai būtų nustatomi vartotojo ir perduodami kaip parametrai, tačiau paprastumo dėlei
+pakanka laikyti, jog jie nustatomi paties GA.
+Algoritmui pradedant darbą yra inicializuojama pradinė chromosomų populiacija (žr. \ref{simple_GA:init_pop} eil.).
+Vykdant pagrindinį GA ciklą, pirmiausia
+yra įvertinamas einamosios populiacijos tinkamumas (žr. \ref{simple_GA:eval_pop} eil.).
+Tada iš tinkamiausių populiacijos individų yra atsitiktinai atrenkamos dvi tėvinės chromosomos,
+kurioms taikant rekombinacijos operatorių yra kuriami nauji individai (žr. \ref{simple_GA:recomb1}-\ref{simple_GA:recomb2} eil.).
+Naujam individui su tam tikra tikimybe taip pat yra taikomas mutacijos operatorius (žr. \ref{simple_GA:mut1}-\ref{simple_GA:mut2} eil.).
+Naujų individų generavimas yra kartojamas, kol naujos populiacijos dydis siekia $N$ (žr. \ref{simple_GA:generate_start}-\ref{simple_GA:generate_end} eil.).
+Galiausiai einamajai populiacijai yra priskiriama naujai sugeneruota populiacija (žr. \ref{simple_GA:assign} eil.),
+kas užtikrina, jog kitą ciklo iteraciją bus dirbama su naujais individais.
+Prieš pradedant naują ciklą (žr. \ref{simple_GA:loop_end} eil.), GA patikrina, ar kažkuri iš sustojimo sąlygų yra patenkinta, ir jei taip - baigia darbą.
+Praktikoje dažnai siekiama, jog GA sustotų, kai yra pasiektas maksimalus
+kartų skaičius ar vidutinio tinkamumo pokytis tarp paskutinių dviejų populiacijos kartų yra pakankamai mažas.
+Tokie sustojimo kriterijai nurodomi, jog GA nenaudotų per daug resursų, ypač jei galima nuspėti, jog tolesnis veikimas neduos geresnių rezultatų.
+Žinoma, pateiktas GA yra pakankamai paprastas ir praleidžia daugelį detalių, tačiau autorius mano, jog jis tinkamai iliustruoja pagrindinius genetinių algoritmų veikimo principus.
+
+\begin{algorithm}[H]
+  \caption{Paprastas GA}\label{simple_GA}
+  \begin{algorithmic}[1]
+    \State Let $current\_population$ be a random population of chromosomes.\label{simple_GA:init_pop}
+    \Repeat\label{simple_GA:loop_start}
+      \State Apply the fitness function to each chromosome in $current\_population$.\label{simple_GA:eval_pop}
+      \State Sort the chromosomes in $current\_population$ based on their fitness in descending order.
+      \State Let $new\_population$ be an empty set.
+      \Repeat\label{simple_GA:generate_start}
+        \State Let $(parent1, parent2)$ be a pair of parent chromosomes selected randomly from the first $[N * recombination\_frac]$ elements of $current\_population$.\label{simple_GA:recomb1}
+        \State Let $child\_chromosome$ be the result of applying the recombination operator to $parent1$ and $parent2$.\label{simple_GA:recomb2}
+        \If {$rand01() \leq mutation\_rate$}\label{simple_GA:mut1}
+          \State Apply the mutation operator to $child\_chromosome$
+        \EndIf\label{simple_GA:mut2}
+        \State Add $child\_chromosome$ to $new\_population$
+      \Until N offspring have been created.\label{simple_GA:generate_end}
+      \State Assign $new\_population$ to $current\_population$.\label{simple_GA:assign}
+    \Until Some termination criterion is satisfied.\label{simple_GA:loop_end}
+  \end{algorithmic}
+\end{algorithm}
+
 \section{Tarpų sekų efektyvumo kriterijų nustatymas}
 
 Šelo algoritmo tarpų sekų efektyvumo įvertinimas nėra trivialus.
@@ -298,94 +419,24 @@ yra konkretus įvertis, leidžiantis praktiškai įvertinti duotos sekos efektyv
 Taigi, įvertinant tarpų sekų efektyvumą bus remiamasi visomis atliekamomis operacijomis bei realiais veikimo laikais.
 
 Autoriaus nuomone, atliktų palyginimų skaičius yra svarbiausias kriterijus tarpų sekų efektyvumui įvertinti ir
-atliekant vertinimą didžiausias svoris turėtų būti teikiamas būtent jam.
+didžiausias svoris atliekant bendrą visų kriterijų vertinimą turėtų būti teikiamas būtent jam.
 Vertinant kitus du kriterijus, didesnis svoris turėtų atitekti atliekamų palyginimų skaičiui,
 kadangi veikimo laiko įvertis nėra universalus.
 Verta pastebėti, jog atliktų priskyrimų skaičių reikia vertinti, atsižvelgiant į kontekstą, kadangi
 seka, kuri atlieka daug priskyrimų, nebūtinai yra neefektyvi - daug svarbesnis yra atliekamų palyginimų ir priskyrimų santykis.
 Tai galima paaiškinti paprastu pavyzdžiu: jei su tam tikra tarpų seka Šelo algoritmas atlieka santykinai mažai palyginimų ir daug priskyrimų, galima laikyti,
 jog su ja algoritmas dirba pakankamai efektyviai, kadangi atlikti palyginimai nenueina veltui ir rikiuojamos sekos $S$ elementai greitai artėja link galutinės pozicijos.
-Reikia atsižvelgti ir į tai, jog vadovėlinė Šelo algoritmo implementacija dažnai atlieka nereikalingus priskyrimus,
-tad atliekant sekų vertinimą, yra tikslinga įvertinti sekas naudojant ir VŠA, ir PŠA \cite{Radavičius_Baranauskas_2013}.
+Reikia atsižvelgti ir į tai, jog vadovėlinė Šelo algoritmo implementacija dažnai atlieka nereikalingus priskyrimus \cite{Radavičius_Baranauskas_2013},
+tad atliekant sekų vertinimą, yra tikslinga įvertinti sekas naudojant ir VŠA, ir PŠA.
 Savaime suprantama, jog į veikimo laiką verta žvelgti kritiškai, kadangi jis priklauso nuo algoritmo implementacijos,
 eksperimentams naudojamos mašinos techninių parametrų, operacinės sistemos, pasirinktos programavimo kalbos ar net kompiliatoriaus versijos.
 Todėl vertinant veikimo laiką, svarbiausia atsižvelgti į santykinius gautų rezultatų skirtumus naudojant skirtingas tarpų sekas.
 
 \section{Tarpų sekų generavimas}
 
-\subsection{Genetiniai algoritmai}
-
-Prieš pradedant generuoti sekas, reikalinga plačiau apžvelgti genetinio algoritmo sąvoką.
-Paprasčiausias genetinis algoritmas susideda iš chromosomų populiacijos bei atrankos, mutacijos ir rekombinacijos operatorių.
-Toliau bus nagrinėjamos šių terminų reikšmės ir GA veikimo principai.
-
-Chromosoma GA kontekste vadiname potencialų uždavinio sprendinį.
-Projektuojant genetinį algoritmą tam tikro uždavinio sprendimui, svarbu tinkamai pasirinkti,
-kaip kompiuteriu modeliuoti galimus sprendinius (chromosomas).
-Chromosomos kompiuterio atmintyje standartiškai išreiškiamos bitų eilutėmis,
-kadangi tai palengvina tiek mutaciją (pakanka apversti kurio nors atsitiktinio bito reikšmę),
-tiek rekombinaciją (pakanka perkopijuoti pasirinktus tėvinių chromosomų bitus į vaikinę chromosomą).
-Tiesa, tai nėra vienintelis įmanomas būdas, ir kai kurių uždavinių sprendiniai modeliuojami pvz. grafu ar simbolių eilute.
-
-Sprendinio kokybę įvardijame kaip jo tinkamumą, kuris apibrėžiamas tinkamumo funkcijos reikšme, pateikus sprendinį kaip parametrą.
-Nesunku pastebėti, jog tinkamumo funkcija tėra tikslo funkcijos specializacija, kuri naudojama chromosomų vertinimui.
-Tinkamumo funkcija yra viena svarbiausių genetinio algoritmo dalių,
-kadangi kai ji netinkamai parinkta, algoritmas nekonverguos į tinkamą sprendinį arba užtruks labai ilgai.
-
-Chromosomų rinkinys, literatūroje dažnai vadinamas populiacija, atspindi uždavinio sprendinių aibę, kuri kinta kiekvieną genetinio algoritmo iteraciją.
-Jei GA suprojektuotas tinkamai, dažnu atveju vidutinis populiacijos tinkamumas gerės kiekvieną iteraciją \cite{simpson1999faster}.
-Esminė GA dalis yra populiacijos genetinės įvairovės užtikrinimas, geriausių individų atranka ir kryžminimasis.
-Šiems procesams nesunku rasti atitikmenis nagrinėjant gamtoje vykstančius evoliucinius reiškinius.
-
-Genetinis algoritmas vykdymo metu iteratyviai atnaujina esamą populiaciją, kurdamas naujas kartas taikant atrankos, rekombinacijos ir mutacijos operatorius.
-
-Atrankos operatorius grąžina tinkamiausius populiacijos individus, kuriems yra leidžiama susilaukti palikuonių taikant rekombinacijos operatorių.
-Dažniausiai atranka vykdoma atsižvelgiant į populiacijos individų tinkamumą, atrenkant ir pateikiant rekombinacijai tuos, kurių tinkamumas yra geriausias.
-
-Rekombinacijos operatorius veikia iš dviejų tėvinių chromosomų sukurdamas naują vaikinę chromosomą, kas dažniausiai pasiekiama
-tam tikru būdu perkopijuojant tėvų genų atkarpas į vaikinę chromosomą.
-Rekombinacijos strategijų yra įvairių, tačiau ne kiekvienam uždaviniui visos jos tinka, kadangi
-kai kuriais atvejais netinkamai parinkta rekombinacijos strategija pagamina neatitinkančią uždavinio apribojimų vaikinę chromosomą.
-Pavyzdžiui, jei modeliuojama chromosoma yra sąrašas, turintis susidėti iš tam tikrų elementų, neįmanoma garantuoti, jog atsitiktinai
-perkopijavus tėvinių chromosomų genus į vaikinę chromosomą šis apribojimas bus išlaikytas.
-
-Galiausiai tam tikrai populiacijos daliai yra pritaikomas mutacijos operatorius.
-Jo veikimo principas yra gana paprastas: pasirinktos chromosomos vienas ar keli genai yra modifikuojami,
-nežymiai pakeičiant jų reikšmes ar sukeičiant kelių genų reikšmes vietomis.
-Mutacijos operatorius praplečia vykdomos paieškos erdvę, o tai labai svarbu, kadangi kitaip algoritmas gali konverguoti
-į lokaliojo minimumo taškus, taip ir nepasiekdamas globaliojo minimumo.
-Atsižvelgiant į tai, yra laikoma, jog mutacijos operatorius yra kertinė genetinio algoritmo dalis,
-kuri palaiko genetinę individų įvairovę ir padeda rasti tinkamiausius sprendinius.
-
-Kad genetinis algoritmas neveiktų amžinai, yra pasirenkama viena ar kelios sustojimo sąlygos, pavyzdžiui: pasiektas maksimalus
-kartų skaičius, vidutinio tinkamumo pokytis tarp paskutinių dviejų populiacijos kartų pakankamai mažas, etc.
-Kiekvieną iteraciją GA patikrina, ar kažkuri iš sustojimo sąlygų yra patenkinta, ir jei taip - baigia darbą.
-
-Apjungiant visas aukščiau aptartas genetinio algoritmo dalis, galima suformuluoti paprasto genetinio algoritmo pseudokodą.
-Jis pateikiamas \ref{simple_GA} algoritme.
-
-\begin{algorithm}[H]
-  \caption{Paprastas GA}\label{simple_GA}
-  \begin{algorithmic}
-    \State Let $current\_population$ be a random population of chromosomes.
-    \State Let $mutation\_rate$ be a real value between 0 and 1.
-    \State Let $crossover\_fraction$ be a real value between 0 and 1.
-    \Repeat
-      \State Apply the fitness function to each chromosome in $current\_population$.
-      \State Sort the chromosomes in $current\_population$ based on their fitness. % cia reikia pataisyti
-      \State Let $new\_population$ be an empty set.
-      \Repeat
-        \State Let $(parent1, parent2)$ be a pair of parent chromosomes selected randomly from the first $[N * crossover\_fraction]$ elements of $current\_population$.
-        \State Let $child\_chromosome$ be the result of applying the crossover operator to $parent1$ and $parent2$.
-        \If {$rand() < mutation\_rate$}
-          \State Apply the mutation operator to $child\_chromosome$
-        \EndIf
-        \State Add $child\_chromosome$ to $new\_population$
-      \Until N offspring have been created.
-      \State Assign $new\_population$ to $current\_population$.
-    \Until Termination criteria are satisfied.
-  \end{algorithmic}
-\end{algorithm}
+Šį skyrių sudaro 2 poskyriai.
+Pirmame poskyryje naudojant genetinius algoritmus generuojamos trumpos tarpų sekos.
+Antrame poskyryje naudojant genetinius algoritmus generuojamos vidutinio ilgio tarpų sekos.
 
 \subsection{Trumpų tarpų sekų generavimas}
 Pirmame etape buvo generuojamos tarpų sekos, kurios efektyvios kai $N=1000$.
@@ -451,6 +502,10 @@ Tyrimas buvo įgyvendintas C++ kalba su GNU g++ 8.1.0 kompiliatoriumi naudojant 
 
 \section{Tarpų sekų efektyvumo įvertinimas}
 
+Šį skyrių sudaro 2 poskyriai.
+Pirmame poskyryje atliekant eksperimentus yra įvertinamas trumpų tarpų sekų efektyvumas.
+Antrame poskyryje atliekant eksperimentus yra įvertinamas vidutinio ilgio tarpų sekų efektyvumas.
+
 Iš anksto verta pastebėti, jog ne visos šiame skyriuje tiriamos tarpų sekos iš tiesų yra būtent tokio ilgio, koks pateikiamas šiame darbe.
 Tačiau būtina atsižvelgti į faktą, jog tai galėtų sukelti nelygias sąlygas atliekamuose matavimuose,
 kadangi seka, turinti elementų didesnių už maksimalų tiriamą $N$, atliktų nereikalingas operacijas, o per trumpa seka veiktų neefektyviai.
@@ -460,7 +515,11 @@ Atliekamų matavimų skaičius buvo pasirinktas atsižvelgiant į tame etape tir
 egzistuoja didelė tikimybė jog gautas vidutinis įvertis bus netikslus, matuojant, pavyzdžiui, tik 1000 kartų.
 Todėl tiriant trumpesnes sekas buvo stengtasi atlikti daugiau matavimų.
 
+Remiantis prielaida, jog tiksliam tarpų sekų efektyvumo įvertinimui reikalinga
+jas ištirti naudojant ir VŠA, ir PŠA, tai ir buvo atlikta.
+
 \subsection{Trumpų tarpų sekų efektyvumo įvertinimas}
+
 Trumpų tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų sekos:
 \begin{itemize}
   \item Tokuda: $525, 233, 103, 46, 20, 9, 4, 1$ \cite{10.5555/645569.659879}
@@ -472,10 +531,10 @@ Trumpų tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų sekos:
 \end{itemize}
 
 Atsižvelgiant į santykinai nedidelį duomenų dydį, matavimai buvo atlikti 50000 kartų.
-Gauti duomenys pateikiami suapvalinus iki šimtosios dalies.
+Gauti duomenys pateikiami suapvalinus iki šimtosios dalies,
+3 geriausi rezultatai su tam tikru $N$ pateikiami pajuodintu šriftu.
 
 \subsubsection{Efektyvumo tyrimas naudojant vadovėlinį Šelo algoritmą}
-
 
 \begin{table}[H]
   \caption{Vidutinis VŠA atliktų palyginimų skaičius naudojant trumpas tarpų sekas}
@@ -594,7 +653,7 @@ GA naudojimas Šelo algoritmo trumpų tarpų sekų generavimui duoda gerus rezul
 vidutiniu atveju atlieka daugiau palyginimų tik už Ciura seką, yra vienos iš lyderių vertinant atliktų priskyrimų skaičių naudojant VŠA ir pateikia vienus geriausių veikimo laikų.
 Tiesa, naudojant GA sugeneruotos sekos nėra be trūkumų: lyginant su Tokuda ir Ciura sekomis, kurios atlieka daugiau priskyrimų naudojant VŠA, šios sekos atlieka žymiai daugiau priskyrimų
 naudojant PŠA, nei Tokuda ir Ciura sekos. Tai sukelia klausimų dėl jų efektyvumo, kadangi PŠA pašalina tik nereikalingai atliekamus priskyrimus.
-Stebina faktas, jog naudojant VŠA gauti rezultatai yra 10-20\% geresni kai $N \geq 200$, nei gauti
+Stebina faktas, jog naudojant VŠA gauti veikimo laikai yra 10-20\% geresni kai $N \geq 200$, nei gauti
 naudojant PŠA, nors su PŠA atliktų operacijų skaičiai yra žymiai mažesni.
 Taip pat verta pastebėti, jog su PŠA atliktų palyginimų ir priskyrimų skaičiaus santykis artėja prie 1 augant N, priešingai nei naudojant VŠA.
 
@@ -612,7 +671,8 @@ Vidutinio ilgio tarpų sekų efektyvumo tyrimui buvo pasirinktos šios tarpų se
 \end{itemize}
 
 Atsižvelgiant į duomenų dydį, matavimai buvo atlikti 10000 kartų.
-Gauti duomenys pateikiami suapvalinus iki sveikosios dalies.
+Gauti duomenys pateikiami suapvalinus iki sveikosios dalies,
+3 geriausi rezultatai su tam tikru $N$ pateikiami pajuodintu šriftu.
 
 \subsubsection{Efektyvumo tyrimas naudojant vadovėlinį Šelo algoritmą}
 
@@ -738,6 +798,7 @@ Palyginimų atžvilgiu optimalios sekos (Tokuda ir Ciura) naudojant PŠA veikia 
 Šelo algoritmu rikiuojant nedidelius ($N \leq 1000$) duomenų dydžius, galima rekomenduoti Ciura ir S1 tarpų sekas.
 Šelo algoritmu rikiuojant didesnius ($1000 \leq N \leq 100000$) duomenų dydžius, galima rekomenduoti Ciura ir Tokuda tarpų sekas bei patobulintą Šelo algoritmo implementaciją.
 
+% aprasyti, ka galima atlikti toliau 
 
 % Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
 % suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
