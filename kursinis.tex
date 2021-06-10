@@ -308,7 +308,7 @@ Jei GA suprojektuotas tinkamai, dažnu atveju vidutinis populiacijos tinkamumas 
 
 Esminė GA dalis yra populiacijos genetinės įvairovės užtikrinimas, geriausių individų atranka ir kryžminimasis.
 Šiems procesams nesunku rasti atitikmenis nagrinėjant gamtoje vykstančius evoliucinius reiškinius.
-Siekiant užtikrinti šių biologinių procesų išpildymą, genetinis algoritmas vykdymo metu
+Siekiant užtikrinti šių procesų išpildymą, genetinis algoritmas vykdymo metu
 iteratyviai atnaujina esamą populiaciją ir kuria naujas kartas
 taikydamas biologijos žiniomis paremtus atrankos, rekombinacijos ir mutacijos operatorius.
 
@@ -359,10 +359,10 @@ yra įvertinamas einamosios populiacijos tinkamumas (žr. \ref{simple_GA:eval_po
 Tada iš tinkamiausių populiacijos individų yra atsitiktinai atrenkamos dvi tėvinės chromosomos,
 kurioms taikant rekombinacijos operatorių yra kuriami nauji individai (žr. \ref{simple_GA:recomb1}-\ref{simple_GA:recomb2} eil.).
 Naujam individui su tam tikra tikimybe taip pat yra taikomas mutacijos operatorius (žr. \ref{simple_GA:mut1}-\ref{simple_GA:mut2} eil.).
-Naujų individų generavimas yra kartojamas, kol naujos populiacijos dydis siekia $N$ (žr. \ref{simple_GA:generate_start}-\ref{simple_GA:generate_end} eil.).
+Naujų individų generavimas yra kartojamas, kol naujos populiacijos dydis siekia $N$ (žr. \ref{simple_GA:generate_end} eil.).
 Galiausiai einamajai populiacijai yra priskiriama naujai sugeneruota populiacija (žr. \ref{simple_GA:assign} eil.),
 kas užtikrina, jog kitą ciklo iteraciją bus dirbama su naujais individais.
-Prieš pradedant naują ciklą (žr. \ref{simple_GA:loop_end} eil.), GA patikrina, ar kažkuri iš sustojimo sąlygų yra patenkinta, ir jei taip - baigia darbą.
+Prieš pradedant kitą ciklo iteraciją (žr. \ref{simple_GA:loop_end} eil.), GA patikrina, ar kažkuri iš sustojimo sąlygų yra patenkinta, ir jei taip - baigia darbą.
 Praktikoje dažnai siekiama, jog GA sustotų, kai yra pasiektas maksimalus
 kartų skaičius ar vidutinio tinkamumo pokytis tarp paskutinių dviejų populiacijos kartų yra pakankamai mažas.
 Tokie sustojimo kriterijai nurodomi, jog GA nenaudotų per daug resursų, ypač jei galima nuspėti, jog tolesnis veikimas neduos geresnių rezultatų.
@@ -427,7 +427,7 @@ seka, kuri atlieka daug priskyrimų, nebūtinai yra neefektyvi - daug svarbesnis
 Tai galima paaiškinti paprastu pavyzdžiu: jei su tam tikra tarpų seka Šelo algoritmas atlieka santykinai mažai palyginimų ir daug priskyrimų, galima laikyti,
 jog su ja algoritmas dirba pakankamai efektyviai, kadangi atlikti palyginimai nenueina veltui ir rikiuojamos sekos $S$ elementai greitai artėja link galutinės pozicijos.
 Reikia atsižvelgti ir į tai, jog vadovėlinė Šelo algoritmo implementacija dažnai atlieka nereikalingus priskyrimus \cite{Radavičius_Baranauskas_2013},
-tad atliekant sekų vertinimą, yra tikslinga įvertinti sekas naudojant ir VŠA, ir PŠA.
+tad atliekant sekų vertinimą, gali būti tikslinga įvertinti sekas naudojant ir VŠA, ir PŠA.
 Savaime suprantama, jog į veikimo laiką verta žvelgti kritiškai, kadangi jis priklauso nuo algoritmo implementacijos,
 eksperimentams naudojamos mašinos techninių parametrų, operacinės sistemos, pasirinktos programavimo kalbos ar net kompiliatoriaus versijos.
 Todėl vertinant veikimo laiką, svarbiausia atsižvelgti į santykinius gautų rezultatų skirtumus naudojant skirtingas tarpų sekas.
@@ -490,7 +490,11 @@ buvo parengtos modifikuotos šių algoritmų versijos, kurios kaip rezultatą gr
 
 Verta pastebėti, jog matuoti veikimo laiką naudojant operacijas skaičiuojančius algoritmus nėra tinkama,
 kadangi pats operacijų skaičiavimas reikalauja papildomų žingsnių, o tai gali iškreipti gautus rezultatus.
-Atsižvelgiant į tai, veikimo laiko matavimui naudoti nemodifikuoti VŠA ir PŠA algoritmai. 
+Atsižvelgiant į tai, veikimo laiko matavimui naudoti nemodifikuoti VŠA ir PŠA algoritmai.
+Veikimo laiko matavimai buvo atlikti matuojant sisteminio laiko reikšmę prieš algoritmo vykdymą bei po jo.
+Šių įverčių skirtumo absoliuti vertė buvo laikoma algoritmo veikimo laiku.
+Tiesa, toks matavimo būdas nėra idealus, kadangi sisteminis laikas ne visada sutampa su laiku, kurį programa buvo vykdoma (OS bet kada gali atimti procesorių)
+ir geriausia būtų matuoti laiką, kurį programa naudojo procesorių. Deja, dėl techninių priežasčių to atlikti nebuvo įmanoma, tad buvo apsiribota sisteminio laiko matavimu.
 
 Vykdant eksperimentus buvo pasirinkta naudoti sveikaskaitinius pradinius duomenis, kadangi jų generavimas yra pakankamai paprastas.
 Tai buvo įgyvendinta naudojant MT19937 pseudoatsitiktinių skaičių generatorių, inicializuotą sisteminio laiko reikšme.
@@ -498,7 +502,7 @@ Generuojami duomenys buvo tolygiai paskirstyti nuo INT\_MIN iki INT\_MAX, kas le
 
 Eksperimentų vykdymui buvo naudojamas kompiuteris su 2.70 GHz Intel(R) Core(TM) i7-10850H procesoriumi,
 32 GB operatyviosios atminties ir Windows 10 operacine sistema.
-Tyrimas buvo įgyvendintas C++ kalba su GNU g++ 8.1.0 kompiliatoriumi naudojant -O3 optimizacijos lygį.
+Tyrimas buvo įgyvendintas C++ kalba su MinGW g++ 8.1.0 kompiliatoriumi naudojant -O3 optimizacijos lygį.
 
 \section{Tarpų sekų efektyvumo įvertinimas}
 
@@ -515,8 +519,8 @@ Atliekamų matavimų skaičius buvo pasirinktas atsižvelgiant į tame etape tir
 egzistuoja didelė tikimybė jog gautas vidutinis įvertis bus netikslus, matuojant, pavyzdžiui, tik 1000 kartų.
 Todėl tiriant trumpesnes sekas buvo stengtasi atlikti daugiau matavimų.
 
-Remiantis prielaida, jog tiksliam tarpų sekų efektyvumo įvertinimui reikalinga
-jas ištirti naudojant ir VŠA, ir PŠA, tai ir buvo atlikta.
+Siekiant tiksliau įvertinti sekų efektyvumą, eksperimentai buvo atlikti
+naudojant ir VŠA, ir PŠA.
 
 \subsection{Trumpų tarpų sekų efektyvumo įvertinimas}
 
@@ -581,11 +585,22 @@ Gauti duomenys pateikiami suapvalinus iki šimtosios dalies,
   \end{tabular}
   \end{table}
 
-Kaip galima pastebėti iš \ref{tss_small_comparisons} lentelės, mažiausiai palyginimų bendru atveju atliko Ciura seka,
-nedaug atsiliko S1 ir Simpson-Yachavaram sekos. Mažiausiai priskyrimų, remiantis \ref{tss_small_assignments} lentele, atliko S1 seka, nežymiai daugiau - Simpson-Yachavaram ir Sedgewick sekos.
+Kaip galima pastebėti iš \ref{tss_small_comparisons} lentelės, mažiausiai palyginimų bendru atveju atliko Ciura seka.
+Šiek tiek daugiau - S1 ir Simpson-Yachavaram sekos.
+Vidutiniški rezultatai gauti su Tokuda seka.
+Daugiausiai palyginimų atliko Sedgewick ir Incerpi-Sedgewick sekos.
+
+Mažiausiai priskyrimų, remiantis \ref{tss_small_assignments} lentele, atliko S1 seka.
+Nežymiai daugiau - Simpson-Yachavaram ir Sedgewick sekos.
+Vidutiniškai pasirodė Tokuda seka.
+Daugiausiai priskyrimų atliko Tokuda ir Incerpi-Sedgewick sekos.
+
 Vertinant vidutinį veikimo laiką pateiktą \ref{tss_small_runtimes} lentelėje, sunku išskirti geriausią,
-tačiau palankiausi rezultatai gauti su Sedgewick ir Simpson-Yachavaram sekomis bei S1 seka.
-Todėl, įvertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura, S1 ir Simpson-Yachavaram sekos.
+tačiau palankiausi rezultatai gauti su Sedgewick ir Simpson-Yachavaram sekomis.
+Taip pat pakankamai geri rezultatai gauti su Ciura ir S1 sekomis.
+Prasčiausi rezultatai, imant bendrai, gauti su Incerpi-Sedgewick ir Tokuda sekomis.
+
+Įvertinant visus kriterijus, šiame etape geriausi rezultatai gauti su Ciura, S1 ir Simpson-Yachavaram sekomis.
 
 \subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
 
@@ -635,27 +650,50 @@ Todėl, įvertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura, S
   \end{tabular}
   \end{table}
 
-Analizuojant atliktų palyginimų skaičių, pateikiamą \ref{iss_small_comparisons} lentelėje, rezultatai beveik nesiskiria nuo VŠA
-ir geriausiai pasirodė Ciura, S1 ir Simpson-Yachavaram sekos.
-Vertinant atliktų priskyrimų skaičių, rezultatai labai stipriai skiriasi nuo gautų naudojant VŠA.
-Kaip matoma \ref{iss_small_assignments} lentelėje, mažiausiai priskyrimų atlieka Tokuda ir Ciura sekos.
-Geriausiai šiame etape vidutinio veikimo laiko atžvilgiu, remiantis \ref{iss_small_runtimes} lentele, pasirodė Sedgewick ir Simpson-Yachavaram sekos bei S1 seka.
-Įvertinant visus kriterijus, geriausi rezultatai šioje tyrimo dalyje gauti su Tokuda, Ciura ir S1 sekomis.
+Analizuojant atliktų palyginimų skaičių, pateikiamą \ref{iss_small_comparisons} lentelėje,
+galima pastebėti, jog mažiausiai palyginimų atliko Ciura seka.
+Nedaug atsiliko S1 ir Simpson-Yachavaram sekos.
+Vidutiniškai pasirodė Tokuda seka.
+Daugiausiai palyginimų atliko Sedgewick ir Incerpi-Sedgewick sekos.
+
+Kaip galima pastebėti \ref{iss_small_assignments} lentelėje, mažiausiai priskyrimų atliko Tokuda ir Ciura sekos.
+Vidutiniški rezultatai gauti su S1 ir Simpson-Yachavaram sekomis.
+Daugiausiai priskyrimų atliko Sedgewick ir Incerpi-Sedgewick sekos.
+
+Geriausiai šiame etape vidutinio veikimo laiko atžvilgiu, remiantis \ref{iss_small_runtimes} lentele, pasirodė Sedgewick ir Simpson-Yachavaram sekos.
+Geresni nei vidutiniai rezultatai gauti su S1 seka.
+Vidutiniški rezultatai gauti su Tokuda ir Ciura sekomis.
+Ilgiausiai bendru atveju veikė Incerpi-Sedgewick seka.
+
+Įvertinant visus kriterijus, geriausi rezultatai gauti su Tokuda, Ciura ir S1 sekomis.
+
 
 \subsubsection{Gautų rezultatų apibendrinimas}
 
 Verta pastebėti, jog patobulintas Šelo algoritmas atliekamų palyginimų skaičiumi teoriškai neturėtų skirtis nuo vadovėlinės implementacijos,
-tad gauti įverčiai leidžia įvertinti matavimų tikslumą atspindint Šelo algoritmo atliekamų palyginimų skaičių naudojant šias tarpų sekas vidutiniu atveju.
-Gauti rezultatai rodo, jog Ciura seka atlieka mažiausiai priskyrimų vidutiniu atveju, kai $N \leq 1000$, kaip ir teigta \cite{ciura2001best}.
-Atsižvelgiant į pastebimai prastesnius veikimo laikus, sunku rekomenduoti PŠA nesudėtingų tipų duomenų rikiavimui, kai $N \leq 1000$.
-Tiesa, rikiuojant duomenis, kurių priskyrimas brangus, PŠA veikimo laikas tikėtinai būtų geresnis, nei VŠA, tačiau tuo įsitikinti reikėtų atskiro tyrimo.  
-GA naudojimas Šelo algoritmo trumpų tarpų sekų generavimui duoda gerus rezultatus, kadangi abi GA sugeneruotos sekos (Simpson-Yachavaram ir S1)
-vidutiniu atveju atlieka daugiau palyginimų tik už Ciura seką, yra vienos iš lyderių vertinant atliktų priskyrimų skaičių naudojant VŠA ir pateikia vienus geriausių veikimo laikų.
-Tiesa, naudojant GA sugeneruotos sekos nėra be trūkumų: lyginant su Tokuda ir Ciura sekomis, kurios atlieka daugiau priskyrimų naudojant VŠA, šios sekos atlieka žymiai daugiau priskyrimų
-naudojant PŠA, nei Tokuda ir Ciura sekos. Tai sukelia klausimų dėl jų efektyvumo, kadangi PŠA pašalina tik nereikalingai atliekamus priskyrimus.
-Stebina faktas, jog naudojant VŠA gauti veikimo laikai yra 10-20\% geresni kai $N \geq 200$, nei gauti
-naudojant PŠA, nors su PŠA atliktų operacijų skaičiai yra žymiai mažesni.
+tad gauti įverčiai leidžia įvertinti matavimų tikslumą atspindint vidutiniu atveju atliekamų palyginimų skaičių naudojant šias tarpų sekas.
+Atsižvelgiant į gautus rezultatus, galima teigti, jog matavimai buvo pakankamai tikslūs, kadangi atliktų palyginimų įverčiai naudojant VŠA ir PŠA skiriasi labai nedaug.
+Taip pat galima pastebėti, jog Ciura seka atlieka mažiausiai palyginimų vidutiniu atveju, kai $N \leq 1000$, kaip ir teigta \cite{ciura2001best}.
+
+Gauti rezultatai rodo, jog PŠA atlieka žymiai mažiau priskyrimų, nei VŠA - kaip ir teigė \cite{Radavičius_Baranauskas_2013} autoriai.
+Tirtame rėžyje gauti įverčiai skiriasi apie 25-40\%, priklausomai nuo tarpų sekos ir duomenų dydžio.
 Taip pat verta pastebėti, jog su PŠA atliktų palyginimų ir priskyrimų skaičiaus santykis artėja prie 1 augant N, priešingai nei naudojant VŠA.
+
+Remiantis šiame tyrimo etape gautais rezultatais, galima pastebėti, jog beveik visi naudojant VŠA gauti veikimo laikai yra geresni už tuos, gautus naudojant PŠA
+ir kai kuriais atvejais veikimo laikų skirtumai siekia net 20\%.
+Tai yra neįprasta, kadangi lyginant su VŠA, PŠA atlieka apytiksliai tiek pat palyginimų ir žymiai mažiau priskyrimų.
+Reikia pabrėžti, jog veikimo laiko įverčiai, ypač su mažesniais duomenų dydžiais, nėra labai tikslūs ir priklauso nuo daugelio veiksnių.
+Tačiau atsižvelgiant į pastebimai prastesnius veikimo laikus, sunku rekomenduoti PŠA nesudėtingų tipų duomenų rikiavimui, kai $N \leq 1000$.
+Rikiuojant duomenis, kurių priskyrimas brangus, PŠA veikimo laikas tikėtinai būtų geresnis, kadangi jį naudojant atliekama mažiau priskyrimų, tačiau tuo įsitikinti reikėtų atskiro tyrimo.  
+ 
+Galima teigti, jog GA naudojimas trumpų tarpų sekų generavimui duoda gerus rezultatus, kadangi abi GA sugeneruotos sekos (Simpson-Yachavaram ir S1)
+vidutiniu atveju atlieka daugiau palyginimų tik už Ciura seką, yra vienos iš lyderių vertinant atliktų priskyrimų skaičių naudojant VŠA ir pateikia vienus geriausių veikimo laikų.
+Tiesa, GA sugeneruotos sekos nėra be trūkumų: lyginant su Tokuda ir Ciura sekomis, kurios atlieka daugiau priskyrimų naudojant VŠA, GA sugeneruotos sekos atlieka žymiai daugiau priskyrimų
+naudojant PŠA. Tai sukelia klausimų dėl jų efektyvumo, kadangi PŠA pašalina tik nereikalingai atliekamus priskyrimus.
+
+% Apibendrinant, geriausiai šiame etape įvertinant visus kriterijus pasirodė
+% Ciura, Simpson-Yachavaram ir S1 sekos, vidutiniškai - Tokuda ir Sedgewick sekos, blogiausiai - Incerpi-Sedgewick seka.
+
 
 \subsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas}
 
@@ -721,10 +759,22 @@ Gauti duomenys pateikiami suapvalinus iki sveikosios dalies,
   \end{tabular}
 \end{table}
 
-Kaip galima pastebėti \ref{tss_medium_comparisons} lentelėje, mažiausiai palyginimų bendru atveju atliko Ciura ir Tokuda sekos, šiek tiek daugiau - seka S2.
+Kaip galima pastebėti \ref{tss_medium_comparisons} lentelėje, mažiausiai palyginimų bendru atveju atliko Ciura seka.
+Šiek tiek daugiau - Tokuda ir S2 sekos.
+Vidutiniškai pasirodė Simpson-Yachavaram ir Sedgewick sekos.
+Daugiausiai palyginimų atliko Incerpi-Sedgewick ir Roos et al. sekos.
+
 Mažiausiai priskyrimų, remiantis \ref{tss_medium_assignments} lentele, atliko Simpson-Yachavaram ir S2 sekos.
-Mažiausi veikimo laikai, pateikiami \ref{tss_medium_runtimes} lentelėje, pastebimi su Roos et al. seka, sekos S2 rezultatai taip pat palankūs.
-Vertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura ir Tokuda sekos bei seka S2.
+Nedaug atsiliko Ciura seka.
+Vidutiniški rezultatai gauti su Tokuda ir Sedgewick sekomis.
+Daugiausiai priskyrimų atliko Incerpi-Sedgewick ir Roos et al. sekos.
+
+Mažiausi veikimo laikai, pateikiami \ref{tss_medium_runtimes} lentelėje, pastebimi su Roos et al. seka.
+S2 ir Simpson-Yachavaram sekų rezultatai taip pat palankūs.
+Vidutiniški rezultatai gauti su Incerpi-Sedgewick, Sedgewick ir Ciura sekomis.
+Ilgiausiai veikė Tokuda seka.
+
+Vertinant visus kriterijus, geriausi rezultatai gauti su Ciura, Tokuda ir S2 sekomis.
 
 \subsubsection{Efektyvumo tyrimas naudojant patobulintą Šelo algoritmą}
 
@@ -773,11 +823,23 @@ Vertinant visus kriterijus, šiame etape geriausiai pasirodė Ciura ir Tokuda se
   \end{tabular}
 \end{table}
 
-Analizuojant atliktų palyginimų skaičių, pateikiamą \ref{iss_medium_comparisons} lentelėje, rezultatai yra panašūs į gautus tiriant VŠA
-ir geriausiai pasirodė Ciura, Tokuda ir S2 sekos.
-Vertinant atliktus priskyrimus, geriausi rezultatai, pateikiami \ref{iss_medium_assignments} lentelėje, buvo gauti su Tokuda, Ciura ir Sedgewick sekomis.
-Nagrinėjant vidutinį veikimo laiką, pateikiamą \ref{iss_medium_runtimes} lentelėje, bendru atveju didžiausia sparta gaunama su Roos et al. ir S2 sekomis.
-Vertinant visus kriterijus, geriausiai pasirodė Ciura ir Tokuda sekos.
+Remiantis rezultatais, pateikiamais \ref{iss_medium_comparisons} lentelėje,
+mažiausiai palyginimų su visais duomenų dydžiais atliko Ciura seka.
+Geresni nei vidutiniški rezultatai gauti naudojant Tokuda ir S2 sekas.
+Vidutiniški rezultatai gauti su Simpson-Yachavaram ir Sedgewick sekomis.
+Daugiausiai palyginimų atliko Incerpi-Sedgewick ir Roos et al. sekos.
+
+Vertinant atliktus priskyrimus, geriausi rezultatai, pateikiami \ref{iss_medium_assignments} lentelėje, buvo gauti su Tokuda seka.
+Geresni nei vidutiniški rezultatai gauti su Ciura ir Sedgewick sekomis.
+Vidutiniški rezultatai gauti su Simpson-Yachavaram ir S2 sekomis.
+Daugiausiai priskyrimų atliko Incerpi-Sedgewick ir Roos et al. sekos.
+
+Nagrinėjant vidutinį veikimo laiką, pateikiamą \ref{iss_medium_runtimes} lentelėje, bendru atveju greičiausiai veikė Roos et al. seka.
+Geresni nei vidutiniški rezultatai gauti su seka S2.
+Vidutiniški rezultatai gauti su Simpson-Yachavaram, Tokuda ir Ciura sekomis.
+Ilgiausiai veikė Incerpi-Sedgewick ir Sedgewick sekos.
+
+Vertinant visus kriterijus, geriausi rezultatai gauti su Ciura ir Tokuda sekomis.
 
 \subsubsection{Gautų rezultatų apibendrinimas}
 
