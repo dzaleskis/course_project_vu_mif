@@ -196,6 +196,24 @@ Taigi rikiuojant bent dalinai išrikiuotus duomenis Šelo algoritmas veikia žym
 
 \subsubsection{Vadovėlinis Šelo rikiavimo algoritmas}
 
+
+\begin{algorithm}[H]
+  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{alg:tss}
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \State $j\gets i$
+      \State $temp\gets S[i]$\label{alg:tss:assign1}
+      \While {$j > gap$ \textbf{and} $S[j - gap] > S[j]$}\label{alg:tss:while:start}
+        \State $S[j]\gets S[j - gap]$
+        \State $j\gets j-gap$
+      \EndWhile\label{alg:tss:while:end}
+      \State $S[j]\gets temp$\label{alg:tss:assign2}
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
 Kaip ir daugelis algoritmų, Šelo rikiavimo algoritmas turi keletą galimų implementacijų.
 Žinomiausia iš jų, be abejo, yra vadovėlinė šio algoritmo versija (toliau - VŠA),
 kurią D. L. Shell paskelbė dar 1959 metais \cite{shell1959high}.
@@ -216,24 +234,6 @@ tačiau kai didžiausias atstumas tarp dviejų neišrikiuotų elementų yra $k$,
 Taigi seką $h$-išrikiavus, paskutinė iteracija turės $O(hn)$ laiko sudėtingumą.
 Iteracijos su dideliais tarpais taip pat yra gana greitos, kadangi dirbama su daug mažesniais elementų kiekias,
 o šiuo atveju rikiavimas įterpimu yra vienas greičiausių.
-
-
-\begin{algorithm}[H]
-  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{alg:tss}
-  \begin{algorithmic}[1]
-  \ForEach {$gap$ \textbf{in} $H$}
-    \For {$i\gets gap+1$ \textbf{to} $N$}
-      \State $j\gets i$
-      \State $temp\gets S[i]$\label{alg:tss:assign1}
-      \While {$j > gap$ \textbf{and} $S[j - gap] > S[j]$}\label{alg:tss:while:start}
-        \State $S[j]\gets S[j - gap]$
-        \State $j\gets j-gap$
-      \EndWhile\label{alg:tss:while:end}
-      \State $S[j]\gets temp$\label{alg:tss:assign2}
-    \EndFor
-  \EndFor
-  \end{algorithmic}
-\end{algorithm}
 
 \subsubsection{Patobulintas Šelo rikiavimo algoritmas}
 
@@ -692,7 +692,7 @@ Tiesa, GA sugeneruotos sekos nėra be trūkumų: lyginant su Tokuda ir Ciura sek
 naudojant PŠA. Tai sukelia klausimų dėl jų efektyvumo, kadangi PŠA pašalina tik nereikalingai atliekamus priskyrimus.
 
 Apibendrinant, efektyviausios šiame etape vertintos sekos yra Ciura ir S1,
-nes abiejose efektyvumo tyrimo dalyse geriausi rezultatai buvo gauti su šiomis sekomis.
+nes abiejose efektyvumo tyrimo dalyse jas naudojant gauti rezultatai buvo vieni geriausių.
 
 
 \subsection{Vidutinio ilgio tarpų sekų efektyvumo įvertinimas}
