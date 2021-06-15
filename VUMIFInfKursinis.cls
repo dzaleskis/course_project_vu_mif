@@ -46,10 +46,10 @@
 \renewcommand{\footrulewidth}{0pt}
 \lhead{}
 \chead{}
-\rhead{}
+\rhead{\thepage}  % Numeris bus puslapio viršuje dešinėje
 \lfoot{}
 \cfoot{}
-\rfoot{\thepage}  % Numeris bus puslapio apačioje dešinėje
+\rfoot{}
 
 % Nerodyti įspėjimo dėl pakeistos article klasės antraščių stiliaus
 \RequirePackage{silence}
