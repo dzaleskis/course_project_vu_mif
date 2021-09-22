@@ -1,4 +1,4 @@
-xelatex kursinis.tex
-biber kursinis
-xelatex kursinis.tex
-Invoke-Item kursinis.pdf
+xelatex projektinis.tex
+biber projektinis
+xelatex projektinis.tex
+Invoke-Item projektinis.pdf
