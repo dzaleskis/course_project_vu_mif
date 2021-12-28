@@ -1,6 +1,17 @@
 Plačiau apie šaltinių tipus ir jų atributus:
 http://mirror.datacenter.by/pub/mirrors/CTAN/macros/latex/contrib/biblatex/doc/biblatex.pdf#subsection.2.1
 
+DIFFERENT TYPES OF PASSES FOR SHELLSORT
+
+@inproceedings{sedgewick1996analysis,
+  title={Analysis of Shellsort and related algorithms},
+  author={Sedgewick, Robert},
+  booktitle={European Symposium on Algorithms},
+  pages={1--11},
+  year={1996},
+  organization={Springer}
+}
+
 MERGESORT EARLY VERSION
 
 @article{10.1145/356580.356581,
@@ -73,59 +84,6 @@ author={Radavičius, Irmantas and Baranauskas, Mykolas},
 year={2013},
 month={Dec.},
 pages={61–66}
-}
-
-BOGO SORT
-
-@InProceedings{10.1007/978-3-540-72914-3_17,
-author="Gruber, Hermann
-and Holzer, Markus
-and Ruepp, Oliver",
-editor="Crescenzi, Pierluigi
-and Prencipe, Giuseppe
-and Pucci, Geppino",
-title="Sorting the Slow Way: An Analysis of Perversely Awful Randomized Sorting Algorithms",
-booktitle="Fun with Algorithms",
-year="2007",
-publisher="Springer Berlin Heidelberg",
-address="Berlin, Heidelberg",
-pages="183--197",
-abstract="This paper is devoted to the ``Discovery of Slowness.'' The archetypical perversely awful algorithm bogo-sort, which is sometimes referred to as Monkey-sort, is analyzed with elementary methods. Moreover, practical experiments are performed.",
-isbn="978-3-540-72914-3"
-}
-
-HEAP SORT
-
-@article{10.1145/512274.512284,
-author = {Forsythe, G. E.},
-title = {Algorithms},
-year = {1964},
-issue_date = {June 1964},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-volume = {7},
-number = {6},
-issn = {0001-0782},
-url = {https://doi.org/10.1145/512274.512284},
-doi = {10.1145/512274.512284},
-journal = {Commun. ACM},
-month = jun,
-pages = {347–349},
-numpages = {3}
-}
-
-@article{SCHAFFER199376,
-title = {The Analysis of Heapsort},
-journal = {Journal of Algorithms},
-volume = {15},
-number = {1},
-pages = {76-100},
-year = {1993},
-issn = {0196-6774},
-doi = {https://doi.org/10.1006/jagm.1993.1031},
-url = {https://www.sciencedirect.com/science/article/pii/S019667748371031X},
-author = {R. Schaffer and R. Sedgewick},
-abstract = {Heapsort is a fundamental algorithm whose precise performance characteristics have proven difficult to analyze. It is easy to show that the number of keys moved during the algorithm when sorting a random file of N distinct elements is N lg N + O(N) in the worst case, and it has long been conjectured that the average case performance is the same. No specific results on the average case or even the best case have been found despite the algorithm′s standing as a classic method that is in widespread use. In this paper, we resolve these questions by showing that the best case for the number of moves is ∼ 12N lg N and that the average number of moves is ∼ N lg N. These results have implications for the analysis of various modified versions of the algorithm that have been suggested. In particular, they imply that a well-known variant originally due to Floyd uses an asymptotically optimal number of comparisons on average, but three-halves that in the worst case. This essentially completes the analysis of the algorithm, although there is another quantity that contributes to the leading term of the running time that requires more intricate arguments, and we have little specific information about the distribution beyond what is implied by our asymptotic results.}
 }
 
 INSERTION SORT RUNNING TIMES
@@ -219,48 +177,11 @@ numpages = {9}
   publisher={ACM New York, NY, USA}
 }
 
-@book{wilkes1951preparation,
-  title={The Preparation of Programs for an Electronic Digital Computer: With special reference to the EDSAC and the Use of a Library of Subroutines},
-  author={Wilkes, Maurice V and Wheeler, David J and Gill, Stanley},
-  year={1951},
-  publisher={Addison-Wesley}
-}
-
-@article{turing1937computable,
-  title={On computable numbers, with an application to the Entscheidungsproblem},
-  author={Turing, Alan Mathison},
-  journal={Proceedings of the London mathematical society},
-  volume={2},
-  number={1},
-  pages={230--265},
-  year={1937},
-  publisher={Wiley Online Library}
-}
-
 @book{holland1992adaptation,
   title={Adaptation in natural and artificial systems: an introductory analysis with applications to biology, control, and artificial intelligence},
   author={Holland, John Henry},
   year={1992},
   publisher={MIT press}
-}
-
-@article{maimon1998genetic,
-  title={A genetic algorithm approach to scheduling PCBs on a single machine},
-  author={Maimon, OZ and Braha, D},
-  journal={International Journal of Production Research},
-  volume={36},
-  number={3},
-  pages={761--784},
-  year={1998},
-  publisher={Taylor \& Francis}
-}
-
-@incollection{hornby2006automated,
-  title={Automated antenna design with evolutionary algorithms},
-  author={Hornby, Gregory and Globus, Al and Linden, Derek and Lohn, Jason},
-  booktitle={Space 2006},
-  pages={7242},
-  year={2006}
 }
 
 @inproceedings{simpson1999faster,
@@ -299,40 +220,6 @@ numpages = {9}
   organization={IEEE}
 }
 
-@article{moore1998cramming,
-  title={Cramming more components onto integrated circuits},
-  author={Moore, Gordon E},
-  journal={Proceedings of the IEEE},
-  volume={86},
-  number={1},
-  pages={82--85},
-  year={1998},
-  publisher={IEEE}
-}
-
-@online{golangsort,
-  author = {The Go Authors},
-  title = {sort/sort.go},
-  year = {2009},
-  url = {https://golang.org/src/sort/sort.go},
-  urldate = {2021-05-24}
-}
-
-@online{bzip2sort,
-  author = {Julian Seward},
-  title = {bzip2/​blocksort.c},
-  year = {2010},
-  url = {https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/util/compress/bzip2/blocksort.c#L519},
-  urldate = {2021-05-24}
-}
-
-@article{auger2018worst,
-  title={On the worst-case complexity of TimSort},
-  author={Auger, Nicolas and Jug{\'e}, Vincent and Nicaud, Cyril and Pivoteau, Carine},
-  journal={arXiv preprint arXiv:1805.08612},
-  year={2018}
-}
-
 @article{10.1145/359024.359026,
 author = {Cook, Curtis R. and Kim, Do Jin},
 title = {Best Sorting Algorithm for Nearly Sorted Lists},
@@ -352,17 +239,8 @@ numpages = {5},
 keywords = {heap-sort, Quickersort, merge sort, sorting, Shellsort, sorting effort measures, insertion sort}
 }
 
-@INPROCEEDINGS{7280062,
-  author={Faujdar, Neetu and Ghrera, Satya Prakash},
-  booktitle={2015 Fifth International Conference on Communication Systems and Network Technologies}, 
-  title={Analysis and Testing of Sorting Algorithms on a Standard Dataset}, 
-  year={2015},
-  volume={},
-  number={},
-  pages={962-967},
-  doi={10.1109/CSNT.2015.98}}
 
-  @article{SEDGEWICK1986159,
+@article{SEDGEWICK1986159,
 title = {A new upper bound for Shellsort},
 journal = {Journal of Algorithms},
 volume = {7},
@@ -385,28 +263,6 @@ abstract = {A direct relationship between Shellsort and the classical “problem
   pages={210--224},
   year={1985},
   publisher={Elsevier}
-}
-
-@article{shell1959high,
-  title={A high-speed sorting procedure},
-  author={Shell, Donald L.},
-  journal={Communications of the ACM},
-  volume={2},
-  number={7},
-  pages={30--32},
-  year={1959},
-  publisher={ACM New York, NY, USA}
-}
-
-@article{whitley1994genetic,
-  title={A genetic algorithm tutorial},
-  author={Whitley, Darrell},
-  journal={Statistics and computing},
-  volume={4},
-  number={2},
-  pages={65--85},
-  year={1994},
-  publisher={Springer}
 }
 
 @inproceedings{eiben1994genetic,

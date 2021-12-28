@@ -39,52 +39,95 @@
 Čia bus įvadas (kai prisiversiu parašyt).
 
 Darbo \textbf{tikslas}:
-Kol kas nežinomas.
-
+pritaikyti genetinius algoritmus rikiavimo algoritmų generavimui.
 
 Darbo uždaviniai:
 \begin{itemize}
-  \item ???
-  \item ??
-  \item ?
-  \item PROFIT!
+  \item Atlikti Šelo algoritmo ir jo variantų literatūros analizę.
+  \item Atlikti genetinių algoritmų literatūros analizę. % reiketu pataisyti, sutampa su kursinio uzdaviniu
+  \item Nustatyti kriterijus rikiavimo algoritmų efektyvumui įvertinti.
+  \item Paruošti aplinką rikiavimo algoritmų generavimui.
+  \item Pasitelkiant genetinius algoritmus sugeneruoti rikiavimo algoritmus.
+  \item Paruošti aplinką rikiavimo algoritmų tarpusavio palyginimui.
+  \item Atliekant eksperimentus įvertinti sugeneruotų ir klasikinių rikiavimo algoritmų efektyvumą. % klausimas ar "klasikiniai" yra geras terminas. reikes pakeist matyt
 \end{itemize}
 
-Šis darbas sudarytas iš $n$ skyrių.
-Pirmame skyriuje atliekama tas ir anas.
-Antrame skyriuje vėl kažkas.
-... ir taip toliau.
+Šis darbas sudarytas iš 7 skyrių.
+Pirmame skyriuje atliekama Šelo algoritmo ir jo variantų literatūros analizė.
+Antrame skyriuje atliekama genetinių algoritmų literatūros analizė. % pataisius uzdavini pakeisti ir cia
+Trečiame skyriuje nustatomi kriterijai rikiavimo algoritmų efektyvumui įvertinti.
+Ketvirtame skyriuje paruošiama aplinka rikiavimo algoritmų generavimui.
+Penktame skyriuje pasitelkiant genetinius algoritmus generuojami rikiavimo algoritmai.
+Šeštame skyriuje paruošiama aplinka rikiavimo algoritmų tarpusavio palyginimui.
+Septintame skyriuje atliekant eksperimentus įvertinamas sugeneruotų ir klasikinių rikiavimo algoritmų efektyvumas. % same here
 
-\section{Skyrius}
+\section{Šelo algoritmas ir jo variantai}
 
-Šis skyrius sudarytas iš $m$ poskyrių.
-Pirmame poskyryje nagrinėjama kažkas labai įdomaus.
-Antrame poskyryje mažiau įdomu.
-... ir taip toliau.
+\subsection{Šelo algoritmas}
 
-\subsection{Poskyris}
+\begin{algorithm}[H]
+  \caption{Vadovėlinis Šelo rikiavimo algoritmas}\label{alg:tss}
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \State $j\gets i$
+      \State $temp\gets S[i]$\label{alg:tss:assign1}
+      \While {$j > gap$ \textbf{and} $S[j - gap] > S[j]$}\label{alg:tss:while:start}
+        \State $S[j]\gets S[j - gap]$
+        \State $j\gets j-gap$
+      \EndWhile\label{alg:tss:while:end}
+      \State $S[j]\gets temp$\label{alg:tss:assign2}
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
 
-Čia poskyris.
+\subsection{Šelo algoritmo variantai}
 
-\subsubsection{Poposkyris}
+\cite{sedgewick1996analysis}
 
-Čia poposkyris.
 
-\subsubsection{Poposkyris}
+\begin{algorithm}[H]
+  \caption{Patobulintas Šelo rikiavimo algoritmas}\label{alg:iss}
+  \begin{algorithmic}[1]
+  \ForEach {$gap$ \textbf{in} $H$}
+    \For {$i\gets gap+1$ \textbf{to} $N$}
+      \If {$S[i-gap] > S[i]$}\label{alg:iss:check}
+        \State $j\gets i$\label{alg:iss:inner:start}
+        \State $temp\gets S[i]$
+        \Repeat\label{alg:iss:loop:start}
+          \State $S[j]\gets S[j - gap]$
+          \State $j\gets j-gap$
+        \Until {$j \le gap$ or $S[j - gap] \le S[j]$}\label{alg:iss:loop:end}
+        \State $S[j]\gets temp$\label{alg:iss:inner:end}
+      \EndIf
+    \EndFor
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
 
-Ir dar vienas poposkyris.
+\cite{Radavičius_Baranauskas_2013}
 
-\subsection{Poskyris}
 
-Poskyris (vėl?).
+% \section{Skyrius}
 
-\subsubsection{Poposkyris}
+% Šis skyrius sudarytas iš $m$ poskyrių.
+% Pirmame poskyryje nagrinėjama kažkas labai įdomaus.
+% Antrame poskyryje mažiau įdomu.
+% ... ir taip toliau.
 
-Ir dar vienas poposkyris (gal jau užteks?).
+% \subsection{Poskyris}
 
-\subsubsection{Poposkyris}
+% Čia poskyris.
 
-Ir dar vienas poposkyris (dabar jau tikrai gana).
+% \subsubsection{Poposkyris}
+
+% Čia poposkyris.
+
+% \subsubsection{Poposkyris}
+
+% Ir dar vienas poposkyris.
+
 
 \sectionnonum{Išvados}
 
