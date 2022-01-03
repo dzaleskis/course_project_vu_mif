@@ -208,7 +208,7 @@ Tuo tarpu PŠA prieš vykdydamas bet kokius kitus žingsnius patikrina, ar eleme
 \end{algorithm}
 
 Nesunku pastebėti, jog VŠA ir PŠA struktūra yra tokia pati, ir algoritmai skiriasi tik tuo,
-kaip atliekama elementų rikiavimo logika.
+kaip įgyvendinama elementų rikiavimo logika.
 Šelo algoritmo variantams būdingą struktūrą toliau vadinsime Šelo algoritmo karkasu,
 o karkaso viduje atliekamą rikiavimo logiką - perėjimu (angl. pass).
 VŠA taikomą perėjimą toliau vadinsime įterpimo perėjimu,
@@ -292,31 +292,85 @@ Plytos perėjimo pseudokodas yra pateikiamas \ref{alg:brick_pass} algoritme.
   \end{algorithmic}
 \end{algorithm}
 
+\section{Genetiniai algoritmai}
 
-\section{Rikiavimo algoritmo efektyvumo kriterijai}
+
+\section{Šelo algoritmo variantų efektyvumo kriterijai}
 
 Rikiavimo algoritmai dažniausiai yra vertinami pagal atliekamų priskyrimų skaičių, kadangi
 daugelyje algoritmų priskyrimų skaičius uždaviniui augant greitai artėja prie palyginimų skaičiaus ir
 tokiu metodu gautas įvertis būna pakankamai tikslus.
-Šelo algoritmo atveju, atliekamų palyginimų ir priskyrimų skaičiaus santykis augant $N$ nebūtinai artėja prie 1 \cite{Radavičius_Baranauskas_2013}.
+Vadovėlinio Šelo algoritmo atveju, atliekamų palyginimų ir priskyrimų skaičiaus santykis augant $N$ nebūtinai artėja prie 1 \cite{Radavičius_Baranauskas_2013}.
+Kaip parodo \cite{ciura2001best}, vadovėliniame Šelo algoritme dominuojanti operacija yra palyginimas.
+Tiesa, Šelo algoritmo variantai nėra taip išsamiai ištirti \cite{brejova2001analyzing}.
+Todėl šio darbo kontekste sudėtinga pagrįstai nustatyti, kuri iš operacijų turėtų turėti didesnį svorį.
 
+Algoritmo veikimo laikas taip pat gali duoti tinkamų įžvalgų įvertinant praktinį efektyvumą.
+Savaime suprantama, jog į veikimo laiką verta žvelgti kritiškai, kadangi jis priklauso nuo konkrečios algoritmo implementacijos,
+eksperimentams naudojamos mašinos architektūros ir techninių parametrų, operacinės sistemos, pasirinktos programavimo kalbos ir net kompiliatoriaus versijos.
+Reikia pastebėti, jog šiuolaikinių kompiuterių architektūros yra labai sudėtingos, kadangi gamintojai siekia pilnai išnaudoti mašinos galimybes.
+Šiam tikslui pasiekti yra pasitelkiamos įvarios strategijos:
+instrukcijos nėra vykdomos iš eilės (siekiant pilnai išnaudoti procesoriaus ciklus),
+duomenys saugomi kelių lygių talpykloje (siekiant panaikinti atminties delsą),
+šakos yra nuspėjamos (siekiant išlygiagretinti instrukcijų vykdymą).
+Todėl naudojant modernų kompiuterį labai sunku iš anksto nustatyti, kaip algoritmas veiks praktikoje.
+Atsižvelgiant į tai, algoritmo veikimo laiko įvertis yra pakankamai geras įrankis juodos dėžės principu įvertinti praktinį algoritmo efektyvumą.
 
-% Šis skyrius sudarytas iš $m$ poskyrių.
-% Pirmame poskyryje nagrinėjama kažkas labai įdomaus.
-% Antrame poskyryje mažiau įdomu.
-% ... ir taip toliau.
+Remiantis aukščiau pateiktais argumentais, šiame darbe Šelo algoritmo variantai vertinami pagal
+atliekamų palyginimų skaičių, atliekamų priskyrimų skaičių ir veikimo laiką.
+Svoriai šiems kriterijams nėra suteikiami.
 
-% \subsection{Poskyris}
+\section{Šelo algoritmo variantų generavimo aplinkos paruošimas}
 
-% Čia poskyris.
+Šelo algoritmo variantus generuojantis genetinis algoritmas buvo įgyvendintas C++ programavimo kalba, pasitelkiant openGA biblioteką \cite{mohammadi2017openga}.
+C++ buvo pasirinkta dėl praeitos patirties, galimybės kontroliuoti kodo našumą (ko dažnai nesuteikia "saugesnės" programavimo kalbos)
+ir tam tikrų kalbos aspektų, tokių kaip operatorių perkrovimas.
+OpenGA biblioteka buvo pasirinkta dėl modernių C++ kalbos konstruktų palaikymo, išsamios dokumentacijos ir praeitos patirties (buvo naudojama ruošiant kursinį darbą).
 
-% \subsubsection{Poposkyris}
+Atsižvelgiant į tai, jog dalis Šelo algoritmo variantų yra tikimybiniai (angl. probabilistic) ir pilnai išrikiuoja duomenis tik su tam tikra tikimybe,
+buvo pasirinkta skaičiuoti duomenų inversijas atlikus rikiavimą ir jas įtraukti į individų tinkamumo vertinimą.
+Inversijų skaičiavimas buvo atliekamas naiviu metodu, kuris nėra labai efektyvus (sudėtingumas blogiausiu atveju $O(n^2)$),
+tačiau gana paprastas įgyvendinti.
+Jo pseudokodas pateikiamas \ref{alg:inversion_counting} algoritme.
 
-% Čia poposkyris.
+\begin{algorithm}[H]
+  \caption{Inversijų skaičiavimas}\label{alg:inversion_counting}
+  \begin{algorithmic}[1]
+    \State $inv \gets 0$
 
-% \subsubsection{Poposkyris}
+    \For {$i\gets 0$ \textbf{to} $N-2$}
+      \For {$j\gets i+1$ \textbf{to} $N-1$}
+        \If {$S[i] > S[j]$}
+          \State $inv \gets inv+1$
+        \EndIf
+      \EndFor
+    \EndFor
 
-% Ir dar vienas poposkyris.
+    \State \textbf{return} $inv$
+  \end{algorithmic}
+\end{algorithm}
+
+Siekiant išmatuoti skirtingų Šelo algoritmo variantų atliekamų operacijų skaičių buvo
+suprojektuota bendrinė klasė (angl. generic class) $Element$.
+Klasė $Element$ veikia kaip apvalkalas pasirinkto tipo duomenims, suteikdama
+galimybę automatiškai skaičiuoti atliekamus palyginimus ir priskyrimus.
+Šis funkcionalumas buvo įgyvendintas perkraunant $Element$ klasės palyginimo ir priskyrimo operatorius - kviečiant
+kažkurį iš šių operatorių atitinkamai padidinamas atliktų palyginimų ar priskyrimų skaičius.
+
+\section{Šelo algoritmo variantų generavimas}
+
+Šis skyrius sudarytas iš 2 poskyrių.
+Pirmame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 1000.
+Antrame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 10000.
+
+\subsection{Šelo algoritmo variantų generavimas, kai N = 1000} % ar cia reikia taisyt?
+
+\subsection{Šelo algoritmo variantų generavimas, kai N = 10000} % ar cia reikia taisyt?
+
+\section{Šelo algoritmo variantų efektyvumo tyrimo aplinkos paruošimas}
+
+\section{Šelo algoritmo variantų efektyvumo tyrimas}
+
 
 
 \sectionnonum{Išvados}
