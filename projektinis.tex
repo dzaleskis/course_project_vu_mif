@@ -313,12 +313,16 @@ Reikia pastebėti, jog šiuolaikinių kompiuterių architektūros yra labai sud�
 instrukcijos nėra vykdomos iš eilės (siekiant pilnai išnaudoti procesoriaus ciklus),
 duomenys saugomi kelių lygių talpykloje (siekiant panaikinti atminties delsą),
 šakos yra nuspėjamos (siekiant išlygiagretinti instrukcijų vykdymą).
-Todėl naudojant modernų kompiuterį labai sunku iš anksto nustatyti, kaip algoritmas veiks praktikoje.
+Todėl naudojant modernų kompiuterį labai sunku iš anksto nustatyti, kaip algoritmas veiks praktikoje. 
+Taip pat reikia pastebėti, kad Šelo algoritmo atliekamų operacijų skaičius ir veikimo laikas nėra tiesiogiai susiję, t.y.
+vien tai, jog duotas Šelo algoritmo variantas atlieka sąlyginai mažai operacijų, dar nereiškia jog praktikoje jis veiks greičiau
+už tuos, kurie operacijų atlieka daugiau. % kaip pacituoti kursini???
 Atsižvelgiant į tai, algoritmo veikimo laiko įvertis yra pakankamai geras įrankis juodos dėžės principu įvertinti praktinį algoritmo efektyvumą.
 
 Remiantis aukščiau pateiktais argumentais, šiame darbe Šelo algoritmo variantai vertinami pagal
 atliekamų palyginimų skaičių, atliekamų priskyrimų skaičių ir veikimo laiką.
-Svoriai šiems kriterijams nėra suteikiami.
+% Svoriai šiems kriterijams nėra suteikiami.
+% kazka parasyt cia gudro
 
 \section{Šelo algoritmo variantų generavimo aplinkos paruošimas}
 
@@ -338,25 +342,92 @@ Atsižvelgiant į tai, jog dalis Šelo algoritmo variantų yra tikimybiniai (ang
 buvo pasirinkta skaičiuoti duomenų inversijas atlikus rikiavimą ir jas įtraukti į individų tinkamumo vertinimą.
 Atrodytų pakankamai intuityvu pasirinkti inversijas skaičiuoti burbuliuko metodu, kuris nėra labai efektyvus (sudėtingumas blogiausiu atveju $O(n^2)$),
 tačiau yra lengvai suprantamas ir gana paprastas įgyvendinti.
-Tačiau tarkime, jog GA bus vykdomas su 100 individų populiacija skaliariniu procesoriumi su 1 GHz taktiniu dažniu kai N yra 10000.
-Tada vienos kartos inversijų skaičiavimui blogiausiu atveju bus užtrunkama $\frac{10000^2 * 100}{10^9} = 10s$, kas yra visiškai nepriimtina žinant,
+Tačiau tarkime, jog GA bus vykdomas su 100 individų populiacija kai N yra 10000.
+Tada vienos kartos inversijų skaičiavimui blogiausiu atveju reikės apytiksliai $10000^2 * 100 = 10^{10}$ operacijų, kas yra visiškai nepriimtina žinant,
 jog GA kartų skaičius dažnai siekia šimtus ar net tūkstančius (priklausomai nuo implementacijos ir pasirinktų pabaigos sąlygų).
 Todėl buvo nuspręsta inversijų skaičiavimui pasitelkti modifikuotą rikiavimo sąlaja algoritmą, kurio įgyvendinimas yra kiek sunkesnis, tačiau sudėtingumas blogiausiu atveju siekia $O(n\,log\,n)$.
 Šio inversijų skaičiavimo metodo pseudokodas pateikiamas \ref{alg:merge_sort} ir \ref{alg:merge} algoritmuose.
+
+\section{Šelo algoritmo variantų generavimas}
+
+Šis skyrius sudarytas iš 3 poskyrių.
+Antrame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 1000.
+Trečiame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 100000.
+
+\subsection{Bendra info} % fix naming
+
+Prieš pradedant generuoti Šelo algoritmo variantus, reikėtų aptarti kaip turėtų atrodyti sprendinys, atspindintis tam tikrą Šelo algoritmo variantą.
+Kadangi genetinis algoritmas sprendinių evoliuciją vykdo taikant mutacijos ir rekombinacijos operatorius, sieksime, jog šių operatorių taikymas sprendiniams būtų kuo paprastesnis.
+Tuo tikslu sprendinio duomenų modelis turėtų būti kuo paprastesnis, o jo elementai sudaryti iš primityvių duomenų tipų.
+Laikysime jog vieną varianto perėjimą sudaro pora $(type, gap)$, kur $type$ yra skaičius, atitinkantis vieną iš anksčiau darbe aptartų perėjimų tipų,
+o $gap$ - tarpas, su kuriuo rikiuojama tame perėjime.
+Tadą Šelo algoritmo variantą galime modeliuoti sąrašu tokių perėjimų.
+Tiesa, toks algoritmas neturi jokio funkcionalumo (juo duomenų rikiuoti negalime), tačiau tai nėra sunku išspręsti: pakanka kiekvienam perėjimo tipui
+paruošti atitinkamą funkciją, kuri kaip parametrus priima rikiuojamus duomenis ir tarpą su kuriuo rikiuojama.
+Tada tokį algoritmą galima vykdyti iteruojant jo perėjimų sąrašą ir kiekvienam perėjimui iškviečiant funkciją atitinkančią jo tipą.
+
+% parasyt apie SOGA
+
+% Viena svarbiausių genetinio algoritmo dalių yra tinkamumo funkcija.
+Abiejuose Šelo algoritmo variantų generavimo etapuose buvo naudojama ta pati tinkamumo funkcija, kurios apibrėžimas yra toks:
+$f(c) = (c.inversions)^2 + (c.time)^{1.5} + (2*c.comparisons) + c.assignments$.
+Kadangi siekėme sugeneruoti algoritmą, kuris visada išrikiuoja duomenis, buvo pasirinkta sprendiniams taikyti kvadratinę baudą priklausančią nuo inversijų skaičiaus.
+Taip pat sprendiniams buvo taikoma bauda, paremta veikimo laiku. Reikia pripažinti, jog šios baudos laipsnis neturi matematinio pagrindo ir buvo nustatytas eksperimentiškai,
+siekiant jog baudos dydis neviršytų $max(c.comparisons, c.assignments)$ su pasirinktais duomenų dydžiais.
+Algoritmo atliekamiems priskyrimams ir palyginimams tinkamumo funkcijoje buvo taikomi svoriai, paremti
+praeitame skyriuje apibrėžtais efektyvaus Šelo algoritmo varianto kriterijais. 
+
+
+Genetinio algoritmo rezultatų saugojimui buvo pasirinkta naudoti PostgreSQL duomenų bazę.
+Tai buvo atlikta siekiant automatizuoti genetinio algoritmo rezultatų saugojimo procesą ir palengvinti geriausių rezultatų atranką.
+Rezultatų saugojimui buvo suprojektuota lentelė, kurios stulpelius sudaro sprendinio tinkamumas, rikiuojamų duomenų dydis,
+inversijų skaičius po rikiavimo, atliktų palyginimų skaičius, atliktų priskyrimų skaičius ir veikimo laikas.  
+
+
+\subsection{Šelo algoritmo variantų generavimas, kai N = 1000}
+
+\subsection{Šelo algoritmo variantų generavimas, kai N = 100000}
+
+\section{Šelo algoritmo variantų efektyvumo tyrimo aplinkos paruošimas}
+
+
+
+\section{Šelo algoritmo variantų efektyvumo tyrimas}
+
+Šis skyrius sudarytas iš 2 poskyrių.
+Pirmame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus rikiuojamų duomenų dydis yra 1000.
+Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus rikiuojamų duomenų dydis yra 100000.
+
+\subsection{Šelo algoritmo variantų efektyvumo tyrimas, kai N <= 1000}
+
+
+\subsection{Šelo algoritmo variantų efektyvumo tyrimas, kai N <= 100000}
+
+
+\sectionnonum{Išvados}
+
+Išvadose visą darbą sukišam į porą puslapių, tad čia gana svarbi dalis.
+% Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
+% suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
+
+\printbibliography[heading=bibintoc] % Literatūros šaltiniai
+
+\appendix  % Priedai
+
+\section{Inversijų skaičiavimas pasitelkiant rikiavimą sąlaja}
 
 \begin{algorithm}[H]
   \caption{Inversijas skaičiuojantis rikiavimas sąlaja}\label{alg:merge_sort}
   \begin{algorithmic}[1]
     \Procedure{mergesort}{$a$}
       \State $n \gets size(a)$
-      \State $mid \gets n/2$
       \State $inv \gets 0$
       
       \If {$n \le 1$}
         \State \textbf{return} $0$ 
       \EndIf
 
-      \State let $l$ and $r$ be the result of splitting $a$ at $mid$
+      \State let $l$ and $r$ be the result of splitting $a$ at $n/2$
 
       \State $inv \gets inv + mergesort(l)$
       \State $inv \gets inv + mergesort(r)$
@@ -387,7 +458,7 @@ Todėl buvo nuspręsta inversijų skaičiavimui pasitelkti modifikuotą rikiavim
             \Else
               \State $c[k] \gets b[j])$
               \State $j \gets j+1$
-              \State $inv \gets (n-i)$
+              \State $inv \gets inv + (n-i)$
             \EndIf
           \Else
             \State $c[k] \gets a[i])$
@@ -398,35 +469,12 @@ Todėl buvo nuspręsta inversijų skaičiavimui pasitelkti modifikuotą rikiavim
           \State $j \gets j+1$
         \EndIf
       \EndFor
+
+      \State \textbf{return} $inv$
+      
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
-
-\section{Šelo algoritmo variantų generavimas}
-
-Šis skyrius sudarytas iš 2 poskyrių.
-Pirmame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 1000.
-Antrame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 10000.
-
-\subsection{Šelo algoritmo variantų generavimas, kai N = 1000} % ar cia reikia taisyt?
-
-\subsection{Šelo algoritmo variantų generavimas, kai N = 10000} % ar cia reikia taisyt?
-
-\section{Šelo algoritmo variantų efektyvumo tyrimo aplinkos paruošimas}
-
-\section{Šelo algoritmo variantų efektyvumo tyrimas}
-
-
-
-\sectionnonum{Išvados}
-
-Išvadose visą darbą sukišam į porą puslapių, tad čia gana svarbi dalis.
-% Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
-% suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
-
-\printbibliography[heading=bibintoc] % Literatūros šaltiniai
-
-% \appendix  % Priedai
 % Prieduose gali būti pateikiama pagalbinė, ypač darbo autoriaus savarankiškai
 % parengta, medžiaga. Savarankiški priedai gali būti pateikiami kompiuterio
 % diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
