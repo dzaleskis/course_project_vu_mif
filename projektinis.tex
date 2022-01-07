@@ -9,6 +9,9 @@
 \usepackage{graphicx}
 \usepackage{hyperref}  % Nuorodų aktyvavimas
 \usepackage{url}
+\usepackage{booktabs}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{listings}
 
 \algnewcommand\algorithmicforeach{\textbf{foreach}}
 \algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
@@ -294,6 +297,56 @@ Plytos perėjimo pseudokodas yra pateikiamas \ref{alg:brick_pass} algoritme.
 
 \section{Genetiniai algoritmai}
 
+Paprasčiausias genetinis algoritmas susideda iš chromosomų populiacijos bei atrankos, mutacijos ir rekombinacijos operatorių \cite{simpson1999faster}.
+Šiame skyriuje bus nagrinėjamos šių terminų reikšmės ir genetinių algoritmų dizaino principai.
+
+% reiketu kazka originalaus pridet
+
+\subsection{Chromosomų populiacija}
+
+Chromosoma GA kontekste vadiname potencialų uždavinio sprendinį.
+Projektuojant genetinį algoritmą tam tikro uždavinio sprendimui, svarbu tinkamai pasirinkti,
+kaip kompiuteriu modeliuoti galimus sprendinius.
+Įprastai siekiama sprendinio genus išreikšti kuo primityviau, siekiant
+palengvinti mutacijos ir rekombinacijos operatorių taikymą.
+Dažniausiai tai pasiekiama chromosomas išreiškiant bitų ar kitų primityvių duomenų tipų masyvais \cite{whitley1994genetic}.
+Tada mutacija gali būti įgyvendinama tiesiog modifikuojant atsitiktinai pasirinktą masyvo elementą,
+o rekombinacijai pakanka remiantis tam tikra strategija perkopijuoti tėvinių chromosomų elementus į vaikinę chromosomą.
+
+Sprendinio kokybę įvardijame kaip jo tinkamumą, kuris apibrėžiamas tinkamumo funkcijos reikšme, pateikus sprendinį arba tarpinį sprendinio kainos įvertį kaip parametrą.
+Tinkamumo funkcija yra viena svarbiausių genetinio algoritmo dalių,
+kadangi kai ji netinkamai parinkta, algoritmas nekonverguos į tinkamą sprendinį arba užtruks labai ilgai.
+
+Chromosomų rinkinys, literatūroje dažnai vadinamas populiacija, atspindi uždavinio sprendinių aibę, kuri kinta kiekvieną genetinio algoritmo iteraciją.
+Populiaciją dažnu atveju sudaro šimtai ar net tūkstančiai individų.
+Populiacijos dydis dažnai priklauso nuo sprendžiamo uždavinio,
+tačiau literatūroje nėra konsensuso, kokį populiacijos dydį rinktis bendru atveju.
+
+
+\subsection{Genetiniai operatoriai}
+
+Esminė GA dalis yra populiacijos genetinės įvairovės užtikrinimas, geriausių individų atranka ir kryžminimasis.
+Siekiant užtikrinti šių procesų išpildymą, genetinis algoritmas vykdymo metu
+iteratyviai atnaujina esamą populiaciją ir kuria naujas kartas
+taikydamas biologijos žiniomis paremtus atrankos, rekombinacijos ir mutacijos operatorius.
+
+Atrankos operatorius grąžina tinkamiausius populiacijos individus, kuriems yra leidžiama susilaukti palikuonių taikant rekombinacijos operatorių.
+Dažniausiai atranka vykdoma atsižvelgiant į populiacijos individų tinkamumą, atrenkant ir pateikiant rekombinacijai tuos, kurių tinkamumas yra geriausias.
+Verta pastebėti, jog įprastai rekombinacijai yra pasirenkama tam tikra fiksuota einamosios populiacijos dalis
+ir daugelyje GA implementacijų šis dydis yra nurodomas kaip veikimo parametras.
+
+Rekombinacijos operatorius įprastai veikia iš dviejų tėvinių chromosomų sukurdamas naują vaikinę chromosomą, kas dažniausiai pasiekiama
+tam tikru būdu perkopijuojant tėvų genų atkarpas į vaikinę chromosomą.
+Rekombinacijos strategijų yra įvairių, tačiau tinkamiausią strategiją galima pasirinkti tik atsižvelgiant į sprendžiamą uždavinį.
+
+Mutacijos operatorius veikia modifikuojant pasirinktos chromosomos vieną ar kelis genus,
+kas dažniausiai įgyvendinama nežymiai pakeičiant pasirinktų genų reikšmes ar sukeičiant jas vietomis.
+Įprastai mutacija kiekvienai chromosomai taikoma su tam tikra tikimybe, kuri nurodoma kaip vienas iš GA veikimo parametrų.
+Tinkamas chromosomos mutacijos tikimybės parinkimas yra vienas iš svarbiausių sprendimų projektuojant GA,
+kadangi nuo mutacijos tikimybės dažnu atveju priklauso gaunamų sprendinių kokybė.
+Jei mutacijos tikimybė yra per didelė, GA išsigimsta į primityvią atsitiktinę paiešką \cite{hassanat2019choosing} ir rizikuojama prarasti geriausius sprendinius.
+Jei mutacijos tikimybė per maža, tai gali vesti prie genetinio dreifo \cite{masel2011genetic},
+kas reiškia, jog populiacijos genetinė įvairovė palaipsniui mažės.
 
 \section{Šelo algoritmo variantų efektyvumo kriterijai}
 
@@ -317,19 +370,19 @@ Todėl naudojant modernų kompiuterį labai sunku iš anksto nustatyti, kaip alg
 Taip pat reikia pastebėti, kad Šelo algoritmo atliekamų operacijų skaičius ir veikimo laikas nėra tiesiogiai susiję, t.y.
 vien tai, jog duotas Šelo algoritmo variantas atlieka sąlyginai mažai operacijų, dar nereiškia jog praktikoje jis veiks greičiau
 už tuos, kurie operacijų atlieka daugiau. % kaip pacituoti kursini???
-Atsižvelgiant į tai, algoritmo veikimo laiko įvertis yra pakankamai geras įrankis juodos dėžės principu įvertinti praktinį algoritmo efektyvumą.
+Atsižvelgiant į aukščiau pateiktus argumentus, manome jog
+algoritmo veikimo laiko įvertis yra pakankamai geras įrankis juodos dėžės principu įvertinti praktinį algoritmo efektyvumą.
 
 Remiantis aukščiau pateiktais argumentais, šiame darbe Šelo algoritmo variantai vertinami pagal
 atliekamų palyginimų skaičių, atliekamų priskyrimų skaičių ir veikimo laiką.
-% Svoriai šiems kriterijams nėra suteikiami.
-% kazka parasyt cia gudro
+% kazka parasyt cia gudro apie svorius
 
 \section{Šelo algoritmo variantų generavimo aplinkos paruošimas}
 
 Šelo algoritmo variantus generuojantis genetinis algoritmas buvo įgyvendintas C++ programavimo kalba, pasitelkiant openGA biblioteką \cite{mohammadi2017openga}.
 C++ buvo pasirinkta dėl praeitos patirties, galimybės kontroliuoti kodo našumą (ko dažnai nesuteikia "saugesnės" programavimo kalbos)
 ir tam tikrų kalbos aspektų, tokių kaip operatorių perkrovimas.
-OpenGA biblioteka buvo pasirinkta dėl modernių C++ kalbos konstruktų palaikymo, išsamios dokumentacijos ir praeitos patirties (buvo naudojama ruošiant kursinį darbą).
+OpenGA biblioteka buvo pasirinkta dėl modernių C++ kalbos konstruktų ir lygiagretaus vykdymo palaikymo, išsamios dokumentacijos ir praeitos patirties (buvo naudojama ruošiant kursinį darbą).
 
 Siekiant išmatuoti skirtingų Šelo algoritmo variantų atliekamų operacijų skaičių buvo
 suprojektuota bendrinė klasė (angl. generic class) $Element$.
@@ -351,46 +404,102 @@ Todėl buvo nuspręsta inversijų skaičiavimui pasitelkti modifikuotą rikiavim
 \section{Šelo algoritmo variantų generavimas}
 
 Šis skyrius sudarytas iš 3 poskyrių.
+Pirmame poskyryje aptariamas Šelo algoritmo variantų generavimui suprojektuotas genetinis algoritmas.
 Antrame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 1000.
 Trečiame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 100000.
 
-\subsection{Bendra info} % fix naming
+\subsection{Genetinis algoritmas}
 
 Prieš pradedant generuoti Šelo algoritmo variantus, reikėtų aptarti kaip turėtų atrodyti sprendinys, atspindintis tam tikrą Šelo algoritmo variantą.
 Kadangi genetinis algoritmas sprendinių evoliuciją vykdo taikant mutacijos ir rekombinacijos operatorius, sieksime, jog šių operatorių taikymas sprendiniams būtų kuo paprastesnis.
 Tuo tikslu sprendinio duomenų modelis turėtų būti kuo paprastesnis, o jo elementai sudaryti iš primityvių duomenų tipų.
+Tai tuo pačiu palengvina ir sprendinių serializaciją, kas leidžia sprendinius serializuoti pvz.
+JSON formatu ir išsaugoti į failą ar duomenų bazę.
 Laikysime jog vieną varianto perėjimą sudaro pora $(type, gap)$, kur $type$ yra skaičius, atitinkantis vieną iš anksčiau darbe aptartų perėjimų tipų,
 o $gap$ - tarpas, su kuriuo rikiuojama tame perėjime.
 Tadą Šelo algoritmo variantą galime modeliuoti sąrašu tokių perėjimų.
+Toliau darbe modeliuojamą Šelo algoritmo varianto sprendinį taip pat vadinsime chromosoma arba individu, o vieną jo perėjimą - genu. 
 Tiesa, toks algoritmas neturi jokio funkcionalumo (juo duomenų rikiuoti negalime), tačiau tai nėra sunku išspręsti: pakanka kiekvienam perėjimo tipui
 paruošti atitinkamą funkciją, kuri kaip parametrus priima rikiuojamus duomenis ir tarpą su kuriuo rikiuojama.
 Tada tokį algoritmą galima vykdyti iteruojant jo perėjimų sąrašą ir kiekvienam perėjimui iškviečiant funkciją atitinkančią jo tipą.
 
-% parasyt apie SOGA
+Šelo algoritmo variantų generavimui buvo pasitelktas vienkriterinis genetinis algoritmas,
+kadangi tai supaprastina tiek paties GA vykdymą, tiek realizaciją.
+Projektuojant genetinį algoritmą buvo pasirinkta minimizuoti sprendinių atliekamų operacijų skaičių,
+tuo pačiu taikant baudas pagal pasirinktus kriterijus.
 
-% Viena svarbiausių genetinio algoritmo dalių yra tinkamumo funkcija.
+Esminė genetinio algoritmo dalis yra genetiniai operatoriai.
+Kadangi openGA biblioteka nereikalauja įgyvendinti individų atrankos operatoriaus, lieka apibrėžti tik mutacijos ir rekombinacijos operatorius.
+Individų mutacija buvo įgyvendinta pasirenkant atsitiktinį sprendinio perėjimą ir pakeičiant jo tipą kuriuo nors kitu perėjimo tipu.
+Tarpų mutacija nebuvo vykdoma, kadangi šiame darbe tarpų sekos nėra pagrindinis tyrimo objektas.
+Tuo pačiu tai sumažina galimų variantų aibę, kas leidžia lengviau gauti kokybiškus rezultatus ir paspartina genetinio algoritmo vykdymą.
+Sprendinių rekombinacija buvo vykdoma tolygia strategija, kur dviejų tėvų genai turi vienodą tikimybę
+būti perduoti vaikinei chromosomai.
+Siekiant išvengti netinkamų sprendinių, rekombinacijos operatoriumi gauto naujo sprendinio perėjimai buvo išrikiuojami pagal tarpus.
+Reikia pastebėti, jog pasirinkta rekombinacijos operatoriaus implementacija leidžia tarpų sekų maišymąsi.
+Autoriaus nuomone, tai nėra blogas dalykas - netiesioginis šio darbo rezultatas gali būti ir nauja tarpų seka, gauta maišant
+individų inicializacijai naudotas tarpų sekas.
+
+Genetinio algoritmo rezultatų kokybė taip pat labai priklauso nuo pasirinktų vykdymo parametrų.
+Atlikus keletą eksperimentų ir preliminariai įvertinus gautų sprendinių tinkamumą buvo pasirinkta GA taikyti tokius parametrus:
+populiacija - $200$, mutacijos tikimybė - $0.1$, rekombinuojama populiacijos dalis - $0.2$.
+Siekiant išlaikyti tinkamiausius sprendinius, taip pat buvo pasitelktas elitizmas ir 5 didžiausią tinkamumą turinčios chromosomos nekeistos patekdavo į kitą GA iteraciją.
+GA sustojimo kriterijumi buvo laikomas geriausio individo nepakitimas 100 iteracijų.
+
 Abiejuose Šelo algoritmo variantų generavimo etapuose buvo naudojama ta pati tinkamumo funkcija, kurios apibrėžimas yra toks:
-$f(c) = (c.inversions)^2 + (c.time)^{1.5} + (2*c.comparisons) + c.assignments$.
+\\${f(c) = (c.inversions)^2 + (c.time)^{1.5} + (2*c.comparisons) + c.assignments}$.
 Kadangi siekėme sugeneruoti algoritmą, kuris visada išrikiuoja duomenis, buvo pasirinkta sprendiniams taikyti kvadratinę baudą priklausančią nuo inversijų skaičiaus.
 Taip pat sprendiniams buvo taikoma bauda, paremta veikimo laiku. Reikia pripažinti, jog šios baudos laipsnis neturi matematinio pagrindo ir buvo nustatytas eksperimentiškai,
-siekiant jog baudos dydis neviršytų $max(c.comparisons, c.assignments)$ su pasirinktais duomenų dydžiais.
+siekiant jog baudos dydis neviršytų ${max(c.comparisons, c.assignments)}$ su pasirinktais duomenų dydžiais.
 Algoritmo atliekamiems priskyrimams ir palyginimams tinkamumo funkcijoje buvo taikomi svoriai, paremti
 praeitame skyriuje apibrėžtais efektyvaus Šelo algoritmo varianto kriterijais. 
 
-
 Genetinio algoritmo rezultatų saugojimui buvo pasirinkta naudoti PostgreSQL duomenų bazę.
 Tai buvo atlikta siekiant automatizuoti genetinio algoritmo rezultatų saugojimo procesą ir palengvinti geriausių rezultatų atranką.
-Rezultatų saugojimui buvo suprojektuota lentelė, kurios stulpelius sudaro sprendinio tinkamumas, rikiuojamų duomenų dydis,
+Rezultatų saugojimui buvo suprojektuota lentelė, kurios stulpelius sudaro sprendinys JSON formatu, sprendinio tinkamumas, rikiuojamų duomenų dydis,
 inversijų skaičius po rikiavimo, atliktų palyginimų skaičius, atliktų priskyrimų skaičius ir veikimo laikas.  
-
+Genetiniam algoritmui baigus darbą gauti rezultatai buvo išsaugomi į failą, kurio turinys po to buvo automatiškai patalpinamas į duomenų bazę pasitelkiant Node.js skriptą.
 
 \subsection{Šelo algoritmo variantų generavimas, kai N = 1000}
 
+Kadangi šiame darbe siekiame ištirti Šelo algoritmo variantus, kurie skiriasi taikomo perėjimo tipu,
+šiame etape buvo pasirinkta sprendinių inicializacijai naudoti ne atsitiktinai sugeneruotas, o literatūroje rastas tarpų sekas.
+Tuo tikslu buvo pasirinktos šios tarpų sekos:
+\begin{itemize}
+  \item Pratt: $1, 2, 3, 4, 6, 8, 9, 12, \ldots$ \cite{pratt1972shellsort}
+  \item Sedgewick: $1, 5, 19, 41, 109, 209, 505, 929, \ldots$ \cite{SEDGEWICK1986159}
+  \item Incerpi-Sedgewick: $1, 3, 7, 21, 48, 112, 336, 861, \ldots$ \cite{incerpi1985improved}
+  \item Tokuda: $1, 4, 9, 20, 46, 103, 233, 525, \ldots $ \cite{10.5555/645569.659879}
+  \item Ciura: $1, 4, 10, 23, 57, 132, 301, 701$ \cite{ciura2001best}
+  \item Geometrinės tarpų sekos, kur $ q \in \{1.95, 2.05, 2.15, 2.25, 2.35, 2.45, 2.55, 2.65 \}$ \cite{Radavičius_Baranauskas_2013}
+\end{itemize}
+Pirmos 5 tarpų sekos buvo pasirinktos, kadangi literatūroje jos žinomos kaip vienos efektyviausių
+Šelo algoritmo variantams, kurie naudoja įterpimu paremtus perėjimus.
+Geometrinės tarpų sekos buvo pasirinktos atsižvelgiant į tai, jog jos įprastai yra naudojamos
+Šelo algoritmo variantuose, kurių perėjimai nėra paremti įterpimu.
+Kai kurios iš pasirinktų tarpų sekų yra begalinės, tad buvo nuspręsta visas pasirinktas sekas sutrumpinti taip, jog jas sudarytų 8 elementai.
+
+Modeliuojama chromosoma šiuo atveju buvo sudaryta iš 8 perėjimų, t.y. jos ilgis atitiko
+inicializacijai naudotų tarpų sekų ilgį.
+Chromosomos buvo inicializuojamos remiantis šia formule:
+$p_i = (rand\_type(), H_i)$, kur $rand\_type()$ yra funkcija grąžinanti atsitiktinį perėjimo tipą, $H$ - atsitiktinai pasirinkta tarpų seka.
+Chromosomų tinkamumas buvo vertinamas rikiuojant du 1000 elementų dydžio masyvus.
+Pasitelkiant suprojektuotą GA buvo sugeneruota 50 unikalių sprendinių.
+Tada iš jų buvo atrinkti 5 didžiausią tinkamumą turintys sprendiniai, kurie JSON formatu pateikiami prieduose. % prideti ref veliau
+
 \subsection{Šelo algoritmo variantų generavimas, kai N = 100000}
 
+Šiame etape buvo pasirinkta sprendinių inicializacijai dalinai naudoti sprendinius, gautus praeitame etape.
+Kadangi tokio dydžio duomenų rikiavimui 8 elementų tarpų seka yra per trumpa jog būtų efektyvi,
+sprendinių perėjimų sąrašas buvo pratęsiamas iki 14 elementų, pirmuosius 8 perėjimus perkopijuojant iš praeitame etape gautų sprendinių,
+o likusius užpildant remiantis šia rekursyvia formule: $p_i = (rand\_type(), gap(p_{i-1}) * q)$,
+kur $rand\_type()$ yra funkcija grąžinanti atsitiktinį perėjimo tipą, $gap(x)$ yra funkcija grąžinanti duoto perėjimo tarpą, $q \in \left[2.2, 2.25\right]$.
+
+Chromosomų tinkamumas buvo vertinamas rikiuojant vieną 100000 elementų dydžio masyvą.
+Pasitelkiant suprojektuotą GA buvo sugeneruota 50 unikalių sprendinių.
+Tada iš jų buvo atrinkti 5 didžiausią tinkamumą turintys sprendiniai, kurie JSON formatu pateikiami prieduose. % prideti ref veliau
+
 \section{Šelo algoritmo variantų efektyvumo tyrimo aplinkos paruošimas}
-
-
 
 \section{Šelo algoritmo variantų efektyvumo tyrimas}
 
@@ -398,11 +507,177 @@ inversijų skaičius po rikiavimo, atliktų palyginimų skaičius, atliktų pris
 Pirmame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus rikiuojamų duomenų dydis yra 1000.
 Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus rikiuojamų duomenų dydis yra 100000.
 
-\subsection{Šelo algoritmo variantų efektyvumo tyrimas, kai N <= 1000}
+\subsection{Šelo algoritmo variantų efektyvumo tyrimas rikiuojant nedidelius duomenų dydžius}
+
+\begin{table}[H]
+  \caption{Efektyvumo tyrimo rezultatai, kai N = 125}
+  \label{results_125}
+  \centering
+  \begin{tabular}{@{}llll@{}}
+  algoritmas & vid. palyginimai                     & vid. priskyrimai                      & vid. laikas (μs)                      \\
+  S\_C       & \cellcolor[HTML]{70AD47}\textbf{978} & 1568                                  & 4.04                                  \\
+  S\_T       & 991                                  & 1615                                  & 4.90                                  \\
+  S\_S       & 1005                                 & 1508                                  & 3.90                                  \\
+  SI\_C      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & 3.94                                  \\
+  SI\_T      & 991                                  & \cellcolor[HTML]{70AD47}\textbf{1042} & 3.75                                  \\
+  SI\_S      & 1005                                 & 1125                                  & \cellcolor[HTML]{70AD47}\textbf{3.07} \\
+  GS\_1      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & \cellcolor[HTML]{70AD47}\textbf{3.63} \\
+  GS\_2      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & 3.68                                  \\
+  GS\_3      & 984                                  & \cellcolor[HTML]{70AD47}\textbf{1053} & 3.71                                  \\
+  GS\_4      & 992                                  & \cellcolor[HTML]{70AD47}\textbf{1049} & 4.01                                  \\
+  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & \cellcolor[HTML]{70AD47}\textbf{3.39}
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \caption{Efektyvumo tyrimo rezultatai, kai N = 250}
+  \label{results_250}
+  \centering
+  \begin{tabular}{@{}llll@{}}
+  algoritmas & vid. palyginimai                      & vid. priskyrimai                      & vid. laikas (μs)                      \\
+  S\_C       & \cellcolor[HTML]{70AD47}\textbf{2377} & 3776                                  & 10.71                                 \\
+  S\_T       & 2401                                  & 3853                                  & 10.00                                 \\
+  S\_S       & 2453                                  & 3685                                  & 9.63                                  \\
+  SI\_C      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & \cellcolor[HTML]{70AD47}\textbf{9.08} \\
+  SI\_T      & 2401                                  & \cellcolor[HTML]{70AD47}\textbf{2533} & 9.78                                  \\
+  SI\_S      & 2453                                  & 2696                                  & \cellcolor[HTML]{70AD47}\textbf{8.40} \\
+  GS\_1      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & 9.23                                  \\
+  GS\_2      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & 9.44                                  \\
+  GS\_3      & 2390                                  & \cellcolor[HTML]{70AD47}\textbf{2558} & \cellcolor[HTML]{70AD47}\textbf{9.09} \\
+  GS\_4      & 2400                                  & \cellcolor[HTML]{70AD47}\textbf{2542} & 9.27                                  \\
+  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{2367} & 2578                                  & 9.15                                 
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \caption{Efektyvumo tyrimo rezultatai, kai N = 500}
+  \label{results_500}
+  \centering
+  \begin{tabular}{@{}llll@{}}
+  algoritmas & vid. palyginimai                      & vid. priskyrimai                      & vid. laikas (μs)                       \\
+  S\_C       & \cellcolor[HTML]{70AD47}\textbf{5621} & 8835                                  & 24.83                                  \\
+  S\_T       & 5666                                  & 9001                                  & 24.52                                  \\
+  S\_S       & 5783                                  & 8642                                  & 24.56                                  \\
+  SI\_C      & \cellcolor[HTML]{70AD47}\textbf{5621} & \cellcolor[HTML]{70AD47}\textbf{5994} & 22.96                                  \\
+  SI\_T      & 5666                                  & 5999                                  & 23.03                                  \\
+  SI\_S      & 5783                                  & 6360                                  & \cellcolor[HTML]{70AD47}\textbf{21.30} \\
+  GS\_1      & \cellcolor[HTML]{70AD47}\textbf{5612} & \cellcolor[HTML]{70AD47}\textbf{5991} & 24.24                                  \\
+  GS\_2 & \cellcolor[HTML]{70AD47}\textbf{5621} & \cellcolor[HTML]{70AD47}\textbf{5994} & \cellcolor[HTML]{70AD47}\textbf{21.71} \\
+  GS\_3      & 5655                                  & 6027                                  & 23.16                                  \\
+  GS\_4      & 5669                                  & 6016                                  & 23.26                                  \\
+  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{5607} & 6089                                  & \cellcolor[HTML]{70AD47}\textbf{22.66}
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \caption{Efektyvumo tyrimo rezultatai, kai N = 1000}
+  \label{results_1000}
+  \centering
+  \begin{tabular}{@{}llll@{}}
+  algoritmas & vid. palyginimai                       & vid. priskyrimai                       & vid. laikas (μs)                       \\
+  S\_C       & 13041                                  & 20270                                  & 55.57                                  \\
+  S\_T       & 13129                                  & 20708                                  & 56.69                                  \\
+  S\_S       & 13395                                  & 20089                                  & 52.55                                  \\
+  SI\_C      & 13041                                  & \cellcolor[HTML]{70AD47}\textbf{13816} & 55.05                                  \\
+  SI\_T      & 13129                                  & \cellcolor[HTML]{70AD47}\textbf{13863} & 56.55                                  \\
+  SI\_S      & 13395                                  & 14525                                  & \cellcolor[HTML]{70AD47}\textbf{50.50} \\
+  GS\_1      & \cellcolor[HTML]{70AD47}\textbf{12961} & 13905                                  & \cellcolor[HTML]{70AD47}\textbf{52.21} \\
+  GS\_2      & \cellcolor[HTML]{70AD47}\textbf{12990} & 14048                                  & 52.34                                  \\
+  GS\_3      & 13070                                  & \cellcolor[HTML]{70AD47}\textbf{13817} & 53.18                                  \\
+  GS\_4      & 13121                                  & 13889                                  & 54.02                                  \\
+  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{13023} & 14366                                  & \cellcolor[HTML]{70AD47}\textbf{51.56}
+  \end{tabular}
+\end{table}
 
 
-\subsection{Šelo algoritmo variantų efektyvumo tyrimas, kai N <= 100000}
+\subsection{Šelo algoritmo variantų efektyvumo tyrimas rikiuojant vidutinius duomenų dydžius}
 
+
+
+\begin{table}[H]
+  \caption{Efektyvumo tyrimo rezultatai, kai N = 12500}
+  \label{results_12500}
+  \centering
+  \begin{tabular}{llll}
+    algoritmas & vid. palyginimai                        & vid. priskyrimai                        & vid. laikas (μs)                     \\ \midrule
+    S\_C       & \cellcolor[HTML]{70AD47}\textbf{247436} & 376596                                  & 1009                                 \\
+    S\_T       & 248135                                  & 381261                                  & 1025                                 \\
+    S\_S       & 254437                                  & 381187                                  & 984                                  \\
+    SI\_C      & \cellcolor[HTML]{70AD47}\textbf{247436} & 262114                                  & \cellcolor[HTML]{70AD47}\textbf{936} \\
+    SI\_T      & 248135                                  & \cellcolor[HTML]{70AD47}\textbf{261766} & 973                                  \\
+    SI\_S      & 254437                                  & 268334                                  & \cellcolor[HTML]{70AD47}\textbf{929} \\
+    GL\_1      & \cellcolor[HTML]{70AD47}\textbf{247107} & \cellcolor[HTML]{70AD47}\textbf{261734} & 949                                  \\
+    GL\_2 & \cellcolor[HTML]{70AD47}\textbf{247317} & \cellcolor[HTML]{70AD47}\textbf{261825} & \cellcolor[HTML]{70AD47}\textbf{948} \\
+    GL\_3      & 248879                                  & 263458                                  & 972                                  \\
+    GL\_4      & 248598                                  & 263534                                  & 951                                  \\
+    GL\_5      & 247540                                  & 262044                                  & 956                                  \\ \bottomrule       
+  \end{tabular}
+\end{table}
+
+
+
+\begin{table}[H]
+  \caption{Efektyvumo tyrimo rezultatai, kai N = 25000}
+  \label{results_25000}
+  \centering
+  \begin{tabular}{llll}
+    algoritmas & vid. palyginimai                        & vid. priskyrimai                        & vid. laikas (μs)                      \\
+    S\_C       & \cellcolor[HTML]{70AD47}\textbf{542838} & 822347                                  & 2323                                  \\
+    S\_T       & 544133                                  & 832851                                  & 2379                                  \\
+    S\_S       & 558162                                  & 838206                                  & 2267                                  \\
+    SI\_C & \cellcolor[HTML]{70AD47}\textbf{542838} & 574642                                  & \cellcolor[HTML]{70AD47}\textbf{2162} \\
+    SI\_T      & 544133                                  & \cellcolor[HTML]{70AD47}\textbf{573608} & 2219                                  \\
+    SI\_S      & 558162                                  & 586459                                  & \cellcolor[HTML]{70AD47}\textbf{2140} \\
+    GL\_1 & \cellcolor[HTML]{70AD47}\textbf{541866} & \cellcolor[HTML]{70AD47}\textbf{573477} & \cellcolor[HTML]{70AD47}\textbf{2157} \\
+    GL\_2      & \cellcolor[HTML]{70AD47}\textbf{541303} & 574561                                  & 2183                                  \\
+    GL\_3      & 546239                                  & 579532                                  & 2208                                  \\
+    GL\_4      & 545417                                  & 576050                                  & 2225                                  \\
+    GL\_5      & 543056                                  & \cellcolor[HTML]{70AD47}\textbf{573435} & 2214               
+  \end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+  \caption{Efektyvumo tyrimo rezultatai, kai N = 50000}
+  \label{results_50000}
+  \centering
+  \begin{tabular}{llll}
+    algoritmas & vid. palyginimai                         & vid. priskyrimai                         & vid. laikas (μs)                      \\
+    S\_C       & \cellcolor[HTML]{70AD47}\textbf{1180477} & 1781235                                  & 5203                                  \\
+    S\_T       & 1184476                                  & 1804441                                  & 5335                                  \\
+    S\_S       & 1211998                                  & 1817385                                  & 5140                                  \\
+    SI\_C      & \cellcolor[HTML]{70AD47}\textbf{1180477} & 1250232                                  & 4816                                  \\
+    SI\_T      & 1184476                                  & \cellcolor[HTML]{70AD47}\textbf{1244335} & 4866                                  \\
+    SI\_S      & 1211998                                  & 1269569                                  & \cellcolor[HTML]{70AD47}\textbf{4723} \\
+    GL\_1 & \cellcolor[HTML]{70AD47}\textbf{1178027} & \cellcolor[HTML]{70AD47}\textbf{1247428} & \cellcolor[HTML]{70AD47}\textbf{4816} \\
+    GL\_2 & \cellcolor[HTML]{70AD47}\textbf{1180429} & 1249592                                  & \cellcolor[HTML]{70AD47}\textbf{4795} \\
+    GL\_3      & 1189048                                  & 1261191                                  & 4822                                  \\
+    GL\_4      & 1184607                                  & 1252540                                  & 4819                                  \\
+    GL\_5      & 1180783                                  & \cellcolor[HTML]{70AD47}\textbf{1246917} & 4832                                 
+  \end{tabular}
+\end{table}
+
+
+
+\begin{table}[H]
+  \caption{Efektyvumo tyrimo rezultatai, kai N = 100000}
+  \label{results_100000}
+  \centering
+  \begin{tabular}{llll}
+    algoritmas & vid. palyginimai                         & vid. priskyrimai                         & vid. laikas (μs)                       \\
+    S\_C       & \cellcolor[HTML]{70AD47}\textbf{2552009} & 3835896                                  & 11305                                  \\
+    S\_T       & 2564127                                  & 3888498                                  & 11853                                  \\
+    S\_S       & 2624030                                  & 3941772                                  & 11980                                  \\
+    SI\_C      & \cellcolor[HTML]{70AD47}\textbf{2552009} & 2710178                                  & 10765                                  \\
+    SI\_T      & 2564127                                  & \cellcolor[HTML]{70AD47}\textbf{2691417} & 10671                                  \\
+    SI\_S      & 2624030                                  & 2741613                                  & \cellcolor[HTML]{70AD47}\textbf{10424} \\
+    GL\_1 & \cellcolor[HTML]{70AD47}\textbf{2545884} & \cellcolor[HTML]{70AD47}\textbf{2703088} & \cellcolor[HTML]{70AD47}\textbf{10475} \\
+    GL\_2      & \cellcolor[HTML]{70AD47}\textbf{2549224} & 2735020                                  & 10568                                  \\
+    GL\_3      & 2569991                                  & 2768514                                  & 10481                                  \\
+    GL\_4      & 2556929                                  & 2718989                                  & \cellcolor[HTML]{70AD47}\textbf{10434} \\
+    GL\_5      & 2552700                                  & \cellcolor[HTML]{70AD47}\textbf{2697404} & 10542                
+  \end{tabular}
+\end{table}
 
 \sectionnonum{Išvados}
 
@@ -475,9 +750,8 @@ Išvadose visą darbą sukišam į porą puslapių, tad čia gana svarbi dalis.
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
-% Prieduose gali būti pateikiama pagalbinė, ypač darbo autoriaus savarankiškai
-% parengta, medžiaga. Savarankiški priedai gali būti pateikiami kompiuterio
-% diskelyje ar kompaktiniame diske. Priedai taip pat vadinami ir numeruojami.
-% Tekstas su priedais siejamas nuorodomis (pvz.: \ref{img:mlp}).
+
+\section{Šelo algoritmo variantų generavimo rezultatai}
+
 
 \end{document}
