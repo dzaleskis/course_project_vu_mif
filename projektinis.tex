@@ -39,17 +39,6 @@
 
 \sectionnonum{Įvadas}
 
-% Viena pagrindinių informatikos sąvokų yra algoritmas.
-% Formaliai algoritmą galima apibūdinti kaip
-% baigtinę seką instrukcijų, nurodančių kaip rasti nagrinėjamo uždavinio sprendinį.
-% Algoritmo koncepcija egzistuoja nuo senovės laikų \cite{knuth1972ancient}, tačiau atsiradus kompiuteriams,
-% tapo įmanoma algoritmų vykdymą automatizuoti, paverčiant juos mašininiu kodu suprantamu kompiuteriams \cite{wilkes1951preparation}.
-% Taip informatikos mokslas nuo teorinių šaknų \cite{turing1937computable} įgavo ir taikomąją pusę.
-% Beveik visus algoritmus galima suskirstyti į dvi klases: kombinatorinius algoritmus ir skaitinius algoritmus.
-% Skaitiniai algoritmai sprendžia tolydžius uždavinius: optimizuoti realaus argumento funkciją, išspręsti tiesinių lygčių sistemą su realiais koeficientais, etc.
-% Kombinatoriniai algoritmai sprendžia diskrečius uždavinius ir operuoja diskrečiais objektais: skaičiais, sąrašais, grafais, etc.
-% Apibendrinant, sunku įsivaizduoti informatikos mokslą be algoritmo sąvokos.
-
 Duomenų rikiavimas yra vienas pamatinių informatikos uždavinių.
 Matematiškai jis formuluojamas taip:
 duotai baigtinei palyginamų elementų sekai $S = (s_1, s_2, ..., s_n)$ pateikti tokį
@@ -58,9 +47,11 @@ Efektyvus šio uždavinio sprendimas buvo svarbus, kai informatikos mokslo sąvo
 skaitmeninio rikiavimo algoritmas (angl. radix sort) buvo naudojamas perforuotų kortelių rikiavimui jau 1923 metais.
 Atsiradus kompiuteriams, rikiavimo uždavinys tapo dar aktualesnis ir buvo laikomas vienu pagrindinių diskrečių uždavinių,
 kuriuos turėtų gebėti spręsti kompiuteris \cite{10.1145/356580.356581}.
+Informatikos mokslui vystantis, rikiavimas tapo viena iš intensyviausiai tiriamų sričių,
+o rikiavimo algoritmai dabar sutinkami beveik kiekvienoje informatikos studijų programoje.
 Efektyvus rikiavimo uždavinio sprendimas dažnai padeda pagrindą efektyviam kito uždavinio sprendimui,
-pavyzdžiui, atliekant paiešką sąraše, naivią paiešką tikrinant visus elementus iš eilės galima pakeisti dvejetaine paieška, jei sąrašas yra išrikiuotas ir
-sumažinti uždavinio sprendimo laiko sudėtingumą iš $O(n)$ į $O(log\,n)$.
+pavyzdžiui, atliekant paiešką sąraše, naivią paiešką tikrinant visus elementus iš eilės galima pakeisti dvejetaine paieška, jei sąrašas yra išrikiuotas ir taip
+sumažinti laiko sudėtingumą iš $O(n)$ į $O(log\,n)$.
 Nepaisant to, jog šis uždavinys yra nagrinėjamas nuo pat informatikos mokslo pradžios,
 nauji rikiavimo algoritmai ir įvairūs patobulinimai egzistuojantiems algoritmams yra kuriami ir dabar.
 
@@ -70,63 +61,57 @@ rėmimąsi palyginimu (palyginimu paremti algoritmai gauna informaciją apie duo
 laiko sudėtingumą (optimalūs palyginimu paremti algoritmai blogiausiu atveju turi $O(n\,log\,n)$ laiko sudėtingumą),
 atminties sudėtingumą (optimaliu atveju - $O(1)$),
 stabilumą (stabilūs algoritmai nekeičia lygių elementų tvarkos).
-% parasyti daugiau cia
+Tiesa, praktikoje labiausiai paplitę yra tik keli: rikiavimas sąlaja (angl. merge sort), rikiavimas įterpimu (angl. insertion sort) ir greitojo rikiavimo algoritmas (angl. quicksort).
+Visi jie turi savitų trūkūmų: rikiavimas sąlaja naudoja pakankamai daug papildomos atminties, rikiavimas įterpimu yra efektyvus tik kai elementų kiekis yra nedidelis, o
+greitojo rikiavimo algoritmas netinkamai parinkus slenkstį turi $O(n^2)$ sudėtingumą.
+Todėl pastaruoju metu plačiai naudojami hibridiniai rikiavimo algoritmai, kurie sujungia keletą klasikinių rikiavimo
+algoritmų į vieną ir panaudoja jų geriausias savybes.
+Nepaisant įvairovės ir naujų algoritmų gausos, klasikiniai rikiavimo algoritmai ir toliau išlieka aktualūs.
 
 Šelo rikiavimo algoritmas (angl. Shellsort, toliau - Šelo algoritmas) \cite{10.1145/368370.368387} yra paremtas palyginimu, nenaudojantis papildomos atminties ir nestabilus.
-Šelo algoritmą galima laikyti rikiavimo įterpimu modifikacija,
+Šelo algoritmą galima laikyti rikiavimo įterpimu optimizacija,
 kuri lygina ne gretimus, o toliau vienas nuo kito esančius elementus, taip paspartindama jų perkėlimą į galutinę poziciją.
 Pagrindinė algoritmo idėja - išskaidyti rikiuojamą seką S į posekius $S_1, S_2, ..., S_n$,
-kur kiekvienas posekis $S_i = (s_i, s_{i+h}, s_{i+2h}, ...)$ yra sekos S elementai, kurių pozicija skiriasi $h$.
+kur kiekvienas posekis $S_i = (s_i, s_{i+h}, s_{i+2h}, ...)$ yra sekos $S$ elementai, kurių pozicija skiriasi $h$.
 Išrikiavus visus sekos $S$ posekius $S_i$ su tarpu $h$, seka tampa $h$-išrikiuota.
 Remiantis tuo, jog sekai S esant $h$-išrikiuota ir ją $k$-išrikiavus, ji lieka $h$-išrikiuota \cite{GALE1972103},
 galima kiekvieną algoritmo iteraciją mažinti tarpą, taip vis didinant sekos $S$ išrikiuotumą.
 Įprastai paskutinėje iteracijoje atliekamas rikiavimas su tarpu $1$, kas užtikrina jog bus atliekamas
 rikiavimas įterpimu ir seka bus pilnai išrikiuota.
 
-Šelo algoritmo efektyvumas tiesiogiai priklauso nuo pasirinktos tarpų sekos \cite{ciura2001best,sedgewick1996analysis}.
-Yra įrodyta, kad Šelo algoritmo laiko sudėtingumo blogiausiu atveju apatinė riba yra
-$\Omega(\frac{n\,log^2\,n}{log\,log\,n^2})$ \cite{267769}, taigi jis nėra asimptotiškai optimalus.
-Tiesa, kol kas nėra rasta seka, su kuria Šelo algoritmas pasiektų šią apatinę ribą.
-Kiek žinoma autoriui, asimptotiškai geriausia tarpų seka yra rasta Pratt, kuri yra formos
-$2^p3^p$ ir turi $\Theta(n\,log^2\,n)$ laiko sudėtingumą blogiausiu atveju \cite{pratt1972shellsort},
-tačiau praktikoje ji veikia lėčiau už Ciura \cite{ciura2001best} ar Tokuda \cite{10.5555/645569.659879} eksperimentiškai rastas sekas.
+Šelo algoritmo idėjas taip pat galima pritaikyti ir naujų rikiavimo algoritmų kūrimui.
+Ko gero žinomiausias to pavyzdys yra Dobosiewicz pateiktas algoritmas \cite{dobosiewicz1980efficient},
+kuris pritaiko Šelo algoritmo idėjas burbuliuko rikiavimo algoritmui optimizuoti.
+Perspektyvūs Šelo algoritmo variantai yra kuriami ir šiais laikais -
+M. Goodrich 2014 m. paskelbė Šelo algoritmo variantą, kurio asimptotinis sudėtingumas yra $O(n\,log\,n)$ \cite{goodrich2014zig}.
+Tiesa, Šelo algoritmo variantai literatūroje nėra taip išsamiai ištirti, kaip klasikinė versija.
+Tuo pačiu tai galime matyti ir kaip galimybę - galbūt egzistuoja Šelo algoritmo versija, veikianti du kartus greičiau nei
+klasikinė, kurios dar niekas neatrado.
+Tokio algoritmo radimas galėtų suteikti tiek praktinės, tiek teorinės naudos.
 
+Vienas iš metodų, kuriuos galima taikyti naujų Šelo algoritmo variantų radimui, yra genetinis algoritmas.
+Genetinis algoritmas (GA) yra metodas rasti euristikas, paremtas biologijos žiniomis apie natūralios atrankos procesą.
+J.H. Holland, GA pradininkas, savo knygoje \cite{holland1992adaptation}
+apibrėžė genetinio algoritmo sąvoką ir su ja glaudžiai susijusias
+chromosomų, bei rekombinacijos, atrankos ir mutacijos operatorių koncepcijas.
+Genetinių algoritmų veikimas yra pagrįstas pradinės chromosomų populiacijos evoliucija, kiekvienos naujos chromosomų kartos
+gavimui naudojant rekombinacijos, atrankos ir mutacijos operatorius.
+Genetiniai algoritmai taikomi sprendžiant įvairius paieškos ir optimizavimo uždavinius, kuomet nesunku nustatyti, ar sprendinys tinkamas,
+tačiau tinkamo sprendinio radimas reikalauja daug resursų ar net pilno perrinkimo.
+Tokiu atveju apytikslio sprendinio radimas (euristika) gali būti daug patrauklesnis sprendimo būdas,
+kadangi tikslaus sprendinio radimas dažnai yra NP-sunkus uždavinys.
+Nesunku pastebėti, jog efektyvių Šelo algoritmo variantų radimas yra sunkus uždavinys atliekamų skaičiavimų prasme,
+tikėtinai reikalaujantis pilno potencialių sprendinių perrinkimo, tad šio uždavinio sprendimui taikyti GA atrodo prasminga.
+Kiek žinoma autoriui, genetiniai algoritmai kol kas nebuvo taikyti tokio tipo uždaviniui spręsti.
 
-% Vienas iš metodų, kuriuos galima taikyti efektyvių tarpų sekų radimui, yra genetinis algoritmas.
-% Genetinis algoritmas (GA) yra metodas rasti euristikas, paremtas biologijos žiniomis apie natūralios atrankos procesą.
-% Kartu su genetiniu programavimu, evoliuciniais algoritmais ir kitais metodais, % citations needed
-% genetiniai algoritmai sudaro evoliucinių skaičiavimų šeimą.
-% Visi šios šeimos atstovai yra paremti pradinės populiacijos generavimu ir iteraciniu populiacijos atnaujinimu naudojant biologijos įkvėptas strategijas.
-% J.H. Holland, GA pradininkas, savo knygoje \cite{holland1992adaptation}
-% apibrėžė genetinio algoritmo sąvoką ir su ja glaudžiai susijusias
-% chromosomų (potencialių uždavinio sprendinių, išreikštų genų rinkiniu), bei
-% rekombinacijos (tėvinių chromosomų genų perdavimo palikuonims),
-% atrankos (tinkamiausių chromosomų atrinkimo) ir mutacijos (savaiminio chromosomos genų kitimo) operatorių koncepcijas.
-% Genetinių algoritmų veikimo strategija pagrįsta pradinės chromosomų populiacijos evoliucija, kiekvienos naujos chromosomų kartos
-% gavimui naudojant rekombinacijos, atrankos ir mutacijos operatorius.
-% Nesunku pastebėti, jog genetiniai algoritmai gali palengvinti tam tikrų rūšių uždavinių sprendimą.
+% need some vertical space between these
 
-% Genetiniai algoritmai taikomi sprendžiant įvairius paieškos ir optimizavimo uždavinius, kuomet nesunku nustatyti, ar sprendinys tinkamas,
-% tačiau tinkamo sprendinio radimas reikalauja daug resursų ar net pilno perrinkimo.
-% Tokiu atveju apytikslio sprendinio radimas (euristika) gali būti daug patrauklesnis sprendimo būdas,
-% kadangi tikslaus sprendinio radimas dažnai yra NP-sunkus uždavinys.
-% Todėl GA yra pritaikomi sudarant grafikus ir tvarkaraščius,
-% sprendžiant globalaus optimizavimo uždavinius
-% ir net projektuojant NASA mikrosatelitų antenas \cite{hornby2006automated}.
-% Nesunku pastebėti, jog efektyvių Šelo algoritmo tarpų sekų radimas yra sunkus uždavinys atliekamų skaičiavimų prasme,
-% tikėtinai reikalaujantis pilno potencialių sprendinių perrinkimo,
-% tad šio uždavinio sprendimui taikyti GA yra prasminga.
-% Kiek žinoma autoriui, kol kas yra buvę du bandymai taikyti genetinius algoritmus efektyvių Šelo algoritmo tarpų sekų radimui \cite{simpson1999faster, roos2002genetic}.
-% Abiejuose darbuose teigiama, jog genetiniais algoritmais gautos tarpų sekos veikia greičiau už Sedgewick seką, kuri literatūroje laikoma viena efektyviausių.
-
-
-Darbo \textbf{tikslas}:
+Darbo tikslas:
 pritaikyti genetinius algoritmus Šelo algoritmo variantų generavimui.
 
 Darbo uždaviniai:
 \begin{itemize}
   \item Atlikti Šelo algoritmo ir jo variantų literatūros analizę.
-  \item Atlikti genetinių algoritmų literatūros analizę. % reiketu pataisyti, sutampa su kursinio uzdaviniu
   \item Nustatyti kriterijus Šelo algoritmo variantų efektyvumui įvertinti.
   \item Paruošti aplinką Šelo algoritmo variantų generavimui.
   \item Pasitelkiant genetinius algoritmus sugeneruoti Šelo algoritmo variantus.
@@ -136,7 +121,7 @@ Darbo uždaviniai:
 
 Šis darbas sudarytas iš 7 skyrių.
 Pirmame skyriuje atliekama Šelo algoritmo ir jo variantų literatūros analizė.
-Antrame skyriuje atliekama genetinių algoritmų literatūros analizė. % pataisius uzdavini pakeisti ir cia
+Antrame skyriuje aptariami genetiniai algoritmai.
 Trečiame skyriuje nustatomi kriterijai Šelo algoritmo variantų efektyvumui įvertinti.
 Ketvirtame skyriuje paruošiama aplinka Šelo algoritmo variantų generavimui.
 Penktame skyriuje pasitelkiant genetinius algoritmus generuojami Šelo algoritmo variantai.
@@ -172,7 +157,14 @@ ką galima pastebėti iš pseudokodo, pateikiamo \ref{alg:tss} algoritme.
   \end{algorithmic}
 \end{algorithm}
 
-% parasyt kazka daugiau cia
+Įdėmiau įsižiūrėjus, nesunku pastebėti Šelo algoritmo panašumą į paprastą rikiavimą įterpimu - pašalinus išorinį ciklą, iteruojantį tarpų sekos narius bei pakeitus
+kintamąjį $gap$ į $1$, gaunamas būtent šio algoritmo kodas.
+Didesnis įterpimo atstumas (tarpas) suteikia Šelo algoritmui pranašumą prieš rikiavimą įterpimu, kadangi labiausiai nuo galutinės pozicijos nutolę elementai gali greičiau patekti į reikiamą poziciją.
+Šelo algoritmo idėjos turi tvirtą matematinį pagrindą: rikiavimo įterpimu sudėtingumas yra $O(n^2)$ blogiausiu atveju (pavyzdžiui, kai rikiuojama seka yra išrikiuota atgaline tvarka),
+tačiau kai didžiausias atstumas tarp dviejų neišrikiuotų elementų yra $k$, rikiavimo įterpimu laiko sudėtingumas yra $O(kn)$.
+Tad seką $h$-išrikiavus, paskutinė iteracija su tarpu $1$ turės $O(hn)$ laiko sudėtingumą.
+Iteracijos su didesniais tarpais taip pat yra pakankamai efektyvios, kadangi dirbama su mažais posekiais,
+o šiuo atveju rikiavimas įterpimu yra vienas tinkamiausių.
 
 \subsection{Šelo algoritmo variantai}
 
@@ -249,13 +241,13 @@ Jo pseudokodas pateikiamas \ref{alg:bubble_pass} algoritme.
 Tiesa, burbuliuko metodą galima nežymiai patobulinti, suteikiant jam daugiau simetrijos ir atliekant perėjimą
 tiek iš kairės į dešinę, tiek iš dešinės į kairę.
 Tokiu būdu dešinėje esantys elementai greičiau pasieks savo galutinę poziciją.
-Šis metodas primena kokteilio purtymą, todėl literatūroje dažnai vadinamas kokteilio plaktuvo rikiavimu (angl. cocktail shaker sort).
-Šio algoritmo taikomą perėjimą, kurį toliau vadinsime purtymo perėjimu (angl. shake pass), integravus į Šelo algoritmo karkasą
+Šis metodas primena kokteilio purtymą, todėl literatūroje dažnai vadinamas kokteilio rikiavimu (angl. cocktail sort arba shaker sort).
+Šio algoritmo taikomą perėjimą, kurį toliau vadinsime supurtymo perėjimu (angl. shake pass), integravus į Šelo algoritmo karkasą
 taip pat gaunamas gana įdomus algoritmas \cite{incerpi1986practical}.
-Purtymo perėjimo pseudokodas pateikiamas \ref{alg:shake_pass} algoritme.
+Supurtymo perėjimo pseudokodas pateikiamas \ref{alg:shake_pass} algoritme.
 
 \begin{algorithm}[H]
-  \caption{Purtymo perėjimas}\label{alg:shake_pass}
+  \caption{Supurtymo perėjimas}\label{alg:shake_pass}
   \begin{algorithmic}[1]
     \For {$i\gets 0$ \textbf{to} $N-gap-1$}
       \If {$S[i] > S[i+gap]$}
@@ -271,15 +263,15 @@ Purtymo perėjimo pseudokodas pateikiamas \ref{alg:shake_pass} algoritme.
   \end{algorithmic}
 \end{algorithm}
 
-Dar viena burbuliuko algoritmo modifikacija yra nelyginis-lyginis rikiavimas (angl. odd-even sort arba brick sort).
+Dar viena burbuliuko algoritmo modifikacija yra nelyginis-lyginis rikiavimas (angl. odd-even sort arba brick sort) \cite{habermann1972parallel}.
 Šio algoritmo perėjimo idėja - išrikiuoti visas nelyginių/lyginių indeksų gretimų elementų poras,
 o tada atlikti tą patį visoms lyginių/nelyginių indeksų gretimų elementų poroms.
-Šį perėjimą, kurį toliau vadinsime plytos perėjimu (angl. brick pass) \cite{sedgewick1996analysis},
+Šį perėjimą, kurį toliau vadinsime mūrijimo perėjimu (angl. brick pass) \cite{sedgewick1996analysis},
 nesunkiai galima pritaikyti ir Šelo algoritmo karkasui, kintamuoju pakeitus originaliame algoritme taikytą tarpą $1$ \cite{lemke1994performance}.
-Plytos perėjimo pseudokodas yra pateikiamas \ref{alg:brick_pass} algoritme.
+Mūrijimo perėjimo pseudokodas yra pateikiamas \ref{alg:brick_pass} algoritme.
 
 \begin{algorithm}[H]
-  \caption{Plytos perėjimas}\label{alg:brick_pass}
+  \caption{Mūrijimo perėjimas}\label{alg:brick_pass}
   \begin{algorithmic}[1]
     \For {$i\gets gap$ \textbf{to} $N-gap-1$ \textbf{step} $2*gap$}
       \If {$S[i] > S[i+gap]$}
@@ -298,9 +290,7 @@ Plytos perėjimo pseudokodas yra pateikiamas \ref{alg:brick_pass} algoritme.
 \section{Genetiniai algoritmai}
 
 Paprasčiausias genetinis algoritmas susideda iš chromosomų populiacijos bei atrankos, mutacijos ir rekombinacijos operatorių \cite{simpson1999faster}.
-Šiame skyriuje bus nagrinėjamos šių terminų reikšmės ir genetinių algoritmų dizaino principai.
-
-% reiketu kazka originalaus pridet
+Šiame skyriuje bus nagrinėjamos šių terminų reikšmės ir genetinių algoritmų veikimo principai.
 
 \subsection{Chromosomų populiacija}
 
@@ -357,6 +347,8 @@ Vadovėlinio Šelo algoritmo atveju, atliekamų palyginimų ir priskyrimų skai�
 Kaip parodo \cite{ciura2001best}, vadovėliniame Šelo algoritme dominuojanti operacija yra palyginimas.
 Tiesa, Šelo algoritmo variantai nėra taip išsamiai ištirti \cite{brejova2001analyzing}.
 Todėl šio darbo kontekste sudėtinga pagrįstai nustatyti, kuri iš operacijų turėtų turėti didesnį svorį.
+Remdamiesi tuo, jog norint atlikti priskyrimą visgi reikia prieš tai atlikti palyginimą, tačiau atlikus palyginimą nebūtinai bus atliekamas priskyrimas,
+laikysime jog palyginimo operacijos turėtų turėti didesnį svorį.
 
 Algoritmo veikimo laikas taip pat gali duoti tinkamų įžvalgų įvertinant praktinį efektyvumą.
 Savaime suprantama, jog į veikimo laiką verta žvelgti kritiškai, kadangi jis priklauso nuo konkrečios algoritmo implementacijos,
@@ -367,15 +359,15 @@ instrukcijos nėra vykdomos iš eilės (siekiant pilnai išnaudoti procesoriaus 
 duomenys saugomi kelių lygių talpykloje (siekiant panaikinti atminties delsą),
 šakos yra nuspėjamos (siekiant išlygiagretinti instrukcijų vykdymą).
 Todėl naudojant modernų kompiuterį labai sunku iš anksto nustatyti, kaip algoritmas veiks praktikoje. 
-Taip pat reikia pastebėti, kad Šelo algoritmo atliekamų operacijų skaičius ir veikimo laikas nėra tiesiogiai susiję, t.y.
+Taip pat reikia pastebėti, kad Šelo algoritmo atliekamų operacijų skaičius ir veikimo laikas ne visada koreliuoja, t.y.
 vien tai, jog duotas Šelo algoritmo variantas atlieka sąlyginai mažai operacijų, dar nereiškia jog praktikoje jis veiks greičiau
-už tuos, kurie operacijų atlieka daugiau. % kaip pacituoti kursini???
+už tuos, kurie operacijų atlieka daugiau.
 Atsižvelgiant į aukščiau pateiktus argumentus, manome jog
 algoritmo veikimo laiko įvertis yra pakankamai geras įrankis juodos dėžės principu įvertinti praktinį algoritmo efektyvumą.
 
 Remiantis aukščiau pateiktais argumentais, šiame darbe Šelo algoritmo variantai vertinami pagal
 atliekamų palyginimų skaičių, atliekamų priskyrimų skaičių ir veikimo laiką.
-% kazka parasyt cia gudro apie svorius
+Šių kriterijų įtaka bendram algoritmo efektyvumo vertinimui paskirstoma taip: atliekami palyginimai - 50\%, atliekami priskyrimai - 30\%, veikimo laikas 20\%.
 
 \section{Šelo algoritmo variantų generavimo aplinkos paruošimas}
 
@@ -399,7 +391,7 @@ Tačiau tarkime, jog GA bus vykdomas su 100 individų populiacija kai N yra 1000
 Tada vienos kartos inversijų skaičiavimui blogiausiu atveju reikės apytiksliai $10000^2 * 100 = 10^{10}$ operacijų, kas yra visiškai nepriimtina žinant,
 jog GA kartų skaičius dažnai siekia šimtus ar net tūkstančius (priklausomai nuo implementacijos ir pasirinktų pabaigos sąlygų).
 Todėl buvo nuspręsta inversijų skaičiavimui pasitelkti modifikuotą rikiavimo sąlaja algoritmą, kurio įgyvendinimas yra kiek sunkesnis, tačiau sudėtingumas blogiausiu atveju siekia $O(n\,log\,n)$.
-Šio inversijų skaičiavimo metodo pseudokodas pateikiamas \ref{alg:merge_sort} ir \ref{alg:merge} algoritmuose.
+Šio inversijų skaičiavimo metodo pseudokodas pateikiamas prieduose (\ref{alg:merge_sort} ir \ref{alg:merge} algoritmuose).
 
 \section{Šelo algoritmo variantų generavimas}
 
@@ -452,7 +444,7 @@ Kadangi siekėme sugeneruoti algoritmą, kuris visada išrikiuoja duomenis, buvo
 Taip pat sprendiniams buvo taikoma bauda, paremta veikimo laiku. Reikia pripažinti, jog šios baudos laipsnis neturi matematinio pagrindo ir buvo nustatytas eksperimentiškai,
 siekiant jog baudos dydis neviršytų ${max(c.comparisons, c.assignments)}$ su pasirinktais duomenų dydžiais.
 Algoritmo atliekamiems priskyrimams ir palyginimams tinkamumo funkcijoje buvo taikomi svoriai, paremti
-praeitame skyriuje apibrėžtais efektyvaus Šelo algoritmo varianto kriterijais. 
+praeitame skyriuje apibrėžtais efektyvaus Šelo algoritmo varianto kriterijais ir eksperimentiškai gautais duomenimis apie tipiškai atliekamų palyginimų ir priskyrimų santykį.
 
 Genetinio algoritmo rezultatų saugojimui buvo pasirinkta naudoti PostgreSQL duomenų bazę.
 Tai buvo atlikta siekiant automatizuoti genetinio algoritmo rezultatų saugojimo procesą ir palengvinti geriausių rezultatų atranką.
@@ -583,10 +575,9 @@ Visi kiti rezultatai pateikiami suapvalinus iki sveikosios dalies.
 \end{table}
 
 Vertinant rezultatus pateikiamus \ref{results_125} lentelėje, galime pastebėti, jog
-mažiausiai palyginimų atlikę algoritmai jų atliko tiek pat.
-Tai nėra keista, kadangi GA chromosomų inicializacijai buvo naudojama ir Ciura tarpų seka, kuria paremti variantai ir yra pastebimi tarp geriausiai pasirodžiusių.
+mažiausiai palyginimų atliko GS\_1, GS\_5 ir Ciura tarpų seka paremti variantai.
 Tokuda seka paremtas PŠA šiuo atveju atlieka mažiausiai priskyrimų, nedaug atsilieka GS\_3 ir GS\_4.
-Absoliutus veikimo laiko lyderis yra PŠA su Sedgewick tarpų seka.
+Vertinant veikimo laiką pirmauja PŠA su Sedgewick tarpų seka.
 
 
 \begin{table}[H]
@@ -611,7 +602,7 @@ Absoliutus veikimo laiko lyderis yra PŠA su Sedgewick tarpų seka.
 
 Nagrinėjant rezultatus pateikiamus \ref{results_250} lentelėje, galime pastebėti, jog
 mažiausiai palyginimų atlikę algoritmai pradeda atsiskirti ir GS\_5 algoritmas jų atlieka mažiausiai.
-GA sugeneruoti GS\_3 ir GS\_4 algoritmai taip pat aplenkia Tokuda seka paremtą PŠA vertintant atliktus priskyrimus.
+GA sugeneruoti GS\_3 ir GS\_4 algoritmai bei Tokuda seka paremtas PŠA pateikia geriausius rezultatus vertintant atliktus priskyrimus.
 Vertinant veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
 
 \begin{table}[H]
@@ -635,9 +626,9 @@ Vertinant veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
 \end{table}
 
 
-\ref{results_500} lentelėje, matome, jog
-jau du GA sugeneruoti algoritmai (GS\_1 ir GS\_5) lenkia Ciura tarpų seka paremtus variantus vertinant atliktus palyginimus.
-Vertinant atliktus priskyrimus, pirmauja GS\_1, GS\_2 ir PŠA su Ciura tarpų seka.
+\ref{results_500} lentelėje matome, jog
+GS\_1 ir GS\_5 bei Ciura tarpų seka paremti variantai pasirodė geriausiai vertinant atliktus palyginimus.
+Vertinant atliktus priskyrimus, geriausi rezultatai gauti su GS\_1, GS\_2 ir PŠA su Ciura tarpų seka.
 Pagal veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
 
 \begin{table}[H]
@@ -661,8 +652,8 @@ Pagal veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
 \end{table}
 
 Pagal \ref{results_1000} lentelės rezultatus
-vertinant atliktus palyginimus pirmauja tik GA sugeneruoti algoritmai: GS\_1, GS\_2 ir GS\_5.
-Vertinant atliktus priskyrimus, geriausiai pasirodė PŠA su Ciura ir Tokuda tarpų sekomis bei GS\_3.
+mažiausiai palyginimų atliko GA sugeneruoti algoritmai: GS\_1, GS\_2 ir GS\_5.
+Mažiausiai priskyrimų atliko PŠA su Ciura ir Tokuda tarpų sekomis bei GS\_3.
 PŠA su Sedgewick tarpų seka išlieka geriausiu vertinant veikimo laiką.
 
 \subsection{Šelo algoritmo variantų efektyvumo tyrimas, kai $N \leq 100000$}
@@ -701,9 +692,9 @@ PŠA su Sedgewick tarpų seka išlieka geriausiu vertinant veikimo laiką.
 \end{table}
 
 \ref{results_12500} lentelėje pateikiamuose rezultatuose matome, kad
-pagal atliktus palyginimus pirmauja GL\_1 ir GL\_2 algoritmai, nedaug atsilieka ir Ciura tarpų seka paremti variantai.
-Vertinant atliktus priskyrimus pirmauja GL\_1 ir PŠA su Tokuda tarpų seka.
-Vertinant veikimo laiką pirmauja PŠA su Sedgewick tarpų seka.
+pagal mažiausiai palyginimų atliko GL\_1 ir GL\_2 algoritmai, nedaug atsiliko Ciura tarpų seka paremti variantai.
+Mažiausiai priskyrimų atliko GL\_1 ir PŠA su Tokuda tarpų seka.
+Mažiausias veikimo laikas pastebimas su PŠA naudojant Sedgewick tarpų seką.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 25000}
@@ -727,8 +718,8 @@ Vertinant veikimo laiką pirmauja PŠA su Sedgewick tarpų seka.
 
 Vertinant rezultatus pateikiamus \ref{results_25000} lentelėje, pastebime, jog
 mažiausiai palyginimų atliko GL\_2, nedaug atsiliko GL\_1 ir Ciura tarpų seka paremti variantai.
-Pagal atliktus priskyrimus pirmauja GL\_5, GL\_1 ir PŠA su Tokuda tarpų seka.
-PŠA su Sedgewick tarpų seka toliau pirmauja pagal veikimo laiką.
+Pagal atliktus priskyrimus geriausi rezultatai gauti su GL\_5, GL\_1 ir PŠA su Tokuda tarpų seka.
+PŠA su Sedgewick tarpų seka veikimo laiko rezultatai šiuo atveju yra geriausi.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 50000}
@@ -799,7 +790,7 @@ Apibendrinant rezultatus, gautus tiriant Šelo algoritmo variantus kai $N \leq 1
 galime teigti, jog efektyviausias buvo GL\_1 algoritmas, kadangi jo rezultatai su visais tame etape tirtais duomenų dydžiais buvo vieni geriausių tiek vertinant atliktas operacijas, tiek veikimo laiką.
 Reikia pastebėti, jog pirmi 8 GL\_1 algoritmo perėjimai sutampa su PŠA naudojant Ciura tarpų seką.
 Šis algoritmas taip pat naudoja tik patobulintą iterpimo perėjimą, taigi iš tiesų buvo sugeneruota efektyvi tarpų seka ${S_1 = 1, 4, 10, 23, 57, 132, 301, 701, 1577, 3552, 7983, 17982, 40459, 91032}$,
-kuri yra Ciura sekos pratęsimas.
+kuri yra Ciura tarpų sekos tęsinys.
 
 
 Remiantis gautais rezultatais, galime daryti išvadą, jog nėra objektyvių priežasčių rinktis VŠA - 
@@ -819,9 +810,6 @@ Autoriaus nuomone, algoritmai kombinuojantys keletą skirtingų perėjimų nėra
 kadangi daug paprasčiau įgyvendinti algoritmą, kuris rikiuoja naudodamas tik vieno tipo perėjimą.
 
 \sectionnonum{Išvados}
-
-% Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
-% suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
 
 Renkantis kurį Šelo algoritmo variantą naudoti, nesunkiai galime rekomenduoti patobulintą Šelo algoritmą.
 Remiantis gautais rezultatais, jis atlieka mažiau priskyrimo operacijų ir veikia greičiau už vadovėlinę versiją.
