@@ -385,10 +385,10 @@ ir tam tikrų kalbos aspektų, tokių kaip operatorių perkrovimas.
 OpenGA biblioteka buvo pasirinkta dėl modernių C++ kalbos konstruktų ir lygiagretaus vykdymo palaikymo, išsamios dokumentacijos ir praeitos patirties (buvo naudojama ruošiant kursinį darbą).
 
 Siekiant išmatuoti skirtingų Šelo algoritmo variantų atliekamų operacijų skaičių buvo
-suprojektuota bendrinė klasė (angl. generic class) $Element$.
-Klasė $Element$ veikia kaip apvalkalas pasirinkto tipo duomenims, suteikdama
+suprojektuota bendrinė klasė (angl. generic class) Element.
+Klasė Element veikia kaip apvalkalas pasirinkto tipo duomenims, suteikdama
 galimybę automatiškai skaičiuoti atliekamus palyginimus ir priskyrimus.
-Šis funkcionalumas buvo įgyvendintas perkraunant $Element$ klasės palyginimo ir priskyrimo operatorius - kviečiant
+Šis funkcionalumas buvo įgyvendintas perkraunant Element klasės palyginimo ir priskyrimo operatorius - kviečiant
 kažkurį iš šių operatorių atitinkamai padidinamas atliktų palyginimų ar priskyrimų skaičius.
 
 Atsižvelgiant į tai, jog dalis Šelo algoritmo variantų yra tikimybiniai (angl. probabilistic) ir pilnai išrikiuoja duomenis tik su tam tikra tikimybe,
@@ -405,8 +405,8 @@ Todėl buvo nuspręsta inversijų skaičiavimui pasitelkti modifikuotą rikiavim
 
 Šis skyrius sudarytas iš 3 poskyrių.
 Pirmame poskyryje aptariamas Šelo algoritmo variantų generavimui suprojektuotas genetinis algoritmas.
-Antrame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 1000.
-Trečiame poskyryje generuojami Šelo algoritmo variantai, kai rikiuojamų duomenų dydis yra 100000.
+Antrame poskyryje generuojami Šelo algoritmo variantai, kai $N = 1000$.
+Trečiame poskyryje generuojami Šelo algoritmo variantai, kai $N = 100000$.
 
 \subsection{Genetinis algoritmas}
 
@@ -492,7 +492,7 @@ Tada iš jų buvo atrinkti 5 didžiausią tinkamumą turintys sprendiniai, kurie
 Šiame etape buvo pasirinkta sprendinių inicializacijai dalinai naudoti sprendinius, gautus praeitame etape.
 Kadangi tokio dydžio duomenų rikiavimui 8 elementų tarpų seka yra per trumpa jog būtų efektyvi,
 sprendinių perėjimų sąrašas buvo pratęsiamas iki 14 elementų, pirmuosius 8 perėjimus perkopijuojant iš praeitame etape gautų sprendinių,
-o likusius užpildant remiantis šia rekursyvia formule: $p_i = (rand\_type(), gap(p_{i-1}) * q)$,
+o likusius užpildant remiantis šia rekursyvia formule: $p_i = (rand\_type(), q * gap(p_{i-1}))$,
 kur $rand\_type()$ yra funkcija grąžinanti atsitiktinį perėjimo tipą, $gap(x)$ yra funkcija grąžinanti duoto perėjimo tarpą, $q \in \left[2.2, 2.25\right]$.
 
 Chromosomų tinkamumas buvo vertinamas rikiuojant vieną 100000 elementų dydžio masyvą.
@@ -501,20 +501,73 @@ Tada iš jų buvo atrinkti 5 didžiausią tinkamumą turintys sprendiniai, kurie
 
 \section{Šelo algoritmo variantų efektyvumo tyrimo aplinkos paruošimas}
 
+Eksperimentų vykdymui buvo naudojamas kompiuteris su 2.70 GHz Intel(R) Core(TM) i7-10850H procesoriumi,
+32 GB operatyviosios atminties ir Windows 10 operacine sistema.
+Tyrimas buvo įgyvendintas C++ kalba su MSVC 19.16.27043 kompiliatoriumi.
+
+Vykdant eksperimentus buvo pasirinkta naudoti sveikaskaitinius pradinius duomenis.
+Tai buvo įgyvendinta naudojant MT19937 pseudoatsitiktinių skaičių generatorių, inicializuotą sisteminio laiko reikšme.
+Generuojami duomenys buvo tolygiai paskirstyti nuo INT\_MIN iki INT\_MAX, kas leido žymiai sumažinti duomenų duplikacijos tikimybę.
+Visi algoritmai buvo vertinami rikiuojant tuos pačius pradinius duomenis.
+
+Algoritmų atliekamų operacijų skaičiavimui buvo pasitelkta anksčiau darbe minėta Element klasė.
+Veikimo laiko matavimui buvo pasitelktas monotoninis laikrodis std::chrono::steady\_clock, kuris nepriklauso nuo sisteminio laiko reikšmės
+ir užtikrina tikslų laiko intervalų matavimą.
+Siekiant neiškreipti gautų rezultatų, veikimo laiko ir atliekamų operacijų matavimai buvo vykdomi atskirai.
+
 \section{Šelo algoritmo variantų efektyvumo tyrimas}
 
-Šis skyrius sudarytas iš 2 poskyrių.
-Pirmame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus rikiuojamų duomenų dydis yra 1000.
-Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus rikiuojamų duomenų dydis yra 100000.
+Šis skyrius sudarytas iš 3 poskyrių.
+Pirmame poskyryje aptariama efektyvumo tyrimo metodika.
+Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai $N \leq 1000$.
+Trečiame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai $N \leq 100000$.
 
-\subsection{Šelo algoritmo variantų efektyvumo tyrimas rikiuojant nedidelius duomenų dydžius}
+\subsection{Efektyvumo tyrimo metodika}
+
+Kadangi ne įterpimo perėjimu paremti Šelo algoritmo variantai nėra išsamiai ištirti \cite{brejova2001analyzing},
+buvo pasirinkta GA sugeneruotus variantus lyginti su įterpimu paremtais VŠA ir PŠA naudojant keletą skirtingų tarpų sekų.
+Remiantis anksčiau darbe apibrėžtais Šelo algoritmo variantų efektyvumo kriterijais,
+efektyvumo vertinimui buvo pasirinkta matuoti vidutiniškai atliekamus palyginimus ir priskyrimus bei vidutinį veikimo laiką.  
+
+Tyrimui buvo pasirinktos šios tarpų sekos:
+\begin{itemize}
+  \item Sedgewick: $1, 5, 19, 41, 109, 209, 505, 929, \ldots$ \cite{SEDGEWICK1986159}
+  \item Tokuda: $1, 4, 9, 20, 46, 103, 233, 525, \ldots $ \cite{10.5555/645569.659879}
+  \item Ciura: $1, 4, 10, 23, 57, 132, 301, 701$ \cite{ciura2001best}
+\end{itemize}
+Kadangi Ciura seka yra baigtinė, didesnių duomenų dydžių rikiavimui ji buvo pratęsta pasitelkiant rekursyvią formulę $h_{k}=\lfloor 2.25h_{k-1}\rfloor$.
+Sedgewick ir Tokuda sekos yra begalinės, tad jos buvo sutrumpintos taip, jog gauta seka būtų ilgiausia įmanoma seka, kurios visi elementai mažesni už maksimalų tiriamą $N$.
+
+Atliekamų matavimų skaičius buvo pasirinktas atsižvelgiant į tame etape tiriamų duomenų dydį: jei $N$ pakankamai mažas,
+tikimybė jog gautas vidutinio veikimo laiko įvertis bus netikslus yra didesnė.
+Todėl matavimai su mažesniais duomenų dydžiais buvo atliekami daugiau kartų.
+
+Vidutinis veikimo laikas su nedideliais duomenų dydžiais pateikiamas suapvalinus iki šimtosios dalies,
+atsižvelgiant į tai, jog gautų rezultatų absoliutiniai skirtumai nėra dideli.
+Visi kiti rezultatai pateikiami suapvalinus iki sveikosios dalies.
+3 geriausi vienos kategorijos rezultatai su tam tikru $N$ pateikiami pajuodintu šriftu ir žalia fono spalva.
+
+\subsection{Šelo algoritmo variantų efektyvumo tyrimas, kai $N \leq 1000$}
+
+Šiame efektyvumo tyrimo etape buvo tiriami šie Šelo algoritmo variantai:
+\begin{itemize}
+  \item VŠA su Ciura tarpų seka (S\_C)
+  \item VŠA su Tokuda tarpų seka (S\_T)
+  \item VŠA su Sedgewick tarpų seka (S\_S)
+  \item PŠA su Ciura tarpų seka (SI\_C)
+  \item PŠA su Tokuda tarpų seka (SI\_T)
+  \item PŠA su Sedgewick tarpų seka (SI\_S)
+  \item GA sugeneruoti algoritmai (GS\_1, GS\_2, GS\_3, GS\_4, GS\_5)
+\end{itemize}
+
+\subsubsection{Tyrimo rezultatai}
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 125}
   \label{results_125}
   \centering
   \begin{tabular}{@{}llll@{}}
-  algoritmas & vid. palyginimai                     & vid. priskyrimai                      & vid. laikas (μs)                      \\
+  algoritmas & vid. palyginimai                     & vid. priskyrimai                      & vid. laikas (μs)                      \\ \midrule
   S\_C       & \cellcolor[HTML]{70AD47}\textbf{978} & 1568                                  & 4.04                                  \\
   S\_T       & 991                                  & 1615                                  & 4.90                                  \\
   S\_S       & 1005                                 & 1508                                  & 3.90                                  \\
@@ -525,16 +578,23 @@ Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus
   GS\_2      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & 3.68                                  \\
   GS\_3      & 984                                  & \cellcolor[HTML]{70AD47}\textbf{1053} & 3.71                                  \\
   GS\_4      & 992                                  & \cellcolor[HTML]{70AD47}\textbf{1049} & 4.01                                  \\
-  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & \cellcolor[HTML]{70AD47}\textbf{3.39}
+  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & \cellcolor[HTML]{70AD47}\textbf{3.39} \\ \bottomrule
   \end{tabular}
 \end{table}
+
+Vertinant rezultatus pateikiamus \ref{results_125} lentelėje, galime pastebėti, jog
+mažiausiai palyginimų atlikę algoritmai jų atliko tiek pat.
+Tai nėra keista, kadangi GA chromosomų inicializacijai buvo naudojama ir Ciura tarpų seka, kuria paremti variantai ir yra pastebimi tarp geriausiai pasirodžiusių.
+Tokuda seka paremtas PŠA šiuo atveju atlieka mažiausiai priskyrimų, nedaug atsilieka GS\_3 ir GS\_4.
+Absoliutus veikimo laiko lyderis yra PŠA su Sedgewick tarpų seka.
+
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 250}
   \label{results_250}
   \centering
   \begin{tabular}{@{}llll@{}}
-  algoritmas & vid. palyginimai                      & vid. priskyrimai                      & vid. laikas (μs)                      \\
+  algoritmas & vid. palyginimai                      & vid. priskyrimai                      & vid. laikas (μs)                      \\ \midrule
   S\_C       & \cellcolor[HTML]{70AD47}\textbf{2377} & 3776                                  & 10.71                                 \\
   S\_T       & 2401                                  & 3853                                  & 10.00                                 \\
   S\_S       & 2453                                  & 3685                                  & 9.63                                  \\
@@ -545,16 +605,21 @@ Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus
   GS\_2      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & 9.44                                  \\
   GS\_3      & 2390                                  & \cellcolor[HTML]{70AD47}\textbf{2558} & \cellcolor[HTML]{70AD47}\textbf{9.09} \\
   GS\_4      & 2400                                  & \cellcolor[HTML]{70AD47}\textbf{2542} & 9.27                                  \\
-  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{2367} & 2578                                  & 9.15                                 
+  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{2367} & 2578                                  & 9.15                                  \\ \bottomrule 
   \end{tabular}
 \end{table}
+
+Nagrinėjant rezultatus pateikiamus \ref{results_250} lentelėje, galime pastebėti, jog
+mažiausiai palyginimų atlikę algoritmai pradeda atsiskirti ir GS\_5 algoritmas jų atlieka mažiausiai.
+GA sugeneruoti GS\_3 ir GS\_4 algoritmai taip pat aplenkia Tokuda seka paremtą PŠA vertintant atliktus priskyrimus.
+Vertinant veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 500}
   \label{results_500}
   \centering
   \begin{tabular}{@{}llll@{}}
-  algoritmas & vid. palyginimai                      & vid. priskyrimai                      & vid. laikas (μs)                       \\
+  algoritmas & vid. palyginimai                      & vid. priskyrimai                      & vid. laikas (μs)                       \\ \midrule
   S\_C       & \cellcolor[HTML]{70AD47}\textbf{5621} & 8835                                  & 24.83                                  \\
   S\_T       & 5666                                  & 9001                                  & 24.52                                  \\
   S\_S       & 5783                                  & 8642                                  & 24.56                                  \\
@@ -565,16 +630,22 @@ Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus
   GS\_2 & \cellcolor[HTML]{70AD47}\textbf{5621} & \cellcolor[HTML]{70AD47}\textbf{5994} & \cellcolor[HTML]{70AD47}\textbf{21.71} \\
   GS\_3      & 5655                                  & 6027                                  & 23.16                                  \\
   GS\_4      & 5669                                  & 6016                                  & 23.26                                  \\
-  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{5607} & 6089                                  & \cellcolor[HTML]{70AD47}\textbf{22.66}
+  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{5607} & 6089                                  & \cellcolor[HTML]{70AD47}\textbf{22.66} \\  \bottomrule 
   \end{tabular}
 \end{table}
+
+
+\ref{results_500} lentelėje, matome, jog
+jau du GA sugeneruoti algoritmai (GS\_1 ir GS\_5) lenkia Ciura tarpų seka paremtus variantus vertinant atliktus palyginimus.
+Vertinant atliktus priskyrimus, pirmauja GS\_1, GS\_2 ir PŠA su Ciura tarpų seka.
+Pagal veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 1000}
   \label{results_1000}
   \centering
   \begin{tabular}{@{}llll@{}}
-  algoritmas & vid. palyginimai                       & vid. priskyrimai                       & vid. laikas (μs)                       \\
+  algoritmas & vid. palyginimai                       & vid. priskyrimai                       & vid. laikas (μs)                       \\ \midrule
   S\_C       & 13041                                  & 20270                                  & 55.57                                  \\
   S\_T       & 13129                                  & 20708                                  & 56.69                                  \\
   S\_S       & 13395                                  & 20089                                  & 52.55                                  \\
@@ -585,14 +656,29 @@ Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus
   GS\_2      & \cellcolor[HTML]{70AD47}\textbf{12990} & 14048                                  & 52.34                                  \\
   GS\_3      & 13070                                  & \cellcolor[HTML]{70AD47}\textbf{13817} & 53.18                                  \\
   GS\_4      & 13121                                  & 13889                                  & 54.02                                  \\
-  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{13023} & 14366                                  & \cellcolor[HTML]{70AD47}\textbf{51.56}
+  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{13023} & 14366                                  & \cellcolor[HTML]{70AD47}\textbf{51.56} \\ \bottomrule
   \end{tabular}
 \end{table}
 
+Pagal \ref{results_1000} lentelės rezultatus
+vertinant atliktus palyginimus pirmauja tik GA sugeneruoti algoritmai: GS\_1, GS\_2 ir GS\_5.
+Vertinant atliktus priskyrimus, geriausiai pasirodė PŠA su Ciura ir Tokuda tarpų sekomis bei GS\_3.
+PŠA su Sedgewick tarpų seka išlieka geriausiu vertinant veikimo laiką.
 
-\subsection{Šelo algoritmo variantų efektyvumo tyrimas rikiuojant vidutinius duomenų dydžius}
+\subsection{Šelo algoritmo variantų efektyvumo tyrimas, kai $N \leq 100000$}
 
+Šiame efektyvumo tyrimo etape buvo tiriami šie Šelo algoritmo variantai:
+\begin{itemize}
+  \item VŠA su Ciura tarpų seka (S\_C)
+  \item VŠA su Tokuda tarpų seka (S\_T)
+  \item VŠA su Sedgewick tarpų seka (S\_S)
+  \item PŠA su Ciura tarpų seka (SI\_C)
+  \item PŠA su Tokuda tarpų seka (SI\_T)
+  \item PŠA su Sedgewick tarpų seka (SI\_S)
+  \item GA sugeneruoti algoritmai (GL\_1, GL\_2, GL\_3, GL\_4, GL\_5)
+\end{itemize}
 
+\subsubsection{Tyrimo rezultatai}
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 12500}
@@ -614,14 +700,17 @@ Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus
   \end{tabular}
 \end{table}
 
-
+\ref{results_12500} lentelėje pateikiamuose rezultatuose matome, kad
+pagal atliktus palyginimus pirmauja GL\_1 ir GL\_2 algoritmai, nedaug atsilieka ir Ciura tarpų seka paremti variantai.
+Vertinant atliktus priskyrimus pirmauja GL\_1 ir PŠA su Tokuda tarpų seka.
+Vertinant veikimo laiką pirmauja PŠA su Sedgewick tarpų seka.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 25000}
   \label{results_25000}
   \centering
   \begin{tabular}{llll}
-    algoritmas & vid. palyginimai                        & vid. priskyrimai                        & vid. laikas (μs)                      \\
+    algoritmas & vid. palyginimai                        & vid. priskyrimai                        & vid. laikas (μs)                      \\ \midrule
     S\_C       & \cellcolor[HTML]{70AD47}\textbf{542838} & 822347                                  & 2323                                  \\
     S\_T       & 544133                                  & 832851                                  & 2379                                  \\
     S\_S       & 558162                                  & 838206                                  & 2267                                  \\
@@ -631,18 +720,22 @@ Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus
     GL\_1 & \cellcolor[HTML]{70AD47}\textbf{541866} & \cellcolor[HTML]{70AD47}\textbf{573477} & \cellcolor[HTML]{70AD47}\textbf{2157} \\
     GL\_2      & \cellcolor[HTML]{70AD47}\textbf{541303} & 574561                                  & 2183                                  \\
     GL\_3      & 546239                                  & 579532                                  & 2208                                  \\
-    GL\_4      & 545417                                  & 576050                                  & 2225                                  \\
-    GL\_5      & 543056                                  & \cellcolor[HTML]{70AD47}\textbf{573435} & 2214               
+    GL\_4      & 545417                                  & 576050                                  & 2225                                  \\ 
+    GL\_5      & 543056                                  & \cellcolor[HTML]{70AD47}\textbf{573435} & 2214                                  \\ \bottomrule 
   \end{tabular}
 \end{table}
 
+Vertinant rezultatus pateikiamus \ref{results_25000} lentelėje, pastebime, jog
+mažiausiai palyginimų atliko GL\_2, nedaug atsiliko GL\_1 ir Ciura tarpų seka paremti variantai.
+Pagal atliktus priskyrimus pirmauja GL\_5, GL\_1 ir PŠA su Tokuda tarpų seka.
+PŠA su Sedgewick tarpų seka toliau pirmauja pagal veikimo laiką.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 50000}
   \label{results_50000}
   \centering
   \begin{tabular}{llll}
-    algoritmas & vid. palyginimai                         & vid. priskyrimai                         & vid. laikas (μs)                      \\
+    algoritmas & vid. palyginimai                         & vid. priskyrimai                         & vid. laikas (μs)                      \\ \midrule
     S\_C       & \cellcolor[HTML]{70AD47}\textbf{1180477} & 1781235                                  & 5203                                  \\
     S\_T       & 1184476                                  & 1804441                                  & 5335                                  \\
     S\_S       & 1211998                                  & 1817385                                  & 5140                                  \\
@@ -652,19 +745,22 @@ Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus
     GL\_1 & \cellcolor[HTML]{70AD47}\textbf{1178027} & \cellcolor[HTML]{70AD47}\textbf{1247428} & \cellcolor[HTML]{70AD47}\textbf{4816} \\
     GL\_2 & \cellcolor[HTML]{70AD47}\textbf{1180429} & 1249592                                  & \cellcolor[HTML]{70AD47}\textbf{4795} \\
     GL\_3      & 1189048                                  & 1261191                                  & 4822                                  \\
-    GL\_4      & 1184607                                  & 1252540                                  & 4819                                  \\
-    GL\_5      & 1180783                                  & \cellcolor[HTML]{70AD47}\textbf{1246917} & 4832                                 
+    GL\_4      & 1184607                                  & 1252540                                  & 4819                                  \\ \bottomrule
+    GL\_5      & 1180783                                  & \cellcolor[HTML]{70AD47}\textbf{1246917} & 4832                                 \\ \bottomrule          
   \end{tabular}
 \end{table}
 
-
+Nagrinėjant \ref{results_50000} lentelės rezultatus, pastebime, jog
+mažiausiai palyginimų atliko GL\_1, taip pat geri rezultatai gauti su GL\_2 ir Ciura tarpų seka paremtais variantais.
+Vertinant atliktus priskyrimus, geriausi rezultatai gauti su PŠA naudojant Tokuda tarpų seką ir GL\_5 bei GL\_1 algoritmais.
+PŠA su Sedgewick tarpų seka toliau rodo geriausius veikimo laiko rezultatus.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai N = 100000}
   \label{results_100000}
   \centering
   \begin{tabular}{llll}
-    algoritmas & vid. palyginimai                         & vid. priskyrimai                         & vid. laikas (μs)                       \\
+    algoritmas & vid. palyginimai                         & vid. priskyrimai                         & vid. laikas (μs)                       \\ \midrule
     S\_C       & \cellcolor[HTML]{70AD47}\textbf{2552009} & 3835896                                  & 11305                                  \\
     S\_T       & 2564127                                  & 3888498                                  & 11853                                  \\
     S\_S       & 2624030                                  & 3941772                                  & 11980                                  \\
@@ -675,15 +771,78 @@ Antrame poskyryje tiriamas Šelo algoritmo variantų efektyvumas, kai maksimalus
     GL\_2      & \cellcolor[HTML]{70AD47}\textbf{2549224} & 2735020                                  & 10568                                  \\
     GL\_3      & 2569991                                  & 2768514                                  & 10481                                  \\
     GL\_4      & 2556929                                  & 2718989                                  & \cellcolor[HTML]{70AD47}\textbf{10434} \\
-    GL\_5      & 2552700                                  & \cellcolor[HTML]{70AD47}\textbf{2697404} & 10542                
+    GL\_5      & 2552700                                  & \cellcolor[HTML]{70AD47}\textbf{2697404} & 10542                                  \\  \bottomrule 
   \end{tabular}
 \end{table}
 
+
+\ref{results_100000} lentelės rezultatuose matome, jog
+mažiausiai palyginimų ir toliau atlieka GL\_1 ir GL\_2 algoritmai, taip pat neblogus rezultatus rodo Ciura tarpų seka paremti variantai.
+Analizuojant atliktų priskyrimų rezultatus, pirmauja PŠA naudojant Tokuda tarpų seką ir GL\_5 bei GL\_1 algoritmai.
+PŠA su Sedgewick tarpų seka ir toliau pateikia geriausius veikimo laiko rezultatus.
+
+\subsection{Tyrimo rezultatų apibendrinimas}
+
+Apibendrinant rezultatus, gautus tiriant Šelo algoritmo variantus kai $N \leq 1000$,
+galime teigti, jog PŠA su Ciura tarpų seka ir algoritmas GS\_1 šiame etape buvo efektyviausi,
+kadangi jie atliko mažiausiai palyginimų ir priskyrimų bei pateikė pakankamai gerus veikimo laikus.
+
+Įdomu pastebėti, jog didelė dalis GA sugeneruotų algoritmų mažesniems duomenų dydžiams naudoja visiškai tokius pat perėjimus,
+kaip ir PŠA su Ciura tarpų seka. Tuo pačiu galime konstatuoti, jog veikimo laiko įverčiai nėra ypač tikslūs -
+jei algoritmai atlieka tas pačias operacijas ir rikiuoja tuos pačius duomenis, natūralu būtų tikėtis labai panašių veikimo laikų. 
+Taip pat matome, jog su didesniais tarpais taikant burbuliuko perėjimą gaunamas algoritmas (GS\_2), kuris atlieka mažiau palyginimų ir daugiau priskyrimų
+nei analogišką tarpų seką naudojantis algoritmas paremtas tik patobulinto įterpimo perėjimais (PŠA su Ciura tarpų seka).
+Vertinant tik veikimo laikus, panašu jog šis kompromisas duoda teigiamą efektą, tačiau reikia atsižvelgti ir į faktą, jog tyrimui
+buvo naudojami tik sveikaskaitiniai duomenys, kurių priskyrimas yra labai pigus atliekamų skaičiavimų prasme. 
+
+Apibendrinant rezultatus, gautus tiriant Šelo algoritmo variantus kai $N \leq 100000$,
+galime teigti, jog efektyviausias buvo GL\_1 algoritmas, kadangi jo rezultatai su visais tame etape tirtais duomenų dydžiais buvo vieni geriausių tiek vertinant atliktas operacijas, tiek veikimo laiką.
+Reikia pastebėti, jog pirmi 8 GL\_1 algoritmo perėjimai sutampa su PŠA naudojant Ciura tarpų seką.
+Šis algoritmas taip pat naudoja tik patobulintą iterpimo perėjimą, taigi iš tiesų buvo sugeneruota efektyvi tarpų seka ${S_1 = 1, 4, 10, 23, 57, 132, 301, 701, 1577, 3552, 7983, 17982, 40459, 91032}$,
+kuri yra Ciura sekos pratęsimas.
+
+
+Remiantis gautais rezultatais, galime daryti išvadą, jog nėra objektyvių priežasčių rinktis VŠA - 
+PŠA naudojant tas pačias tarpų sekas su visais duomenų dydžiais atlieka 29-43\% mažiau priskyrimų ir veikia greičiau. 
+Ypač teigiamas PŠA naudojimo efektas pastebimas su Sedgewick tarpų seka, kur veikimo laikas su visais duomenų dydžiais yra 4-24\% mažesnis lyginant su VŠA paremtu variantu.  
+Tuo pačiu PŠA su Sedgewick tarpų seka yra nenuginčijamai sparčiausias tirtas algoritmas.
+
+Bendrai vertinant GA sugeneruotus algoritmus galime teigti, jog gauti algoritmai yra gana efektyvūs.
+Taip pat galime pastebėti, jog gautuose algoritmuose dominuoja patobulinto įterpimo perėjimai.
+Su didesniais tarpais taip pat pastebime ir burbuliuko perėjimų.
+Tiesa, generuojant algoritmus buvo pasirinktas gana siauras $q$ rėžis geometrinėms tarpų sekoms, kuris galėjo įtakoti šį rezultatą -
+galbūt kitokių tipų perėjimai būtų pastebimi dažniau, jei inicializacijai parinktos tarpų sekos jiems būtų palankesnės.
+
+Taip pat įdomu pastebėti, jog gauti algoritmai sugebėjo atliekamų palyginimų atžvilgiu aplenkti Ciura tarpų seka paremtus Šelo algoritmo variantus.
+Tiesa, su nedideliais N tai buvo pasiekta tik paaukojant atliekamus priskyrimus ir naudojant burbuliuko perėjimą didesniems tarpams.
+Autoriaus nuomone, algoritmai kombinuojantys keletą skirtingų perėjimų nėra tinkami naudoti praktikoje,
+kadangi daug paprasčiau įgyvendinti algoritmą, kuris rikiuoja naudodamas tik vieno tipo perėjimą.
+
 \sectionnonum{Išvados}
 
-Išvadose visą darbą sukišam į porą puslapių, tad čia gana svarbi dalis.
 % Išvadose ir pasiūlymuose, nekartojant atskirų dalių apibendrinimų,
 % suformuluojamos svarbiausios darbo išvados, rekomendacijos bei pasiūlymai.
+
+Renkantis kurį Šelo algoritmo variantą naudoti, nesunkiai galime rekomenduoti patobulintą Šelo algoritmą.
+Remiantis gautais rezultatais, jis atlieka mažiau priskyrimo operacijų ir veikia greičiau už vadovėlinę versiją.
+
+
+Nedideliems duomenų dydžiams ($N \leq 1000$) rikiuoti bendru atveju galime rekomenduoti patobulintą Šelo algoritmą su Ciura tarpų seka.
+Remiantis puikiais veikimo laiko rezultatais taip pat galime rekomenduoti ir patobulintą Šelo algoritmą su Sedgewick tarpų seka.
+Nors darbo metu gautas algoritmas GS\_1 taip pat yra gana efektyvus, jį sunku rekomenduoti dėl
+kelių skirtingų perėjimų taikymo, kas stipriai apsunkina implementaciją.
+
+Vidutiniams duomenų dydžiams ($1000 \leq N \leq 100000$) rikiuoti bendru atveju galime rekomenduoti patobulintą Šelo algoritmą su $S_1$ tarpų seka.
+Remiantis puikiais veikimo laiko rezultatais taip pat galime rekomenduoti ir patobulintą Šelo algoritmą su Sedgewick tarpų seka.
+
+Įvertinant gautus rezultatus, galima teigti, jog genetiniai algoritmai yra tinkamas metodas efektyvių Šelo algoritmo variantų radimui.
+Ateityje būtų įdomu Šelo algoritmo variantų generavimo inicializacijai naudoti daugiau skirtingų tarpų sekų.
+Šiam tikslui pasiekti būtų galima pasitelkti geometrines tarpų sekas, kadangi jas gana nesudėtinga generuoti, o galimų variantų skaičius yra be galo didelis.
+
+Dar viena potenciali naujų darbų kryptis galėtų būti ir geometrinių tarpų sekų generavimas pasitelkiant genetinius algoritmus.
+Šiame darbe buvo gautas Ciura tarpų sekos tęsinys $S_1$, kuris yra efektyvesnis už literatūroje pateikiamą tęsinį gautą naudojant rekursyvią formulę $h_{k}=\lfloor 2.25h_{k-1}\rfloor$.
+Sukonstravus genetinį algoritmą Ciura tarpų sekos tęsinių generavimui naudojant skirtingus $q$ galėtų būti gauta ir dar efektyvesnė tarpų seka.
+Žinoma, nėra būtina apsiriboti vien tęsinių generavimu - vienodai prasmingas uždavinys būtų ir pilnų geometrinių tarpų sekų generavimas pasitelkiant genetinius algoritmus.
 
 \printbibliography[heading=bibintoc] % Literatūros šaltiniai
 
