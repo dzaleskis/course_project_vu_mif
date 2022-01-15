@@ -16,6 +16,35 @@
 \algnewcommand\algorithmicforeach{\textbf{foreach}}
 \algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
 
+\definecolor{eclipseStrings}{RGB}{42,0.0,255}
+\definecolor{eclipseKeywords}{RGB}{127,0,85}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily,
+    commentstyle=\color{eclipseStrings}, % style of comment
+    stringstyle=\color{eclipseKeywords}, % style of strings
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{white},
+    string=[s]{"}{"},
+    comment=[l]{:\ "},
+    morecomment=[l]{:"},
+    literate=
+        *{0}{{{\color{numb}0}}}{1}
+         {1}{{{\color{numb}1}}}{1}
+         {2}{{{\color{numb}2}}}{1}
+         {3}{{{\color{numb}3}}}{1}
+         {4}{{{\color{numb}4}}}{1}
+         {5}{{{\color{numb}5}}}{1}
+         {6}{{{\color{numb}6}}}{1}
+         {7}{{{\color{numb}7}}}{1}
+         {8}{{{\color{numb}8}}}{1}
+         {9}{{{\color{numb}9}}}{1}
+}
+
+
 % Titulinio aprašas
 \university{Vilniaus universitetas}
 \faculty{Matematikos ir informatikos fakultetas}
@@ -344,11 +373,9 @@ Rikiavimo algoritmai dažniausiai yra vertinami pagal atliekamų priskyrimų ska
 daugelyje algoritmų priskyrimų skaičius uždaviniui augant greitai artėja prie palyginimų skaičiaus ir
 tokiu metodu gautas įvertis būna pakankamai tikslus.
 Vadovėlinio Šelo algoritmo atveju, atliekamų palyginimų ir priskyrimų skaičiaus santykis augant $N$ nebūtinai artėja prie 1 \cite{Radavičius_Baranauskas_2013}.
-Kaip parodo \cite{ciura2001best}, vadovėliniame Šelo algoritme dominuojanti operacija yra palyginimas.
-Tiesa, Šelo algoritmo variantai nėra taip išsamiai ištirti \cite{brejova2001analyzing}.
-Todėl šio darbo kontekste sudėtinga pagrįstai nustatyti, kuri iš operacijų turėtų turėti didesnį svorį.
-Remdamiesi tuo, jog norint atlikti priskyrimą visgi reikia prieš tai atlikti palyginimą, tačiau atlikus palyginimą nebūtinai bus atliekamas priskyrimas,
-laikysime jog palyginimo operacijos turėtų turėti didesnį svorį.
+Kaip parodo \cite{ciura2001best}, vadovėliniame Šelo algoritme svarbiausia operacija yra palyginimas.
+Literatūroje sudėtinga rasti panašios informacijos apie Šelo algoritmo variantus,
+todėl laikysime, jog tinkamam efektyvumo įvertinimui būtina matuoti ir atliekamus palyginimus, ir atliekamus priskyrimus.
 
 Algoritmo veikimo laikas taip pat gali duoti tinkamų įžvalgų įvertinant praktinį efektyvumą.
 Savaime suprantama, jog į veikimo laiką verta žvelgti kritiškai, kadangi jis priklauso nuo konkrečios algoritmo implementacijos,
@@ -359,21 +386,25 @@ instrukcijos nėra vykdomos iš eilės (siekiant pilnai išnaudoti procesoriaus 
 duomenys saugomi kelių lygių talpykloje (siekiant panaikinti atminties delsą),
 šakos yra nuspėjamos (siekiant išlygiagretinti instrukcijų vykdymą).
 Todėl naudojant modernų kompiuterį labai sunku iš anksto nustatyti, kaip algoritmas veiks praktikoje. 
-Taip pat reikia pastebėti, kad Šelo algoritmo atliekamų operacijų skaičius ir veikimo laikas ne visada koreliuoja, t.y.
-vien tai, jog duotas Šelo algoritmo variantas atlieka sąlyginai mažai operacijų, dar nereiškia jog praktikoje jis veiks greičiau
-už tuos, kurie operacijų atlieka daugiau.
+Remiantis kursiniame darbe gautais rezultatais taip pat galime teigti, jog Šelo algoritmo atliekamų operacijų skaičius ir veikimo laikas ne visada koreliuoja -
+tyrime geriausius veikimo laiko rezultatus pateikę Šelo algoritmo variantai atliko ženkliai daugiau operacijų, nei atliekamų operacijų operacijų atžvilgiu optimalūs variantai.
 Atsižvelgiant į aukščiau pateiktus argumentus, manome jog
 algoritmo veikimo laiko įvertis yra pakankamai geras įrankis juodos dėžės principu įvertinti praktinį algoritmo efektyvumą.
 
 Remiantis aukščiau pateiktais argumentais, šiame darbe Šelo algoritmo variantai vertinami pagal
 atliekamų palyginimų skaičių, atliekamų priskyrimų skaičių ir veikimo laiką.
-Šių kriterijų įtaka bendram algoritmo efektyvumo vertinimui paskirstoma taip: atliekami palyginimai - 50\%, atliekami priskyrimai - 30\%, veikimo laikas 20\%.
+Kadangi Šelo algoritmo variantai nėra taip išsamiai ištirti \cite{brejova2001analyzing},
+šio darbo kontekste sudėtinga pagrįstai nustatyti, kuri iš operacijų turėtų turėti didesnį svorį.
+Remdamiesi tuo, jog variantai veikia panašiu principu į vadovėlinę versiją, laikysime, jog  
+didesnis svoris turėtų būti suteikiamas atliekamiems palyginimams.
+Veikimo laikui teiksime mažesnį svorį nei atliekamoms operacijoms, kadangi gauti veikimo laiko įverčiai gali priklausyti nuo išorinių veiksnių,
+dėl ko gauti rezultatai nebus tokie patikimi ir juos gali būti sudėtinga atkartoti.
 
 \section{Šelo algoritmo variantų generavimo aplinkos paruošimas}
 
 Šelo algoritmo variantus generuojantis genetinis algoritmas buvo įgyvendintas C++ programavimo kalba, pasitelkiant openGA biblioteką \cite{mohammadi2017openga}.
-C++ buvo pasirinkta dėl praeitos patirties, galimybės kontroliuoti kodo našumą (ko dažnai nesuteikia "saugesnės" programavimo kalbos)
-ir tam tikrų kalbos aspektų, tokių kaip operatorių perkrovimas.
+C++ buvo pasirinkta dėl praeitos patirties, galimybės kontroliuoti kodo našumą (ko dažnai nesuteikia aukštesnio lygio programavimo kalbos)
+ir tam tikrų kalbos aspektų palengvinančių projekto įgyvendinimą, tokių kaip operatorių perkrovimas.
 OpenGA biblioteka buvo pasirinkta dėl modernių C++ kalbos konstruktų ir lygiagretaus vykdymo palaikymo, išsamios dokumentacijos ir praeitos patirties (buvo naudojama ruošiant kursinį darbą).
 
 Siekiant išmatuoti skirtingų Šelo algoritmo variantų atliekamų operacijų skaičių buvo
@@ -403,15 +434,13 @@ Trečiame poskyryje generuojami Šelo algoritmo variantai, kai $N = 100000$.
 \subsection{Genetinis algoritmas}
 
 Prieš pradedant generuoti Šelo algoritmo variantus, reikėtų aptarti kaip turėtų atrodyti sprendinys, atspindintis tam tikrą Šelo algoritmo variantą.
-Kadangi genetinis algoritmas sprendinių evoliuciją vykdo taikant mutacijos ir rekombinacijos operatorius, sieksime, jog šių operatorių taikymas sprendiniams būtų kuo paprastesnis.
-Tuo tikslu sprendinio duomenų modelis turėtų būti kuo paprastesnis, o jo elementai sudaryti iš primityvių duomenų tipų.
-Tai tuo pačiu palengvina ir sprendinių serializaciją, kas leidžia sprendinius serializuoti pvz.
-JSON formatu ir išsaugoti į failą ar duomenų bazę.
 Laikysime jog vieną varianto perėjimą sudaro pora $(type, gap)$, kur $type$ yra skaičius, atitinkantis vieną iš anksčiau darbe aptartų perėjimų tipų,
 o $gap$ - tarpas, su kuriuo rikiuojama tame perėjime.
 Tadą Šelo algoritmo variantą galime modeliuoti sąrašu tokių perėjimų.
-Toliau darbe modeliuojamą Šelo algoritmo varianto sprendinį taip pat vadinsime chromosoma arba individu, o vieną jo perėjimą - genu. 
-Tiesa, toks algoritmas neturi jokio funkcionalumo (juo duomenų rikiuoti negalime), tačiau tai nėra sunku išspręsti: pakanka kiekvienam perėjimo tipui
+Toliau darbe modeliuojamą Šelo algoritmo varianto sprendinį taip pat vadinsime chromosoma arba individu, o vieną jo perėjimą - genu.
+Kadangi genetinis algoritmas sprendinių evoliuciją vykdo taikant mutacijos ir rekombinacijos operatorius, siekėme, jog šių operatorių taikymas sprendiniams būtų kuo mažiau sudėtingas.
+Todėl sprendinio duomenų modelis yra pakankamai paprastas, kas taip pat palengvina serializaciją ir saugojimą.
+Tiesa, toks modelis neturi jokio funkcionalumo (juo duomenų rikiuoti negalime), tačiau tai nėra sunku išspręsti: pakanka kiekvienam perėjimo tipui
 paruošti atitinkamą funkciją, kuri kaip parametrus priima rikiuojamus duomenis ir tarpą su kuriuo rikiuojama.
 Tada tokį algoritmą galima vykdyti iteruojant jo perėjimų sąrašą ir kiekvienam perėjimui iškviečiant funkciją atitinkančią jo tipą.
 
@@ -420,7 +449,6 @@ kadangi tai supaprastina tiek paties GA vykdymą, tiek realizaciją.
 Projektuojant genetinį algoritmą buvo pasirinkta minimizuoti sprendinių atliekamų operacijų skaičių,
 tuo pačiu taikant baudas pagal pasirinktus kriterijus.
 
-Esminė genetinio algoritmo dalis yra genetiniai operatoriai.
 Kadangi openGA biblioteka nereikalauja įgyvendinti individų atrankos operatoriaus, lieka apibrėžti tik mutacijos ir rekombinacijos operatorius.
 Individų mutacija buvo įgyvendinta pasirenkant atsitiktinį sprendinio perėjimą ir pakeičiant jo tipą kuriuo nors kitu perėjimo tipu.
 Tarpų mutacija nebuvo vykdoma, kadangi šiame darbe tarpų sekos nėra pagrindinis tyrimo objektas.
@@ -432,7 +460,6 @@ Reikia pastebėti, jog pasirinkta rekombinacijos operatoriaus implementacija lei
 Autoriaus nuomone, tai nėra blogas dalykas - netiesioginis šio darbo rezultatas gali būti ir nauja tarpų seka, gauta maišant
 individų inicializacijai naudotas tarpų sekas.
 
-Genetinio algoritmo rezultatų kokybė taip pat labai priklauso nuo pasirinktų vykdymo parametrų.
 Atlikus keletą eksperimentų ir preliminariai įvertinus gautų sprendinių tinkamumą buvo pasirinkta GA taikyti tokius parametrus:
 populiacija - $200$, mutacijos tikimybė - $0.1$, rekombinuojama populiacijos dalis - $0.2$.
 Siekiant išlaikyti tinkamiausius sprendinius, taip pat buvo pasitelktas elitizmas ir 5 didžiausią tinkamumą turinčios chromosomos nekeistos patekdavo į kitą GA iteraciją.
@@ -441,10 +468,9 @@ GA sustojimo kriterijumi buvo laikomas geriausio individo nepakitimas 100 iterac
 Abiejuose Šelo algoritmo variantų generavimo etapuose buvo naudojama ta pati tinkamumo funkcija, kurios apibrėžimas yra toks:
 \\${f(c) = (c.inversions)^2 + (c.time)^{1.5} + (2*c.comparisons) + c.assignments}$.
 Kadangi siekėme sugeneruoti algoritmą, kuris visada išrikiuoja duomenis, buvo pasirinkta sprendiniams taikyti kvadratinę baudą priklausančią nuo inversijų skaičiaus.
-Taip pat sprendiniams buvo taikoma bauda, paremta veikimo laiku. Reikia pripažinti, jog šios baudos laipsnis neturi matematinio pagrindo ir buvo nustatytas eksperimentiškai,
-siekiant jog baudos dydis neviršytų ${max(c.comparisons, c.assignments)}$ su pasirinktais duomenų dydžiais.
+Taip pat sprendiniams buvo taikoma bauda, paremta veikimo laiku. Reikia pripažinti, jog šios baudos laipsnis neturi matematinio pagrindo ir buvo nustatytas eksperimentiškai.
 Algoritmo atliekamiems priskyrimams ir palyginimams tinkamumo funkcijoje buvo taikomi svoriai, paremti
-praeitame skyriuje apibrėžtais efektyvaus Šelo algoritmo varianto kriterijais ir eksperimentiškai gautais duomenimis apie tipiškai atliekamų palyginimų ir priskyrimų santykį.
+praeitame skyriuje apibrėžtais efektyvaus Šelo algoritmo varianto kriterijais ir eksperimentiškai gautais duomenimis apie tipiškai atliekamus palyginimus ir priskyrimus.
 
 Genetinio algoritmo rezultatų saugojimui buvo pasirinkta naudoti PostgreSQL duomenų bazę.
 Tai buvo atlikta siekiant automatizuoti genetinio algoritmo rezultatų saugojimo procesą ir palengvinti geriausių rezultatų atranką.
@@ -543,13 +569,13 @@ Visi kiti rezultatai pateikiami suapvalinus iki sveikosios dalies.
 
 Šiame efektyvumo tyrimo etape buvo tiriami šie Šelo algoritmo variantai:
 \begin{itemize}
-  \item VŠA su Ciura tarpų seka (S\_C)
-  \item VŠA su Tokuda tarpų seka (S\_T)
-  \item VŠA su Sedgewick tarpų seka (S\_S)
-  \item PŠA su Ciura tarpų seka (SI\_C)
-  \item PŠA su Tokuda tarpų seka (SI\_T)
-  \item PŠA su Sedgewick tarpų seka (SI\_S)
-  \item GA sugeneruoti algoritmai (GS\_1, GS\_2, GS\_3, GS\_4, GS\_5)
+  \item VŠA su Ciura tarpų seka
+  \item VŠA su Tokuda tarpų seka
+  \item VŠA su Sedgewick tarpų seka
+  \item PŠA su Ciura tarpų seka
+  \item PŠA su Tokuda tarpų seka
+  \item PŠA su Sedgewick tarpų seka
+  \item GA sugeneruoti algoritmai (A1, A2, A3, A4, A5)
 \end{itemize}
 
 \subsubsection{Tyrimo rezultatai}
@@ -560,23 +586,23 @@ Visi kiti rezultatai pateikiami suapvalinus iki sveikosios dalies.
   \centering
   \begin{tabular}{@{}llll@{}}
   algoritmas & vid. palyginimai                     & vid. priskyrimai                      & vid. laikas (μs)                      \\ \midrule
-  S\_C       & \cellcolor[HTML]{70AD47}\textbf{978} & 1568                                  & 4.04                                  \\
-  S\_T       & 991                                  & 1615                                  & 4.90                                  \\
-  S\_S       & 1005                                 & 1508                                  & 3.90                                  \\
-  SI\_C      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & 3.94                                  \\
-  SI\_T      & 991                                  & \cellcolor[HTML]{70AD47}\textbf{1042} & 3.75                                  \\
-  SI\_S      & 1005                                 & 1125                                  & \cellcolor[HTML]{70AD47}\textbf{3.07} \\
-  GS\_1      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & \cellcolor[HTML]{70AD47}\textbf{3.63} \\
-  GS\_2      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & 3.68                                  \\
-  GS\_3      & 984                                  & \cellcolor[HTML]{70AD47}\textbf{1053} & 3.71                                  \\
-  GS\_4      & 992                                  & \cellcolor[HTML]{70AD47}\textbf{1049} & 4.01                                  \\
-  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & \cellcolor[HTML]{70AD47}\textbf{3.39} \\ \bottomrule
+  VŠA (Ciura)       & \cellcolor[HTML]{70AD47}\textbf{978} & 1568                                  & 4.04                                  \\
+  VŠA (Tokuda)      & 991                                  & 1615                                  & 4.90                                  \\
+  VŠA (Sedgewick)       & 1005                                 & 1508                                  & 3.90                                  \\
+  PŠA (Ciura)      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & 3.94                                  \\
+  PŠA (Tokuda)      & 991                                  & \cellcolor[HTML]{70AD47}\textbf{1042} & 3.75                                  \\
+  PŠA (Sedgewick)      & 1005                                 & 1125                                  & \cellcolor[HTML]{70AD47}\textbf{3.07} \\
+  A1      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & \cellcolor[HTML]{70AD47}\textbf{3.63} \\
+  A2      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & 3.68                                  \\
+  A3      & 984                                  & \cellcolor[HTML]{70AD47}\textbf{1053} & 3.71                                  \\
+  A4      & 992                                  & \cellcolor[HTML]{70AD47}\textbf{1049} & 4.01                                  \\
+  A5      & \cellcolor[HTML]{70AD47}\textbf{978} & 1068                                  & \cellcolor[HTML]{70AD47}\textbf{3.39} \\ \bottomrule
   \end{tabular}
 \end{table}
 
 Vertinant rezultatus pateikiamus \ref{results_125} lentelėje, galime pastebėti, jog
-mažiausiai palyginimų atliko GS\_1, GS\_5 ir Ciura tarpų seka paremti variantai.
-Tokuda seka paremtas PŠA šiuo atveju atlieka mažiausiai priskyrimų, nedaug atsilieka GS\_3 ir GS\_4.
+mažiausiai palyginimų atliko A1, A5 ir Ciura tarpų seka paremti variantai.
+Tokuda seka paremtas PŠA šiuo atveju atlieka mažiausiai priskyrimų, nedaug atsilieka A3 ir A4.
 Vertinant veikimo laiką pirmauja PŠA su Sedgewick tarpų seka.
 
 
@@ -586,23 +612,23 @@ Vertinant veikimo laiką pirmauja PŠA su Sedgewick tarpų seka.
   \centering
   \begin{tabular}{@{}llll@{}}
   algoritmas & vid. palyginimai                      & vid. priskyrimai                      & vid. laikas (μs)                      \\ \midrule
-  S\_C       & \cellcolor[HTML]{70AD47}\textbf{2377} & 3776                                  & 10.71                                 \\
-  S\_T       & 2401                                  & 3853                                  & 10.00                                 \\
-  S\_S       & 2453                                  & 3685                                  & 9.63                                  \\
-  SI\_C      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & \cellcolor[HTML]{70AD47}\textbf{9.08} \\
-  SI\_T      & 2401                                  & \cellcolor[HTML]{70AD47}\textbf{2533} & 9.78                                  \\
-  SI\_S      & 2453                                  & 2696                                  & \cellcolor[HTML]{70AD47}\textbf{8.40} \\
-  GS\_1      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & 9.23                                  \\
-  GS\_2      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & 9.44                                  \\
-  GS\_3      & 2390                                  & \cellcolor[HTML]{70AD47}\textbf{2558} & \cellcolor[HTML]{70AD47}\textbf{9.09} \\
-  GS\_4      & 2400                                  & \cellcolor[HTML]{70AD47}\textbf{2542} & 9.27                                  \\
-  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{2367} & 2578                                  & 9.15                                  \\ \bottomrule 
+  VŠA (Ciura)       & \cellcolor[HTML]{70AD47}\textbf{2377} & 3776                                  & 10.71                                 \\
+  VŠA (Tokuda)      & 2401                                  & 3853                                  & 10.00                                 \\
+  VŠA (Sedgewick)       & 2453                                  & 3685                                  & 9.63                                  \\
+  PŠA (Ciura)      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & \cellcolor[HTML]{70AD47}\textbf{9.08} \\
+  PŠA (Tokuda)      & 2401                                  & \cellcolor[HTML]{70AD47}\textbf{2533} & 9.78                                  \\
+  PŠA (Sedgewick)      & 2453                                  & 2696                                  & \cellcolor[HTML]{70AD47}\textbf{8.40} \\
+  A1      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & 9.23                                  \\
+  A2      & \cellcolor[HTML]{70AD47}\textbf{2377} & 2571                                  & 9.44                                  \\
+  A3      & 2390                                  & \cellcolor[HTML]{70AD47}\textbf{2558} & \cellcolor[HTML]{70AD47}\textbf{9.09} \\
+  A4      & 2400                                  & \cellcolor[HTML]{70AD47}\textbf{2542} & 9.27                                  \\
+  A5      & \cellcolor[HTML]{70AD47}\textbf{2367} & 2578                                  & 9.15                                  \\ \bottomrule 
   \end{tabular}
 \end{table}
 
 Nagrinėjant rezultatus pateikiamus \ref{results_250} lentelėje, galime pastebėti, jog
-mažiausiai palyginimų atlikę algoritmai pradeda atsiskirti ir GS\_5 algoritmas jų atlieka mažiausiai.
-GA sugeneruoti GS\_3 ir GS\_4 algoritmai bei Tokuda seka paremtas PŠA pateikia geriausius rezultatus vertintant atliktus priskyrimus.
+mažiausiai palyginimų atlikę algoritmai pradeda atsiskirti ir A5 algoritmas jų atlieka mažiausiai.
+GA sugeneruoti A3 ir A4 algoritmai bei Tokuda seka paremtas PŠA pateikia geriausius rezultatus vertintant atliktus priskyrimus.
 Vertinant veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
 
 \begin{table}[H]
@@ -611,24 +637,24 @@ Vertinant veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
   \centering
   \begin{tabular}{@{}llll@{}}
   algoritmas & vid. palyginimai                      & vid. priskyrimai                      & vid. laikas (μs)                       \\ \midrule
-  S\_C       & \cellcolor[HTML]{70AD47}\textbf{5621} & 8835                                  & 24.83                                  \\
-  S\_T       & 5666                                  & 9001                                  & 24.52                                  \\
-  S\_S       & 5783                                  & 8642                                  & 24.56                                  \\
-  SI\_C      & \cellcolor[HTML]{70AD47}\textbf{5621} & \cellcolor[HTML]{70AD47}\textbf{5994} & 22.96                                  \\
-  SI\_T      & 5666                                  & 5999                                  & 23.03                                  \\
-  SI\_S      & 5783                                  & 6360                                  & \cellcolor[HTML]{70AD47}\textbf{21.30} \\
-  GS\_1      & \cellcolor[HTML]{70AD47}\textbf{5612} & \cellcolor[HTML]{70AD47}\textbf{5991} & 24.24                                  \\
-  GS\_2 & \cellcolor[HTML]{70AD47}\textbf{5621} & \cellcolor[HTML]{70AD47}\textbf{5994} & \cellcolor[HTML]{70AD47}\textbf{21.71} \\
-  GS\_3      & 5655                                  & 6027                                  & 23.16                                  \\
-  GS\_4      & 5669                                  & 6016                                  & 23.26                                  \\
-  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{5607} & 6089                                  & \cellcolor[HTML]{70AD47}\textbf{22.66} \\  \bottomrule 
+  VŠA (Ciura)       & \cellcolor[HTML]{70AD47}\textbf{5621} & 8835                                  & 24.83                                  \\
+  VŠA (Tokuda)      & 5666                                  & 9001                                  & 24.52                                  \\
+  VŠA (Sedgewick)       & 5783                                  & 8642                                  & 24.56                                  \\
+  PŠA (Ciura)      & \cellcolor[HTML]{70AD47}\textbf{5621} & \cellcolor[HTML]{70AD47}\textbf{5994} & 22.96                                  \\
+  PŠA (Tokuda)      & 5666                                  & 5999                                  & 23.03                                  \\
+  PŠA (Sedgewick)      & 5783                                  & 6360                                  & \cellcolor[HTML]{70AD47}\textbf{21.30} \\
+  A1      & \cellcolor[HTML]{70AD47}\textbf{5612} & \cellcolor[HTML]{70AD47}\textbf{5991} & 24.24                                  \\
+  A2 & \cellcolor[HTML]{70AD47}\textbf{5621} & \cellcolor[HTML]{70AD47}\textbf{5994} & \cellcolor[HTML]{70AD47}\textbf{21.71} \\
+  A3      & 5655                                  & 6027                                  & 23.16                                  \\
+  A4      & 5669                                  & 6016                                  & 23.26                                  \\
+  A5      & \cellcolor[HTML]{70AD47}\textbf{5607} & 6089                                  & \cellcolor[HTML]{70AD47}\textbf{22.66} \\  \bottomrule 
   \end{tabular}
 \end{table}
 
 
 \ref{results_500} lentelėje matome, jog
-GS\_1 ir GS\_5 bei Ciura tarpų seka paremti variantai pasirodė geriausiai vertinant atliktus palyginimus.
-Vertinant atliktus priskyrimus, geriausi rezultatai gauti su GS\_1, GS\_2 ir PŠA su Ciura tarpų seka.
+A1 ir A5 bei Ciura tarpų seka paremti variantai pasirodė geriausiai vertinant atliktus palyginimus.
+Vertinant atliktus priskyrimus, geriausi rezultatai gauti su A1, A2 ir PŠA su Ciura tarpų seka.
 Pagal veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
 
 \begin{table}[H]
@@ -637,36 +663,36 @@ Pagal veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
   \centering
   \begin{tabular}{@{}llll@{}}
   algoritmas & vid. palyginimai                       & vid. priskyrimai                       & vid. laikas (μs)                       \\ \midrule
-  S\_C       & 13041                                  & 20270                                  & 55.57                                  \\
-  S\_T       & 13129                                  & 20708                                  & 56.69                                  \\
-  S\_S       & 13395                                  & 20089                                  & 52.55                                  \\
-  SI\_C      & 13041                                  & \cellcolor[HTML]{70AD47}\textbf{13816} & 55.05                                  \\
-  SI\_T      & 13129                                  & \cellcolor[HTML]{70AD47}\textbf{13863} & 56.55                                  \\
-  SI\_S      & 13395                                  & 14525                                  & \cellcolor[HTML]{70AD47}\textbf{50.50} \\
-  GS\_1      & \cellcolor[HTML]{70AD47}\textbf{12961} & 13905                                  & \cellcolor[HTML]{70AD47}\textbf{52.21} \\
-  GS\_2      & \cellcolor[HTML]{70AD47}\textbf{12990} & 14048                                  & 52.34                                  \\
-  GS\_3      & 13070                                  & \cellcolor[HTML]{70AD47}\textbf{13817} & 53.18                                  \\
-  GS\_4      & 13121                                  & 13889                                  & 54.02                                  \\
-  GS\_5      & \cellcolor[HTML]{70AD47}\textbf{13023} & 14366                                  & \cellcolor[HTML]{70AD47}\textbf{51.56} \\ \bottomrule
+  VŠA (Ciura)       & 13041                                  & 20270                                  & 55.57                                  \\
+  VŠA (Tokuda)      & 13129                                  & 20708                                  & 56.69                                  \\
+  VŠA (Sedgewick)       & 13395                                  & 20089                                  & 52.55                                  \\
+  PŠA (Ciura)      & 13041                                  & \cellcolor[HTML]{70AD47}\textbf{13816} & 55.05                                  \\
+  PŠA (Tokuda)      & 13129                                  & \cellcolor[HTML]{70AD47}\textbf{13863} & 56.55                                  \\
+  PŠA (Sedgewick)      & 13395                                  & 14525                                  & \cellcolor[HTML]{70AD47}\textbf{50.50} \\
+  A1      & \cellcolor[HTML]{70AD47}\textbf{12961} & 13905                                  & \cellcolor[HTML]{70AD47}\textbf{52.21} \\
+  A2      & \cellcolor[HTML]{70AD47}\textbf{12990} & 14048                                  & 52.34                                  \\
+  A3      & 13070                                  & \cellcolor[HTML]{70AD47}\textbf{13817} & 53.18                                  \\
+  A4      & 13121                                  & 13889                                  & 54.02                                  \\
+  A5      & \cellcolor[HTML]{70AD47}\textbf{13023} & 14366                                  & \cellcolor[HTML]{70AD47}\textbf{51.56} \\ \bottomrule
   \end{tabular}
 \end{table}
 
 Pagal \ref{results_1000} lentelės rezultatus
-mažiausiai palyginimų atliko GA sugeneruoti algoritmai: GS\_1, GS\_2 ir GS\_5.
-Mažiausiai priskyrimų atliko PŠA su Ciura ir Tokuda tarpų sekomis bei GS\_3.
+mažiausiai palyginimų atliko GA sugeneruoti algoritmai: A1, A2 ir A5.
+Mažiausiai priskyrimų atliko PŠA su Ciura ir Tokuda tarpų sekomis bei A3.
 PŠA su Sedgewick tarpų seka išlieka geriausiu vertinant veikimo laiką.
 
 \subsection{Šelo algoritmo variantų efektyvumo tyrimas, kai $N \leq 100000$}
 
 Šiame efektyvumo tyrimo etape buvo tiriami šie Šelo algoritmo variantai:
 \begin{itemize}
-  \item VŠA su Ciura tarpų seka (S\_C)
-  \item VŠA su Tokuda tarpų seka (S\_T)
-  \item VŠA su Sedgewick tarpų seka (S\_S)
-  \item PŠA su Ciura tarpų seka (SI\_C)
-  \item PŠA su Tokuda tarpų seka (SI\_T)
-  \item PŠA su Sedgewick tarpų seka (SI\_S)
-  \item GA sugeneruoti algoritmai (GL\_1, GL\_2, GL\_3, GL\_4, GL\_5)
+  \item VŠA su Ciura tarpų seka
+  \item VŠA su Tokuda tarpų seka
+  \item VŠA su Sedgewick tarpų seka
+  \item PŠA su Ciura tarpų seka
+  \item PŠA su Tokuda tarpų seka
+  \item PŠA su Sedgewick tarpų seka
+  \item GA sugeneruoti algoritmai (B1, B2, B3, B4, B5)
 \end{itemize}
 
 \subsubsection{Tyrimo rezultatai}
@@ -677,23 +703,23 @@ PŠA su Sedgewick tarpų seka išlieka geriausiu vertinant veikimo laiką.
   \centering
   \begin{tabular}{llll}
     algoritmas & vid. palyginimai                        & vid. priskyrimai                        & vid. laikas (μs)                     \\ \midrule
-    S\_C       & \cellcolor[HTML]{70AD47}\textbf{247436} & 376596                                  & 1009                                 \\
-    S\_T       & 248135                                  & 381261                                  & 1025                                 \\
-    S\_S       & 254437                                  & 381187                                  & 984                                  \\
-    SI\_C      & \cellcolor[HTML]{70AD47}\textbf{247436} & 262114                                  & \cellcolor[HTML]{70AD47}\textbf{936} \\
-    SI\_T      & 248135                                  & \cellcolor[HTML]{70AD47}\textbf{261766} & 973                                  \\
-    SI\_S      & 254437                                  & 268334                                  & \cellcolor[HTML]{70AD47}\textbf{929} \\
-    GL\_1      & \cellcolor[HTML]{70AD47}\textbf{247107} & \cellcolor[HTML]{70AD47}\textbf{261734} & 949                                  \\
-    GL\_2 & \cellcolor[HTML]{70AD47}\textbf{247317} & \cellcolor[HTML]{70AD47}\textbf{261825} & \cellcolor[HTML]{70AD47}\textbf{948} \\
-    GL\_3      & 248879                                  & 263458                                  & 972                                  \\
-    GL\_4      & 248598                                  & 263534                                  & 951                                  \\
-    GL\_5      & 247540                                  & 262044                                  & 956                                  \\ \bottomrule       
+    VŠA (Ciura)       & \cellcolor[HTML]{70AD47}\textbf{247436} & 376596                                  & 1009                                 \\
+    VŠA (Tokuda)      & 248135                                  & 381261                                  & 1025                                 \\
+    VŠA (Sedgewick)       & 254437                                  & 381187                                  & 984                                  \\
+    PŠA (Ciura)      & \cellcolor[HTML]{70AD47}\textbf{247436} & 262114                                  & \cellcolor[HTML]{70AD47}\textbf{936} \\
+    PŠA (Tokuda)      & 248135                                  & \cellcolor[HTML]{70AD47}\textbf{261766} & 973                                  \\
+    PŠA (Sedgewick)      & 254437                                  & 268334                                  & \cellcolor[HTML]{70AD47}\textbf{929} \\
+    B1      & \cellcolor[HTML]{70AD47}\textbf{247107} & \cellcolor[HTML]{70AD47}\textbf{261734} & 949                                  \\
+    B2 & \cellcolor[HTML]{70AD47}\textbf{247317} & \cellcolor[HTML]{70AD47}\textbf{261825} & \cellcolor[HTML]{70AD47}\textbf{948} \\
+    B3      & 248879                                  & 263458                                  & 972                                  \\
+    B4      & 248598                                  & 263534                                  & 951                                  \\
+    B5      & 247540                                  & 262044                                  & 956                                  \\ \bottomrule       
   \end{tabular}
 \end{table}
 
 \ref{results_12500} lentelėje pateikiamuose rezultatuose matome, kad
-pagal mažiausiai palyginimų atliko GL\_1 ir GL\_2 algoritmai, nedaug atsiliko Ciura tarpų seka paremti variantai.
-Mažiausiai priskyrimų atliko GL\_1 ir PŠA su Tokuda tarpų seka.
+pagal mažiausiai palyginimų atliko B1 ir B2 algoritmai, nedaug atsiliko Ciura tarpų seka paremti variantai.
+Mažiausiai priskyrimų atliko B1 ir PŠA su Tokuda tarpų seka.
 Mažiausias veikimo laikas pastebimas su PŠA naudojant Sedgewick tarpų seką.
 
 \begin{table}[H]
@@ -702,23 +728,23 @@ Mažiausias veikimo laikas pastebimas su PŠA naudojant Sedgewick tarpų seką.
   \centering
   \begin{tabular}{llll}
     algoritmas & vid. palyginimai                        & vid. priskyrimai                        & vid. laikas (μs)                      \\ \midrule
-    S\_C       & \cellcolor[HTML]{70AD47}\textbf{542838} & 822347                                  & 2323                                  \\
-    S\_T       & 544133                                  & 832851                                  & 2379                                  \\
-    S\_S       & 558162                                  & 838206                                  & 2267                                  \\
-    SI\_C & \cellcolor[HTML]{70AD47}\textbf{542838} & 574642                                  & \cellcolor[HTML]{70AD47}\textbf{2162} \\
-    SI\_T      & 544133                                  & \cellcolor[HTML]{70AD47}\textbf{573608} & 2219                                  \\
-    SI\_S      & 558162                                  & 586459                                  & \cellcolor[HTML]{70AD47}\textbf{2140} \\
-    GL\_1 & \cellcolor[HTML]{70AD47}\textbf{541866} & \cellcolor[HTML]{70AD47}\textbf{573477} & \cellcolor[HTML]{70AD47}\textbf{2157} \\
-    GL\_2      & \cellcolor[HTML]{70AD47}\textbf{541303} & 574561                                  & 2183                                  \\
-    GL\_3      & 546239                                  & 579532                                  & 2208                                  \\
-    GL\_4      & 545417                                  & 576050                                  & 2225                                  \\ 
-    GL\_5      & 543056                                  & \cellcolor[HTML]{70AD47}\textbf{573435} & 2214                                  \\ \bottomrule 
+    VŠA (Ciura)       & \cellcolor[HTML]{70AD47}\textbf{542838} & 822347                                  & 2323                                  \\
+    VŠA (Tokuda)      & 544133                                  & 832851                                  & 2379                                  \\
+    VŠA (Sedgewick)       & 558162                                  & 838206                                  & 2267                                  \\
+    PŠA (Ciura) & \cellcolor[HTML]{70AD47}\textbf{542838} & 574642                                  & \cellcolor[HTML]{70AD47}\textbf{2162} \\
+    PŠA (Tokuda)      & 544133                                  & \cellcolor[HTML]{70AD47}\textbf{573608} & 2219                                  \\
+    PŠA (Sedgewick)      & 558162                                  & 586459                                  & \cellcolor[HTML]{70AD47}\textbf{2140} \\
+    B1 & \cellcolor[HTML]{70AD47}\textbf{541866} & \cellcolor[HTML]{70AD47}\textbf{573477} & \cellcolor[HTML]{70AD47}\textbf{2157} \\
+    B2      & \cellcolor[HTML]{70AD47}\textbf{541303} & 574561                                  & 2183                                  \\
+    B3      & 546239                                  & 579532                                  & 2208                                  \\
+    B4      & 545417                                  & 576050                                  & 2225                                  \\ 
+    B5      & 543056                                  & \cellcolor[HTML]{70AD47}\textbf{573435} & 2214                                  \\ \bottomrule 
   \end{tabular}
 \end{table}
 
 Vertinant rezultatus pateikiamus \ref{results_25000} lentelėje, pastebime, jog
-mažiausiai palyginimų atliko GL\_2, nedaug atsiliko GL\_1 ir Ciura tarpų seka paremti variantai.
-Pagal atliktus priskyrimus geriausi rezultatai gauti su GL\_5, GL\_1 ir PŠA su Tokuda tarpų seka.
+mažiausiai palyginimų atliko B2, nedaug atsiliko B1 ir Ciura tarpų seka paremti variantai.
+Pagal atliktus priskyrimus geriausi rezultatai gauti su B5, B1 ir PŠA su Tokuda tarpų seka.
 PŠA su Sedgewick tarpų seka veikimo laiko rezultatai šiuo atveju yra geriausi.
 
 \begin{table}[H]
@@ -727,23 +753,23 @@ PŠA su Sedgewick tarpų seka veikimo laiko rezultatai šiuo atveju yra geriausi
   \centering
   \begin{tabular}{llll}
     algoritmas & vid. palyginimai                         & vid. priskyrimai                         & vid. laikas (μs)                      \\ \midrule
-    S\_C       & \cellcolor[HTML]{70AD47}\textbf{1180477} & 1781235                                  & 5203                                  \\
-    S\_T       & 1184476                                  & 1804441                                  & 5335                                  \\
-    S\_S       & 1211998                                  & 1817385                                  & 5140                                  \\
-    SI\_C      & \cellcolor[HTML]{70AD47}\textbf{1180477} & 1250232                                  & 4816                                  \\
-    SI\_T      & 1184476                                  & \cellcolor[HTML]{70AD47}\textbf{1244335} & 4866                                  \\
-    SI\_S      & 1211998                                  & 1269569                                  & \cellcolor[HTML]{70AD47}\textbf{4723} \\
-    GL\_1 & \cellcolor[HTML]{70AD47}\textbf{1178027} & \cellcolor[HTML]{70AD47}\textbf{1247428} & \cellcolor[HTML]{70AD47}\textbf{4816} \\
-    GL\_2 & \cellcolor[HTML]{70AD47}\textbf{1180429} & 1249592                                  & \cellcolor[HTML]{70AD47}\textbf{4795} \\
-    GL\_3      & 1189048                                  & 1261191                                  & 4822                                  \\
-    GL\_4      & 1184607                                  & 1252540                                  & 4819                                  \\ \bottomrule
-    GL\_5      & 1180783                                  & \cellcolor[HTML]{70AD47}\textbf{1246917} & 4832                                 \\ \bottomrule          
+    VŠA (Ciura)       & \cellcolor[HTML]{70AD47}\textbf{1180477} & 1781235                                  & 5203                                  \\
+    VŠA (Tokuda)      & 1184476                                  & 1804441                                  & 5335                                  \\
+    VŠA (Sedgewick)       & 1211998                                  & 1817385                                  & 5140                                  \\
+    PŠA (Ciura)      & \cellcolor[HTML]{70AD47}\textbf{1180477} & 1250232                                  & 4816                                  \\
+    PŠA (Tokuda)      & 1184476                                  & \cellcolor[HTML]{70AD47}\textbf{1244335} & 4866                                  \\
+    PŠA (Sedgewick)      & 1211998                                  & 1269569                                  & \cellcolor[HTML]{70AD47}\textbf{4723} \\
+    B1 & \cellcolor[HTML]{70AD47}\textbf{1178027} & \cellcolor[HTML]{70AD47}\textbf{1247428} & \cellcolor[HTML]{70AD47}\textbf{4816} \\
+    B2 & \cellcolor[HTML]{70AD47}\textbf{1180429} & 1249592                                  & \cellcolor[HTML]{70AD47}\textbf{4795} \\
+    B3      & 1189048                                  & 1261191                                  & 4822                                  \\
+    B4      & 1184607                                  & 1252540                                  & 4819                                  \\ \bottomrule
+    B5      & 1180783                                  & \cellcolor[HTML]{70AD47}\textbf{1246917} & 4832                                 \\ \bottomrule          
   \end{tabular}
 \end{table}
 
 Nagrinėjant \ref{results_50000} lentelės rezultatus, pastebime, jog
-mažiausiai palyginimų atliko GL\_1, taip pat geri rezultatai gauti su GL\_2 ir Ciura tarpų seka paremtais variantais.
-Vertinant atliktus priskyrimus, geriausi rezultatai gauti su PŠA naudojant Tokuda tarpų seką ir GL\_5 bei GL\_1 algoritmais.
+mažiausiai palyginimų atliko B1, taip pat geri rezultatai gauti su B2 ir Ciura tarpų seka paremtais variantais.
+Vertinant atliktus priskyrimus, geriausi rezultatai gauti su PŠA naudojant Tokuda tarpų seką ir B5 bei B1 algoritmais.
 PŠA su Sedgewick tarpų seka toliau rodo geriausius veikimo laiko rezultatus.
 
 \begin{table}[H]
@@ -752,43 +778,43 @@ PŠA su Sedgewick tarpų seka toliau rodo geriausius veikimo laiko rezultatus.
   \centering
   \begin{tabular}{llll}
     algoritmas & vid. palyginimai                         & vid. priskyrimai                         & vid. laikas (μs)                       \\ \midrule
-    S\_C       & \cellcolor[HTML]{70AD47}\textbf{2552009} & 3835896                                  & 11305                                  \\
-    S\_T       & 2564127                                  & 3888498                                  & 11853                                  \\
-    S\_S       & 2624030                                  & 3941772                                  & 11980                                  \\
-    SI\_C      & \cellcolor[HTML]{70AD47}\textbf{2552009} & 2710178                                  & 10765                                  \\
-    SI\_T      & 2564127                                  & \cellcolor[HTML]{70AD47}\textbf{2691417} & 10671                                  \\
-    SI\_S      & 2624030                                  & 2741613                                  & \cellcolor[HTML]{70AD47}\textbf{10424} \\
-    GL\_1 & \cellcolor[HTML]{70AD47}\textbf{2545884} & \cellcolor[HTML]{70AD47}\textbf{2703088} & \cellcolor[HTML]{70AD47}\textbf{10475} \\
-    GL\_2      & \cellcolor[HTML]{70AD47}\textbf{2549224} & 2735020                                  & 10568                                  \\
-    GL\_3      & 2569991                                  & 2768514                                  & 10481                                  \\
-    GL\_4      & 2556929                                  & 2718989                                  & \cellcolor[HTML]{70AD47}\textbf{10434} \\
-    GL\_5      & 2552700                                  & \cellcolor[HTML]{70AD47}\textbf{2697404} & 10542                                  \\  \bottomrule 
+    VŠA (Ciura)       & \cellcolor[HTML]{70AD47}\textbf{2552009} & 3835896                                  & 11305                                  \\
+    VŠA (Tokuda)      & 2564127                                  & 3888498                                  & 11853                                  \\
+    VŠA (Sedgewick)       & 2624030                                  & 3941772                                  & 11980                                  \\
+    PŠA (Ciura)      & \cellcolor[HTML]{70AD47}\textbf{2552009} & 2710178                                  & 10765                                  \\
+    PŠA (Tokuda)      & 2564127                                  & \cellcolor[HTML]{70AD47}\textbf{2691417} & 10671                                  \\
+    PŠA (Sedgewick)      & 2624030                                  & 2741613                                  & \cellcolor[HTML]{70AD47}\textbf{10424} \\
+    B1 & \cellcolor[HTML]{70AD47}\textbf{2545884} & \cellcolor[HTML]{70AD47}\textbf{2703088} & \cellcolor[HTML]{70AD47}\textbf{10475} \\
+    B2      & \cellcolor[HTML]{70AD47}\textbf{2549224} & 2735020                                  & 10568                                  \\
+    B3      & 2569991                                  & 2768514                                  & 10481                                  \\
+    B4      & 2556929                                  & 2718989                                  & \cellcolor[HTML]{70AD47}\textbf{10434} \\
+    B5      & 2552700                                  & \cellcolor[HTML]{70AD47}\textbf{2697404} & 10542                                  \\  \bottomrule 
   \end{tabular}
 \end{table}
 
 
 \ref{results_100000} lentelės rezultatuose matome, jog
-mažiausiai palyginimų ir toliau atlieka GL\_1 ir GL\_2 algoritmai, taip pat neblogus rezultatus rodo Ciura tarpų seka paremti variantai.
-Analizuojant atliktų priskyrimų rezultatus, pirmauja PŠA naudojant Tokuda tarpų seką ir GL\_5 bei GL\_1 algoritmai.
+mažiausiai palyginimų ir toliau atlieka B1 ir B2 algoritmai, taip pat neblogus rezultatus rodo Ciura tarpų seka paremti variantai.
+Analizuojant atliktų priskyrimų rezultatus, pirmauja PŠA naudojant Tokuda tarpų seką ir B5 bei B1 algoritmai.
 PŠA su Sedgewick tarpų seka ir toliau pateikia geriausius veikimo laiko rezultatus.
 
 \subsection{Tyrimo rezultatų apibendrinimas}
 
 Apibendrinant rezultatus, gautus tiriant Šelo algoritmo variantus kai $N \leq 1000$,
-galime teigti, jog PŠA su Ciura tarpų seka ir algoritmas GS\_1 šiame etape buvo efektyviausi,
+galime teigti, jog PŠA su Ciura tarpų seka ir algoritmas A1 šiame etape buvo efektyviausi,
 kadangi jie atliko mažiausiai palyginimų ir priskyrimų bei pateikė pakankamai gerus veikimo laikus.
 
 Įdomu pastebėti, jog didelė dalis GA sugeneruotų algoritmų mažesniems duomenų dydžiams naudoja visiškai tokius pat perėjimus,
 kaip ir PŠA su Ciura tarpų seka. Tuo pačiu galime konstatuoti, jog veikimo laiko įverčiai nėra ypač tikslūs -
 jei algoritmai atlieka tas pačias operacijas ir rikiuoja tuos pačius duomenis, natūralu būtų tikėtis labai panašių veikimo laikų. 
-Taip pat matome, jog su didesniais tarpais taikant burbuliuko perėjimą gaunamas algoritmas (GS\_2), kuris atlieka mažiau palyginimų ir daugiau priskyrimų
+Taip pat matome, jog su didesniais tarpais taikant burbuliuko perėjimą gaunamas algoritmas (A2), kuris atlieka mažiau palyginimų ir daugiau priskyrimų
 nei analogišką tarpų seką naudojantis algoritmas paremtas tik patobulinto įterpimo perėjimais (PŠA su Ciura tarpų seka).
 Vertinant tik veikimo laikus, panašu jog šis kompromisas duoda teigiamą efektą, tačiau reikia atsižvelgti ir į faktą, jog tyrimui
 buvo naudojami tik sveikaskaitiniai duomenys, kurių priskyrimas yra labai pigus atliekamų skaičiavimų prasme. 
 
 Apibendrinant rezultatus, gautus tiriant Šelo algoritmo variantus kai $N \leq 100000$,
-galime teigti, jog efektyviausias buvo GL\_1 algoritmas, kadangi jo rezultatai su visais tame etape tirtais duomenų dydžiais buvo vieni geriausių tiek vertinant atliktas operacijas, tiek veikimo laiką.
-Reikia pastebėti, jog pirmi 8 GL\_1 algoritmo perėjimai sutampa su PŠA naudojant Ciura tarpų seką.
+galime teigti, jog efektyviausias buvo B1 algoritmas, kadangi jo rezultatai su visais tame etape tirtais duomenų dydžiais buvo vieni geriausių tiek vertinant atliktas operacijas, tiek veikimo laiką.
+Reikia pastebėti, jog pirmi 8 B1 algoritmo perėjimai sutampa su PŠA naudojant Ciura tarpų seką.
 Šis algoritmas taip pat naudoja tik patobulintą iterpimo perėjimą, taigi iš tiesų buvo sugeneruota efektyvi tarpų seka ${S_1 = 1, 4, 10, 23, 57, 132, 301, 701, 1577, 3552, 7983, 17982, 40459, 91032}$,
 kuri yra Ciura tarpų sekos tęsinys.
 
@@ -814,23 +840,35 @@ kadangi daug paprasčiau įgyvendinti algoritmą, kuris rikiuoja naudodamas tik 
 Renkantis kurį Šelo algoritmo variantą naudoti, nesunkiai galime rekomenduoti patobulintą Šelo algoritmą.
 Remiantis gautais rezultatais, jis atlieka mažiau priskyrimo operacijų ir veikia greičiau už vadovėlinę versiją.
 
-
 Nedideliems duomenų dydžiams ($N \leq 1000$) rikiuoti bendru atveju galime rekomenduoti patobulintą Šelo algoritmą su Ciura tarpų seka.
 Remiantis puikiais veikimo laiko rezultatais taip pat galime rekomenduoti ir patobulintą Šelo algoritmą su Sedgewick tarpų seka.
-Nors darbo metu gautas algoritmas GS\_1 taip pat yra gana efektyvus, jį sunku rekomenduoti dėl
+Nors darbo metu gautas algoritmas A1 taip pat yra gana efektyvus, jį sunku rekomenduoti dėl
 kelių skirtingų perėjimų taikymo, kas stipriai apsunkina implementaciją.
 
 Vidutiniams duomenų dydžiams ($1000 \leq N \leq 100000$) rikiuoti bendru atveju galime rekomenduoti patobulintą Šelo algoritmą su $S_1$ tarpų seka.
 Remiantis puikiais veikimo laiko rezultatais taip pat galime rekomenduoti ir patobulintą Šelo algoritmą su Sedgewick tarpų seka.
 
+Reikia pastebėti, jog šiame darbe visi algoritmai buvo tiriami naudojant tik atsitiktinius duomenis.
+Atliekant išsamesnį Šelo algoritmo variantų tyrimą, reikėtų panaudoti daugiau skirtingų duomenų rinkinių:
+išrikiuotų (didėjančia/mažėjančia tvarka), dalinai išrikiuotų, sutinkamų realybėje.
+Taip pat reikėtų panaudoti ir skirtingus duomenų tipus, kadangi palyginimo ir priskyrimo operacijų kaina
+priklauso nuo rikiuojamų duomenų tipo.
+Tai galėtų duoti naudingų įžvalgų į operacijų kainų įtaką veikimo laikui.
+
 Įvertinant gautus rezultatus, galima teigti, jog genetiniai algoritmai yra tinkamas metodas efektyvių Šelo algoritmo variantų radimui.
-Ateityje būtų įdomu Šelo algoritmo variantų generavimo inicializacijai naudoti daugiau skirtingų tarpų sekų.
-Šiam tikslui pasiekti būtų galima pasitelkti geometrines tarpų sekas, kadangi jas gana nesudėtinga generuoti, o galimų variantų skaičius yra be galo didelis.
+Tiesa, suprojektuotas genetinis algoritmas galėtų būti patobulintas siekiant sugeneruoti dar geresnių variantų.
+Remiantis tuo, jog darbo metu sugeneruoti algoritmai veikimo greičiu atsiliko nuo PŠA su Sedgewick tarpų seka,
+turime priežasčių manyti, jog tinkamumo funkcijoje taikyti svoriai nėra visiškai teisingi ir galėjo atmesti kokybiškus variantus, kurie veikė greitai, bet atliko santykinai daug palyginimų.
+Ateityje būtų įdomu panagrinėti, kokia tinkamumo funkcija tiksliausiai išreiškia praktinį algoritmo efektyvumą.
+Pavertus suprojektuotą vienkriterinį genetinį algoritmą į daugiakriterinį, taip pat būtų įmanoma gauti daugiau kokybiškų variantų,
+kadangi veikimo laikas ir atliekamos operacijos dažnai nekoreliuoja ir šiuos kriterijus būtų prasminga atskirti.
 
 Dar viena potenciali naujų darbų kryptis galėtų būti ir geometrinių tarpų sekų generavimas pasitelkiant genetinius algoritmus.
 Šiame darbe buvo gautas Ciura tarpų sekos tęsinys $S_1$, kuris yra efektyvesnis už literatūroje pateikiamą tęsinį gautą naudojant rekursyvią formulę $h_{k}=\lfloor 2.25h_{k-1}\rfloor$.
 Sukonstravus genetinį algoritmą Ciura tarpų sekos tęsinių generavimui naudojant skirtingus $q$ galėtų būti gauta ir dar efektyvesnė tarpų seka.
 Žinoma, nėra būtina apsiriboti vien tęsinių generavimu - vienodai prasmingas uždavinys būtų ir pilnų geometrinių tarpų sekų generavimas pasitelkiant genetinius algoritmus.
+
+
 
 \printbibliography[heading=bibintoc] % Literatūros šaltiniai
 
@@ -898,7 +936,254 @@ Sukonstravus genetinį algoritmą Ciura tarpų sekos tęsinių generavimui naudo
   \end{algorithmic}
 \end{algorithm}
 
-\section{Šelo algoritmo variantų generavimo rezultatai}
+\section{Šelo algoritmo variantų generavimo rezultatai, kai $N = 1000$}
+
+\subsection{Algoritmas A1}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+    {
+      "gap": 861,
+      "passType": "bubble"
+    },
+    {
+      "gap": 347,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 132,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 57,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 23,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 10,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 4,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 1,
+      "passType": "insertion_improved"
+    }
+  ]
+\end{lstlisting}
+
+\subsection{Algoritmas A2}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+    {
+      "gap": 701,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 301,
+      "passType": "bubble"
+    },
+    {
+      "gap": 132,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 57,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 23,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 10,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 4,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 1,
+      "passType": "insertion_improved"
+    }
+  ]
+\end{lstlisting}
+
+\subsection{Algoritmas A3}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+    {
+      "gap": 702,
+      "passType": "bubble"
+    },
+    {
+      "gap": 275,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 108,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 57,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 23,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 10,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 4,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 1,
+      "passType": "insertion_improved"
+    }
+  ]
+\end{lstlisting}
+
+\subsection{Algoritmas A4}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+    {
+      "gap": 701,
+      "passType": "bubble"
+    },
+    {
+      "gap": 233,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 108,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 43,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 20,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 9,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 4,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 1,
+      "passType": "insertion_improved"
+    }
+  ]
+\end{lstlisting}
+
+\subsection{Algoritmas A5}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+    {
+      "gap": 929,
+      "passType": "bubble"
+    },
+    {
+      "gap": 347,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 209,
+      "passType": "bubble"
+    },
+    {
+      "gap": 57,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 23,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 10,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 4,
+      "passType": "insertion_improved"
+    },
+    {
+      "gap": 1,
+      "passType": "insertion_improved"
+    }
+  ]
+\end{lstlisting}
+
+
+\section{Šelo algoritmo variantų generavimo rezultatai, kai $N = 100000$}
+
+\subsection{Algoritmas B1}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+  ]
+\end{lstlisting}
+
+
+\subsection{Algoritmas B2}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+  ]
+\end{lstlisting}
+
+
+\subsection{Algoritmas B3}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+  ]
+\end{lstlisting}
+
+
+\subsection{Algoritmas B4}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+  ]
+\end{lstlisting}
+
+
+\subsection{Algoritmas B5}
+
+\lstset{language=json}
+\begin{lstlisting}
+  [
+  ]
+\end{lstlisting}
 
 
 \end{document}
