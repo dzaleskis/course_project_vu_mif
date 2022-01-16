@@ -503,7 +503,15 @@ Chromosomos buvo inicializuojamos remiantis šia formule:
 $p_i = (rand\_type(), H_i)$, kur $rand\_type()$ yra funkcija grąžinanti atsitiktinį perėjimo tipą, $H$ - atsitiktinai pasirinkta tarpų seka.
 Chromosomų tinkamumas buvo vertinamas rikiuojant du 1000 elementų dydžio masyvus.
 Pasitelkiant suprojektuotą GA buvo sugeneruota 50 unikalių sprendinių.
-Tada iš jų buvo atrinkti 5 didžiausią tinkamumą turintys sprendiniai, kurie JSON formatu pateikiami prieduose. % prideti ref veliau
+Tada iš jų buvo atrinkti 5 didžiausią tinkamumą turintys sprendiniai A1, A2, A3, A4 ir A5, kurie glaustai aptariami žemiau (detalūs rezultatai JSON formatu pateikiami prieduose).
+
+Algoritmą A1 pagrinde sudaro patobulinto įterpimo perėjimai (tik su didžiausiu tarpu naudojamas burbuliuko perėjimas),
+dažniausiai naudojami Ciura sekos tarpai, taip pat pastebime Sedgewick bei geometrinės tarpų sekos su $q = 2.65$ elementų.
+Algoritmas A2 naudoja tik Ciura sekos tarpus, pagrinde pasitelkiami patobulinto įterpimo perėjimai, nors pastebime ir burbuliuko perėjimą su tarpu 301.
+Algoritmo A3 mažiausi tarpai yra iš Ciura tarpų sekos, didesnius tarpus sudaro geometrinės tarpų sekos su $q = 2.55$ elementai,
+pagrinde naudojami patobulinto įterpimo perėjimai (burbuliuko perėjimas naudojamas tik su didžiausiu tarpu).
+Algoritmą A4 sudaro Tokuda, Ciura ir geometrinės tarpų sekos su $q = 2.55$ mišinys, didžiausiam tarpui naudojamas burbuliuko perėjimas, visiems kitiems - patobulinto įterpimo perėjimas.
+Algoritmą A5 sudaro Sedgewick, Ciura ir geometrinės tarpų sekos su $q = 2.65$ mišinys, su tarpais 929 ir 209 naudojami burbuliuko perėjimai, su likusiais tarpais pastebime patobulinto įterpimo perėjimus.
 
 \subsection{Šelo algoritmo variantų generavimas, kai $N = 100000$}
 
@@ -515,7 +523,14 @@ kur $rand\_type()$ yra funkcija grąžinanti atsitiktinį perėjimo tipą, $gap(
 
 Chromosomų tinkamumas buvo vertinamas rikiuojant vieną 100000 elementų dydžio masyvą.
 Pasitelkiant suprojektuotą GA buvo sugeneruota 50 unikalių sprendinių.
-Tada iš jų buvo atrinkti 5 didžiausią tinkamumą turintys sprendiniai, kurie JSON formatu pateikiami prieduose. % prideti ref veliau
+Tada iš jų buvo atrinkti 5 didžiausią tinkamumą turintys sprendiniai B1, B2, B3, B4 ir B5, kurie glaustai aptariami žemiau (detalūs rezultatai JSON formatu pateikiami prieduose).
+
+Algoritmą B1 yra sudaro algoritmo A2 naudoti tarpai, su visais tarpais naudojamas patobulinto įterpimo perėjimas.
+Algoritmas B2 yra paremtas algoritmų A2 ir A3 naudotais tarpais, pagrinde naudojamas patobulinto įterpimo perėjimas, su tarpu 36335 taip pat pasitelkiamas burbuliuko perėjimas.
+Algoritmas B3 naudoja algoritmų A2 ir A3 tarpus, dažniausiai naudojami patobulinto įterpimo perėjimai, dviems didžiausiems tarpams taikomi burbuliuko ir mūrijimo perėjimai.
+Algoritmas B4 yra pagrįstas A2 ir A3 algoritmų tarpais, daugiausia naudojami patobulinto įterpimo perėjimai, dviems didžiausiems tarpams taikomas burbuliuko perėjimas.
+Algoritmas B5 pasitelkia algoritmų A2 ir A3 tarpus, su visais tarpais naudojamas patobulinto įterpimo perėjimas.
+
 
 \section{Šelo algoritmo variantų efektyvumo tyrimo aplinkos paruošimas}
 
@@ -628,8 +643,8 @@ Vertinant veikimo laiką pirmauja PŠA su Sedgewick tarpų seka.
 
 Nagrinėjant rezultatus pateikiamus \ref{results_250} lentelėje, galime pastebėti, jog
 mažiausiai palyginimų atlikę algoritmai pradeda atsiskirti ir A5 algoritmas jų atlieka mažiausiai.
-GA sugeneruoti A3 ir A4 algoritmai bei Tokuda seka paremtas PŠA pateikia geriausius rezultatus vertintant atliktus priskyrimus.
-Vertinant veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
+A3 ir A4 algoritmai bei Tokuda seka paremtas PŠA pateikia geriausius rezultatus vertintant atliktus priskyrimus.
+Vertinant veikimo laiką pirmauja PŠA su Sedgewick tarpų seka.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai $N = 500$}
@@ -655,7 +670,7 @@ Vertinant veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
 \ref{results_500} lentelėje matome, jog
 A1 ir A5 bei Ciura tarpų seka paremti variantai pasirodė geriausiai vertinant atliktus palyginimus.
 Vertinant atliktus priskyrimus, geriausi rezultatai gauti su A1, A2 ir PŠA su Ciura tarpų seka.
-Pagal veikimo laiką toliau pirmauja PŠA su Sedgewick tarpų seka.
+Pagal veikimo laiką pirmauja PŠA su Sedgewick tarpų seka.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai $N = 1000$}
@@ -770,7 +785,7 @@ PŠA su Sedgewick tarpų seka veikimo laiko rezultatai šiuo atveju yra geriausi
 Nagrinėjant \ref{results_50000} lentelės rezultatus, pastebime, jog
 mažiausiai palyginimų atliko B1, taip pat geri rezultatai gauti su B2 ir Ciura tarpų seka paremtais variantais.
 Vertinant atliktus priskyrimus, geriausi rezultatai gauti su PŠA naudojant Tokuda tarpų seką ir B5 bei B1 algoritmais.
-PŠA su Sedgewick tarpų seka toliau rodo geriausius veikimo laiko rezultatus.
+PŠA su Sedgewick tarpų seka rodo geriausius veikimo laiko rezultatus.
 
 \begin{table}[H]
   \caption{Efektyvumo tyrimo rezultatai, kai $N = 100000$}
@@ -794,9 +809,9 @@ PŠA su Sedgewick tarpų seka toliau rodo geriausius veikimo laiko rezultatus.
 
 
 \ref{results_100000} lentelės rezultatuose matome, jog
-mažiausiai palyginimų ir toliau atlieka B1 ir B2 algoritmai, taip pat neblogus rezultatus rodo Ciura tarpų seka paremti variantai.
+mažiausiai palyginimų atliko B1 ir B2 algoritmai, taip pat neblogus rezultatus rodo Ciura tarpų seka paremti variantai.
 Analizuojant atliktų priskyrimų rezultatus, pirmauja PŠA naudojant Tokuda tarpų seką ir B5 bei B1 algoritmai.
-PŠA su Sedgewick tarpų seka ir toliau pateikia geriausius veikimo laiko rezultatus.
+PŠA su Sedgewick tarpų seka pateikia geriausius veikimo laiko rezultatus.
 
 \subsection{Tyrimo rezultatų apibendrinimas}
 
@@ -804,11 +819,13 @@ Apibendrinant rezultatus, gautus tiriant Šelo algoritmo variantus kai $N \leq 1
 galime teigti, jog PŠA su Ciura tarpų seka ir algoritmas A1 šiame etape buvo efektyviausi,
 kadangi jie atliko mažiausiai palyginimų ir priskyrimų bei pateikė pakankamai gerus veikimo laikus.
 
-Įdomu pastebėti, jog didelė dalis GA sugeneruotų algoritmų mažesniems duomenų dydžiams naudoja visiškai tokius pat perėjimus,
+Įdomu pastebėti, jog didelė dalis GA sugeneruotų algoritmų mažesniems duomenų dydžiams naudoja visiškai tokius pat perėjimus ir tarpus,
 kaip ir PŠA su Ciura tarpų seka. Tuo pačiu galime konstatuoti, jog veikimo laiko įverčiai nėra ypač tikslūs -
 jei algoritmai atlieka tas pačias operacijas ir rikiuoja tuos pačius duomenis, natūralu būtų tikėtis labai panašių veikimo laikų. 
 Taip pat matome, jog su didesniais tarpais taikant burbuliuko perėjimą gaunamas algoritmas (A2), kuris atlieka mažiau palyginimų ir daugiau priskyrimų
 nei analogišką tarpų seką naudojantis algoritmas paremtas tik patobulinto įterpimo perėjimais (PŠA su Ciura tarpų seka).
+Ši skirtumą galime paaiškinti tuo, jog burbuliuko perėjimas mažiau aprikiuoja duomenis nei įterpimo perėjimai, taigi sutaupoma palyginimų,
+tačiau sekantys perėjimai turi atlikti daugiau darbo, dėl ko pastebimas padidėjęs priskyrimų skaičius.
 Vertinant tik veikimo laikus, panašu jog šis kompromisas duoda teigiamą efektą, tačiau reikia atsižvelgti ir į faktą, jog tyrimui
 buvo naudojami tik sveikaskaitiniai duomenys, kurių priskyrimas yra labai pigus atliekamų skaičiavimų prasme. 
 
